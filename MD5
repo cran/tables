@@ -1,0 +1,13 @@
+ce4efd0d1429623ad5262130246a6164 *DESCRIPTION
+e8e078a2956a2b1b24334ac80000c789 *NAMESPACE
+e3289983e5bccd5367d5e28e9145e087 *R/Hline.R
+3f7e460a0c197a34df14ad48657cd5fc *R/PlusMinus.R
+3556269485c8f39792a5773c95a3fd0f *R/tabular.R
+bb34ab3792828c365e6986e2a87f4d13 *inst/doc/tables.Rnw
+008ef777b69437663ee9c5efb0de87f7 *inst/doc/tables.pdf
+e2d7b430bec2d7bc27c21f396f0dfcb3 *man/Hline.Rd
+e9a49bf9f67ac6cc7b824bbcfed13442 *man/PlusMinus.Rd
+1384a51906c334e8331ff3f8277c59b7 *man/latex.tabular.Rd
+49048f0b8d6229a19cac2be59e6b5ce7 *man/latexNumeric.Rd
+5cd3900a1b8055b8a93ebf939b3b8b28 *man/tabular.Rd
+bb34ab3792828c365e6986e2a87f4d13 *vignettes/tables.Rnw
