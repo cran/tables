@@ -300,8 +300,7 @@ expandFactors <- function(e, env) {
 # A sum of products is a list whose elements are atoms or products of atoms.
 
 sumofprods <- function(e) {
-    if (identical(e,1)) return(list(1))
-    if (!is.language(e)) stop('Need an expression')
+    if (!is.language(e)) return(list(e))
     if (is.expression(e)) e <- e[[1]]
     if (is.name(e)) result <- list(e)
     else {
@@ -353,8 +352,10 @@ tabular <- function(table, data=parent.frame(), n, suppressLabels=0) {
     dims[[1]] <- expandFactors(dims[[1]], data)
     rlabels <- getLabels(dims[[1]], rows=TRUE, suppress=suppressLabels)
     suppressLabels <- attr(rlabels, "suppress")
+    justify <- attr(rlabels, "justify")
     dims[[2]] <- expandFactors(dims[[2]], data)
-    clabels <- getLabels(dims[[2]], rows=FALSE, suppress=suppressLabels)
+    clabels <- getLabels(dims[[2]], rows=FALSE, justify=justify,
+			 suppress=suppressLabels)
     rows <- sumofprods(dims[[1]])
     cols <- sumofprods(dims[[2]])
     result <- NULL
@@ -413,11 +414,13 @@ justify <- function(x, justification="c", width=max(nchar(x))) {
     x
 }
 
-latexNumeric <- function(chars, minus=TRUE, pad=TRUE, mathmode=TRUE) {
-    regexp <- "^( *)([-]?)([^ -].*)$"
+latexNumeric <- function(chars, minus=TRUE, leftpad=TRUE, rightpad=TRUE,
+			 mathmode=TRUE) {
+    regexp <- "^( *)([-]?)([^ -][^ ]*)( *)$"
     leadin <- sub(regexp, "\\1", chars)
     sign <- sub(regexp, "\\2", chars)
     rest <- sub(regexp, "\\3", chars)
+    tail <- sub(regexp, "\\4", chars)
     
     if (minus && any(neg <- sign == "-")) {
     	if (any(leadin[!neg] == ""))
@@ -425,14 +428,18 @@ latexNumeric <- function(chars, minus=TRUE, pad=TRUE, mathmode=TRUE) {
     	leadin[!neg] <- sub(" ", "", leadin[!neg])
     	sign[!neg] <- "\\phantom{-}"
     }
-    if (pad && any(ind <- leadin != "")) 
+    if (leftpad && any(ind <- leadin != "")) 
     	leadin[ind] <- paste("\\phantom{", 
     	                     gsub(" ", "0", leadin[ind]),
     	                     "}", sep="")
+    if (rightpad && any(ind <- tail != ""))
+    	tail[ind] <- paste("\\phantom{",
+    			   gsub(" ", "0", tail[ind]),
+    			   "}", sep="")
     if (mathmode)
-    	paste(leadin, "$", sign, rest, "$", sep="")
+    	paste("$", leadin, sign, rest, tail, "$", sep="")
     else
-    	paste(leadin, sign, rest, sep="")
+    	paste(leadin, sign, rest, tail, sep="")
 }
 
 format.tabular <- function(x, digits=4, justification="n", 
@@ -491,86 +498,4 @@ print.tabular <- function(x, justification = "n", ...) {
     colnames(result) <- rep("", ncol(result))
     print(noquote(result))
     invisible(x)
-}
-
-latex.tabular <- function(object, file="", justification="c", ...) {
-    if (file == "")
-    	out <- ""
-    else {
-    	out <- file(file, open="wt")
-    	on.exit(close(out))
-    }
-    mycat <- function(...) cat(..., file=out)
-    
-    chars <- format(object, latex = TRUE, ...) # format without justification
-    
-    vjust <- attr(object, "justification")
-    ind <- !is.na(vjust) & vjust != justification
-    chars[ind] <- sprintf("\\multicolumn{1}{%s}{%s}",
-    			  vjust[ind], chars[ind])
-    
-    rowLabels <- attr(object, "rowLabels")
-    rowLabels[is.na(rowLabels)] <- ""
-    rjust <- attr(rowLabels, "justification")
-    ind <- !is.na(rjust) & (rjust != justification)
-    rowLabels[ind] <- sprintf("\\multicolumn{1}{%s}{%s}",
-    			      rjust[ind], rowLabels[ind])
-    nleading <- ncol(rowLabels)
-    rlabels <- apply(rowLabels, 1, paste, collapse = " & ")
-    colnamejust <- attr(rowLabels, "colnamejust")
-    colnamejust[is.na(colnamejust)] <- justification
-    ind <- colnamejust != justification
-    colnames(rowLabels)[ind] <- sprintf("\\multicolumn{1}{%s}{%s}", 
-    		colnamejust[ind], colnames(rowLabels)[ind])
-    clabels <- attr(object, "colLabels")
-    leadin <- paste(rep("&", nleading - 1), collapse=" ")
-    cjust <- attr(clabels, "justification")
-    cjust[is.na(cjust)] <- justification
-
-    clines <- character(nrow(clabels))
-    for (i in seq_len(nrow(clabels))) {
-    	row <- c(clabels[i,], "STOP") # add sentinel
-    	rowjust <- c(cjust[i,], "")
-    	result <- leadin
-    	label <- ""
-    	just <- justification
-    	ncols <- 0
-    	for (j in seq_along(row)) {
-    	    if (!is.na(row[j])) {
-    	    	if (ncols > 0) {
-    	    	    if (ncols > 1 || just != justification)
-    	    	        result <- c(result, 
-    	    	            sprintf("& \\multicolumn{%d}{%s}{%s}", ncols, just, label))
-    	    	    else
-    	    	    	result <- c(result, paste("&", label))
-    	    	}
-    	    	ncols <- 1
-    	    	label <- row[j]
-    	    	just <- rowjust[j]
-    	    } else
-    	    	ncols <- ncols + 1
-    	}
-    	clines[i] <- paste( paste(result, collapse=" "), "\\\\")
-    }
-    clabels <- clines
-    # Replace the leadin of the last line with the row label headings
-    if (nchar(leadin))
-    	clabels[length(clabels)] <- 
-    	    sub(leadin, paste(colnames(rowLabels), collapse=" & "),
-    	        clabels[length(clabels)], fixed = TRUE)
-    else
-    	clabels[length(clabels)] <-
-    	    paste(paste(colnames(rowLabels), collapse=" & "), 
-    	    	  clabels[length(clabels)])
-    mycat("\\begin{tabular}{", paste(rep(justification, nleading + ncol(chars)), 
-    				   collapse=""), "}\n", sep="")
-    mycat("\\hline\n")
-    mycat(clabels, sep="\n")
-    mycat("\\hline\n")
-    chars <- apply(chars, 1, paste, collapse=" & ")
-    chars <- paste(" & ", chars, "\\\\")
-    mycat(paste(rlabels, chars), sep="\n")
-    mycat("\\hline\n")
-    mycat("\\end{tabular}\n")
-    structure(list(file=file, style=character(0)), class="latex")
 }
