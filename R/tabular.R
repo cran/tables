@@ -36,7 +36,7 @@ term2table <- function(rowterm, colterm, env, n) {
     	    	    subset <- arg
     	    	else
     	    	    subset <- subset & arg
-    	    } else if (asis || is.vector(arg)) {
+    	    } else if (asis || is.atomic(arg)) {
     	    	if (is.null(values)) {
     	    	    values <- arg
     	    	    valuename <- e
@@ -340,11 +340,27 @@ tabledims <- function(e) {
     result
 }
 
-tabular <- function(table, data=parent.frame(), n, suppressLabels=0) {
+tabular <- function(table, ...) 
+    UseMethod("tabular")
+    
+tabular.default <- function(table, ...) {
+    tabular.formula(as.formula(table, env=parent.frame()), ...)
+}
+
+tabular.formula <- function(table, data=NULL, n, suppressLabels=0, ...) {
+    if (length(list(...)))
+	warning(gettextf("extra argument(s) %s will be disregarded",
+			 paste(sQuote(names(list(...))), collapse = ", ")),
+		domain = NA)
     if (missing(n) && inherits(data, "data.frame"))
     	n <- nrow(data)
-    if (is.list(data))
-    	data <- list2env(data, parent=parent.frame())
+    if (is.null(data))
+    	data <- environment(table)
+    else if (is.list(data))
+    	data <- list2env(data, parent=environment(table))
+    else if (!is.environment(data))
+    	stop("data must be a dataframe, list or environment")
+    	
     table <- expandExpressions(table, data)
     table <- collectFormats(table)
     dims <- tabledims(table)
@@ -468,34 +484,15 @@ format.tabular <- function(x, digits=4, justification="n",
        	    call[[last+1]] <- x
        	    names(call)[last+1] <- "x"
        	    chars[ind] <- eval(call, parent.frame())
-       	    if (latex && is.numeric(x) 
-       	    	&& identical(call[[1]], as.name("format")))
-       	    	chars[ind] <- latexNumeric(chars[ind])
+       	    if (latex && identical(call[[1]], as.name("format")))
+       	    	if (is.numeric(x))
+       	    	    chars[ind] <- latexNumeric(chars[ind])
+       	    	else
+       	    	    chars[ind] <- texify(chars[ind])
        	}
     }
     if (!latex)
     	for (i in seq_len(ncol(result))) 
     	    chars[,i] <- justify(chars[,i], justify[,i])
     chars
-}
-
-print.tabular <- function(x, justification = "n", ...) {
-    chars <- format(x, justification = justification, ...)
-    
-    rlabels <- attr(x, "rowLabels")
-    rlabels[is.na(rlabels)] <- ""
-    clabels <- attr(x, "colLabels")
-    clabels[is.na(clabels)] <- ""
-    colnamejust <- attr(rlabels, "colnamejust")
-    colnamejust[is.na(colnamejust)] <- justification
-    corner <- matrix("", nrow(clabels), ncol(rlabels))
-    for (i in seq_len(ncol(rlabels)))
-    	corner[nrow(clabels),] <- justify(colnames(rlabels)[i],
-    					  colnamejust[i])
-    result <- rbind(cbind(corner, clabels),
-                    cbind(rlabels, chars))
-    rownames(result) <- rep("", nrow(result))
-    colnames(result) <- rep("", ncol(result))
-    print(noquote(result))
-    invisible(x)
 }

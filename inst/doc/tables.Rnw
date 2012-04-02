@@ -22,7 +22,9 @@
 options(width=60)
 @
 
-\title{The \pkg{tables} Package}
+\title{The \pkg{tables} Package\footnote{This 
+vignette  was built using \pkg{tables} version \Sexpr{packageDescription("tables")$Version}}.}%$
+
 \author{Duncan Murdoch}
 
 \begin{document}
@@ -64,7 +66,7 @@ booktabs()
 for the rest of this document.  This gives
 \begin{center}
 <<echo=FALSE, results=hide>>=
-save <- table_options()
+saved.options <- table_options()
 booktabs()
 @
 <<irisbook, echo=FALSE, results=tex>>=
@@ -144,11 +146,20 @@ F
 
 \begin{Schunk}
 \begin{Sinput}
-tabular(table, data=parent.frame(), n, suppressLabels=0) 
+tabular(table, ...)
+tabular.default(table, ...)
+tabular.formula(table, data=parent.frame(), n, suppressLabels=0, ...) 
 \end{Sinput}
 \end{Schunk}
 
-The \code{tabular} function has 4 arguments, but usually only the first two are used.
+The \code{tabular} function is a generic function.  The default method
+uses \code{as.formula()} to try to convert the \code{table} argument
+to a formula, then passes it and all the other arguments to 
+\code{tabular.formula()} method, which does most of the work.  That
+method has 4 arguments plus \code{...}, but usually only the first two
+are used, and a warning is issued if anything is passed in the
+\code{...} arguments.
+
 \begin{description}
 \item[table] The \code{table} argument is the table formula, described in detail below.
 
@@ -200,6 +211,32 @@ for use in Sweave documents like this one.
 will be set only for the duration of the call to \code{latex()}.
 \end{description}
 
+\subsubsection{\code{as.matrix(), write.csv.tabular(), write.table.tabular()}}
+
+\begin{Schunk}
+\begin{Sinput}
+as.matrix(x, format = TRUE, 
+    rowLabels = TRUE, colLabels = TRUE, justification = "n", ...)
+write.csv.tabular(x, file = "", justification = "n", row.names=FALSE, 
+    write.options=list(), ...)
+ write.table.tabular(x, file="", 
+    justification = "n", row.names=FALSE, col.names=FALSE,
+    write.options=list(), ...)   
+\end{Sinput}
+\end{Schunk}
+
+These functions export tables for further computations.  The arguments are:
+\begin{description}
+\item[x] The tabular object.
+\item[format] Whether to format the entries.  See the help page for alternatives.
+\item[rowLabels, colLabels] If formatting, whether to include the labels or not.
+\item[justification] The default text justification to use when formatting.
+\item[file] Where to write the output.
+\item[row.names,col.names, write.options] Additional parameters to pass
+to \code{write.csv()} or \code{write.table()}.
+\end{description}
+
+
 \subsubsection{\code{table\textunderscore options(), booktabs()}}
 \label{sec:booktabs}
 
@@ -215,7 +252,7 @@ one that the \LaTeX\ \verb+\tabular+ environment (or substitute) accepts.
 modifications within the table; the \code{Literal()} (section \ref{sec:Literal}) function may be
 helpful.
 \item[toprule, midrule, bottomrule] The \LaTeX\ macros to draw the top, middle and bottom lines
-in the table.  By default these are all \code{"\\hline"}.
+in the table.  By default these are all \verb!"\\hline"!.
 \item[titlerule] An optional \LaTeX\ macro to draw a line under multicolumn titles.
 \item[doBegin, doHeader, doBody, doFooter, doEnd]
 These logical values control the inclusion of specific parts of
@@ -223,7 +260,7 @@ the output table.
 \end{description}
 The defaults are
 <<echo=FALSE>>=
-save
+saved.options
 @
 
 If you are using the \LaTeX\ \pkg{booktabs} package, the \code{booktabs()} function will
@@ -417,12 +454,19 @@ to be saved and re-used.  For examples, see section \ref{sec:tableformulas}.
 
 \subsubsection{Other vectors}
 
-If the expression evaluates to something other than the above, then it is assumed to be a vector of values
-to be summarized in the table.  If you would like to summarize a factor or logical vector, wrap it in \code{I()} to prevent
-special handling.
+If the expression evaluates to something other than the above, then it
+is assumed to be a vector of values to be summarized in the table.  If
+you would like to summarize a factor or logical vector, wrap it in
+\code{I()} to prevent special handling.
 
-Note that only one value vector can be specified for any cell in the table, and all value vectors must be the same length, or an error will be
-reported.
+Note that the following must all be true, or an error will be reported:
+\begin{itemize}
+\item only one value vector can be specified for any cell in the
+table, 
+\item all value vectors must be the same length, 
+\item \code{is.atomic()}
+must evaluate to \code{TRUE} for the vector.
+\end{itemize}
 
 Example:  treating a logical vector as values.
 \begin{center}
@@ -550,7 +594,8 @@ It has syntax
 \begin{Schunk}
 \begin{Sinput}
 All(df, numeric=TRUE, character=FALSE, logical=FALSE, 
-        factor=FALSE, complex=FALSE, raw=FALSE, other=FALSE)
+        factor=FALSE, complex=FALSE, raw=FALSE, other=FALSE,
+        texify=TRUE)
 \end{Sinput}
 \end{Schunk}
 
@@ -560,6 +605,7 @@ The arguments are
 \item[\code{numeric}, \code{character}, \code{logical}, \code{factor}, \code{complex}
 and \code{raw}] Whether to include columns of the corresponding types in the table.
 \item[\code{other}] Whether to include columns that match none of the previous types.
+\item[\code{texify}] Whether to escape \LaTeX\ special characters.  See section \ref{sec:formatdetails}.
 \end{description}
 
 If functions are given for any of the selection arguments, the columns will be
@@ -643,42 +689,105 @@ latex( tabular( (Species+1) ~ All(iris)*
 @
 \end{center}
 
-\subsubsection{\code{RowFactor()}}
+\subsubsection{\code{Factor()}, \code{RowFactor()} and \code{Multicolumn()}}
 \label{sec:RowFactor}
 
-This function produces multiple rows the way a factor does, but 
-with more flexibility.  It has syntax
+The \code{Factor()} function converts its argument into a factor, but keeps the
+original name for a column heading.  \code{RowFactor()} is designed to be used only
+for \LaTeX\ output:  it produces multiple rows the way a factor does, but 
+with more flexibility in the formatting.  The \code{Multicolumn()} function is also designed
+for \LaTeX\ output:  it displays factor levels in the style where the level is displayed across 
+multiple columns on its own line.
+
+They have syntax
 
 \begin{Schunk}
 \begin{Sinput}
-RowFactor(x, name, spacing=3, space=1, nopagebreak="\\nopagebreak")
+Factor(x, name, levelnames, texify=TRUE)
+RowFactor(x, name, levelnames, spacing=3, space=1, 
+                    nopagebreak="\\nopagebreak", texify=TRUE)
+Multicolumn(x, name, levelnames, width=2, first=1, justify="l",
+                    texify=TRUE)
 \end{Sinput}
 \end{Schunk}
 
 The arguments are
 \begin{description}
 \item[x] A variable to be treated as a factor.
-\item[name] The name to be used for the factor; by default, the name passed as \code{f}.
-\item[spacing] Extra spacing is added after every group of \code{spacing} lines.
+\item[name] The name to be used for the factor; by default, the name passed as \code{x}.
+\item[levelnames] An optional argument to allow customization of the displayed level names.
+\item[texify] Whether to escape \LaTeX\ special characters.  See section \ref{sec:formatdetails}.
+\item[spacing] Extra spacing is added before every group of \code{spacing} lines.
 \item[space] How much extra space to add (in ``ex'' units).
 \item[nopagebreak] Macro to insert to suppress page breaks except between groups.
+\item[width] How many columns for the label?
+\item[first] What is the first column?
+\item[justify] What justification to use.
 \end{description}
 
-Example: Show the first 50 lines of the iris dataset, in groups of 5 lines.  Use
-the \code{"longtable"} environment to allow this to cross page boundaries.  The
-\code{midrule} setting is necessary to get the headings to repeat on subsequent pages.  
-I've used the one that is compatible with the \pkg{booktabs} style; if you want the
-default style, use \verb!midrule="\\hline\\endhead\\hline\\endfoot"! instead.
+Example:  Show the first 15 lines of the iris dataset, in groups of 5 lines.
+
+<<results=tex>>=
+subset <- 1:15
+latex( tabular( RowFactor(subset, "$i$", spacing=5)  ~ 
+       All(iris[subset,], factor=as.character)*Heading()*identity ) )
+@
+\\
+
+For longer tables, 
+the \code{"longtable"} environment allows the table to cross page boundaries.  Using
+this is more complicated, as in the example below.
+The \code{toprule}
+setting inserts the caption as well as the top rule, because the \pkg{longtable} package 
+requires it to be \textit{within}
+the table.  The
+\code{midrule} setting gets the headings to repeat on subsequent 
+pages.\footnote{I've done all of this
+in a way that is compatible with the \pkg{booktabs} style; if you want the
+default style, use \texttt{\textbackslash hline} in place of the \pkg{booktabs}
+\texttt{\textbackslash toprule} 
+and \texttt{\textbackslash midrule} macros in the
+\code{options} settings instead.}
+To avoid extra spacing at the top of those pages, we need
+to undo the automatic addition of a \verb!\normalbaselineskip! there, and use
+\code{suppressfirst=FALSE} so that the first page doesn't get messed up.  Whew!
 
 <<results=tex>>=
 subset <- 1:50
-latex( tabular( RowFactor(subset, "$i$", spacing=5)  ~ 
+latex( tabular( RowFactor(subset, "$i$", spacing=5, 
+                                             suppressfirst=FALSE)  ~ 
        All(iris[subset,], factor=as.character)*Heading()*identity ),
        options = list(tabular="longtable",
-                      midrule="\\midrule\\endhead\\hline\\endfoot") )
+          toprule="\\caption{This table crosses page boundaries.}\\\\
+              \\toprule",
+midrule="\\midrule\\\\[-2\\normalbaselineskip]\\endhead\\hline\\endfoot") )
 @
 
-\section{Technical Details}
+To suppress the row numbering, use  \code{suppress=3} in the call to
+tabular.  (It is 3 because we need to suppress the column heading, the
+rewritten labels for the rows, and the original labels.  Trial and error is
+the best way to determine this!)  Unfortunately, the spacing features
+of \code{RowFactor()} won't work without the row labels.
+\begin{center}
+<<results=tex>>=
+subset <- 1:10
+latex( tabular( Factor(subset)  ~ 
+       All(iris[subset,], factor=as.character)*Heading()*identity, 
+       suppress=3 ) )
+@
+\end{center}
+
+To get group labels to span multiple columns, the \code{levelnames} argument
+can be used with embedded \LaTeX\ code.  For example,
+\begin{center}
+<<results=tex>>=
+latex( tabular( Multicolumn(Species, width=3, 
+            levelnames=paste("\\textit{Iris", levels(Species),"}")) 
+            * (mean + sd)  ~ All(iris), data=iris, suppress=1))
+@
+\end{center}
+
+\section{Further Details}
 
 \subsection{Formatting}
 \label{sec:formatdetails}
@@ -706,16 +815,74 @@ any numeric entries are passed to the \code{latexNumeric()} function (see \ref{s
 minus signs with fixed width spaces and \LaTeX\ minus signs 
 so that all entries will display in the same width.  This means that numeric values will
 normally have decimal points aligned, unless the formatting function explicitly removes
-leading spaces.  
+leading spaces.    Non-numeric entries are passed through the \code{Hmisc::latexTranslate} function
+so that special characters are displayed properly.
 
 \item If the \code{latex} argument is \code{FALSE}, 
 an attempt is made to justify the results using simple ASCII spacing, according to the \code{Justify()}
 specification with the \code{justification} argument used as a default.
 \end{enumerate}
 
+Note that \LaTeX\ special characters will be escaped in data when \code{latex()} is called, but
+row and column headings generated by \code{All()}, \code{Factor()}, etc. will by default have the escapes
+done in all cases.  Those functions have a \code{texify} argument that can be set to \code{FALSE}
+to disable this behaviour (e.g. if the label is meant to be processed by \LaTeX).  For example,
+with the definition
+<<>>=
+df <- data.frame(A = factor(c( "$", "\\" ) ), B_label=1:2)
+@
+the code
+<<eval=FALSE>>=
+latex( tabular( mean ~ A*B_label, data=df ) ) 
+@
+wouild fail, as the labels would include the special characters.  But this will work:
+\begin{center}
+<<results=tex>>=
+latex( tabular( mean ~ Factor(A)*All(df), data=df ) ) 
+@
+\end{center}
+
+\subsection{Missing Values}
+
+By default, most summary statistics in R return \code{NA} if any of the input values are 
+\code{NA}, but have ways to treat \code{NA} differently.  For example, the \code{mean()}
+function has the \code{na.rm} argument:
+<<>>=
+dat <- data.frame( a = c(1, 2, 3, NA), b = 1:4 )
+mean(dat$a)
+mean(dat$a, na.rm=TRUE)
+@
+
+The \code{tabular()} function itself has no way to specify special \code{NA} handling, but
+there are several ways to do this yourself, depending on how you want them handled.
+To ignore \code{NA} values within the column, define a new function which sets the
+different behaviour.  For example, 
+\begin{center}
+<<results=tex>>=
+Mean <- function(x) base::mean(x, na.rm=TRUE)
+latex( tabular( Mean ~ a + b, data=dat ) )
+@
+\end{center}
+An alternative approach is to use \code{na.omit()} to work on a subset of your data which has 
+rows with any missing values removed, e.g. 
+\begin{center}
+<<results=tex>>=
+latex( tabular( mean ~ a + b, data = na.omit(dat) ) )
+@
+\end{center}
+A third possibility is to use the \code{complete.cases()} function to remove missings
+only from some columns, e.g.
+\begin{center}
+<<results=tex>>=
+latex( tabular( 
+  Mean ~ (1 + Heading(Complete)*complete.cases(dat)) * (a + b), 
+               data=dat ) )
+@
+\end{center}
+
 \section*{Acknowledgments}
 
-I gratefully acknowledge helpful suggestions and hints from Rich Heiberger and Frank Harrell.
+I gratefully acknowledge helpful suggestions and hints from Rich Heiberger, Frank Harrell and Dieter Menne.
 
 \bibliography{tables}
 

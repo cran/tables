@@ -1,0 +1,28 @@
+\begin{thebibliography}{3}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Fear(2005)]{booktabs}
+Simon Fear.
+\newblock \emph{Publication Quality Tables in \LaTeX}, 2005.
+\newblock URL
+  \url{http://www.ctan.org/tex-archive/macros/latex/contrib/booktabs}.
+\newblock \LaTeX\ package version 1.61803.
+
+\bibitem[Harrell(2011)]{Hmisc}
+Frank~E. Harrell, Jr.
+\newblock \emph{Hmisc: Harrell Miscellaneous}, 2011.
+\newblock URL \url{http://CRAN.R-project.org/package=Hmisc}.
+\newblock R package version 3.9-0.
+
+\bibitem[Harrell et~al.(2011)Harrell, Heiberger, and Whiting]{HmiscLatex}
+Frank~E. Harrell, Jr., Richard~M. Heiberger, and David~R. Whiting.
+\newblock \emph{latex: Convert an S Object to LaTeX, and Related Utilities},
+  2011.
+\newblock URL \url{http://CRAN.R-project.org/package=Hmisc}.
+\newblock Help page in Hmisc 3.9-0.
+
+\end{thebibliography}
