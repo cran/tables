@@ -4,6 +4,9 @@
 \alias{tabular.formula}
 \alias{print.tabular}
 \alias{format.tabular}
+\alias{[.tabular}
+\alias{cbind.tabular}
+\alias{rbind.tabular}
 \title{
 Compute complex table
 }
@@ -15,7 +18,12 @@ tabular(table, ...)
 \method{tabular}{default}(table, ...)
 \method{tabular}{formula}(table, data = NULL, n, suppressLabels = 0, ...)
 \method{print}{tabular}(x, justification="n", ...)
-\method{format}{tabular}(x, digits=4, justification="n", latex=FALSE, ...)
+\method{format}{tabular}(x, digits=4, justification="n", latex=FALSE, html=FALSE, 
+                         leftpad = TRUE, rightpad = TRUE, minus = TRUE, 
+			 mathmode = TRUE, ...)
+\method{[}{tabular}(x, i, j, ..., drop=FALSE)
+\method{cbind}{tabular}(..., deparse.level = 1)
+\method{rbind}{tabular}(..., deparse.level = 1)
 }
 \arguments{
   \item{table}{
@@ -31,7 +39,7 @@ An optional value giving the length of the data.  See the Details below.
 How many initial labels to suppress?
 }
   \item{x}{ 
-The object to print.
+The object to print, format, or subset.
 }
   \item{digits, ...}{
 In the print and format methods, how many significant digits or other parameters to show by default?  See
@@ -44,6 +52,21 @@ The default justification to use in the table.
 If \code{TRUE}, the \code{\link{latexNumeric}} function will be applied when formatting
 numeric columns after \code{\link{format}}, to maintain spacing and handle signs properly.
 }
+  \item{html}{
+If \code{TRUE}, the \code{\link{htmlNumeric}} function will be applied when formatting
+numeric columns after \code{\link{format}}, to maintain spacing and handle signs properly.
+}
+  \item{leftpad, rightpad, minus, mathmode}{
+Options to pass to \code{\link{latexNumeric}} or \code{\link{htmlNumeric}} to
+control details of formatting.  See those pages for details.
+}
+  \item{i, j, drop}{
+The usual arguments for matrix indexing, but see the Details below.
+}
+  \item{deparse.level}{
+Ignored.  (Present because the generic requires it.)
+}
+
 }
 \details{
 For the purposes of this function, a "table" is a rectangular array of values, computed
@@ -100,6 +123,14 @@ they were columns in a dataframe (but they can be computed values).  If \code{n}
 missing but \code{data} is a dataframe, \code{n} is set from that.  Otherwise, if terms such
 as \code{1} appear in a table, the length is assumed to be the same as for previous terms.
 As a last resort, set the \code{n} argument in the call to \code{tabular()} explicitly.
+
+The \code{"["} method extracts a subset of the table.
+For indexing, consider the table to consist of a matrix containing the values.
+If \code{drop=TRUE}, the labels and attributes are dropped.  If \code{drop=FALSE},
+the default, the \code{i} and \code{j} indices must select 
+a rectangular block of the table; matrix indexing (using a two column
+matrix or a full matrix of logical values) is not supported.
+
 }
 
 \section{Formatting}{
@@ -204,5 +235,8 @@ fmt <- function(x) {
   s[even] <- sprintf("(\%s)", s[even])
   s
 }
-tabular( Justify(c)*Heading()*z*Sex*Heading(Statistic)*Format(fmt())*(mean+sd) ~ Status )
+tab <- tabular( Justify(c)*Heading()*z*Sex*Heading(Statistic)*Format(fmt())*(mean+sd) 
+                ~ Status )
+tab
+tab[1:2, c(2,3,1)]
 }

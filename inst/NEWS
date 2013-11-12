@@ -49,4 +49,17 @@
       Added optional parameter to Heading() to use it only if another
       hasn't already been set.
       
+0.7.48:
+      Default formatting now skips character cells.
+      Justification of labels in text mode wasn't being done properly.
+      
+0.7.64:
+      Added support for HTML output.
+      Added support for extraction of subsets of the matrix.
+      Added Paste() function.
+      If a summary doesn't produce a scalar value, formatting
+      messed up the display.  Now a warning will be issued and that
+      cell will be displayed as <NA> or similar.
+      Added cbind() and rbind() methods for tabular objects.
+      The internal texify() function did not work properly.
       

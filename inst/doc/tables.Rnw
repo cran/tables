@@ -220,7 +220,7 @@ as.matrix(x, format = TRUE,
     rowLabels = TRUE, colLabels = TRUE, justification = "n", ...)
 write.csv.tabular(x, file = "", justification = "n", row.names=FALSE, 
     write.options=list(), ...)
- write.table.tabular(x, file="", 
+write.table.tabular(x, file="", 
     justification = "n", row.names=FALSE, col.names=FALSE,
     write.options=list(), ...)   
 \end{Sinput}
@@ -496,10 +496,11 @@ the \code{Format(digits=2)} directive will only apply to \code{Z}, and neither w
 
 By default \pkg{tables} formats each column
 using the standard \code{format()} function, with arguments taken from the
-\code{format.tabular()} call (see section \ref{sec:formatsyntax}).
+\code{format.tabular()} call (see section \ref{sec:formatsyntax}).  
 
 The \code{Format()} pseudo-function does two
-things:  it changes the formatting, and it specifies that all values it applies to will be formatted together.   The ``call'' to \code{Format} looks like a call to \code{format}, but without 
+things:  it changes the formatting, and it specifies that all values it applies to will be formatted together.  
+The ``call'' to \code{Format} looks like a call to \code{format}, but without 
 specifying the argument \code{x}.  When \code{tabular()} formats the output it will construct
 \code{x} from the entries in the table governed by the \code{Format()} specification.
 
@@ -533,6 +534,8 @@ latex( tabular( Format(fmt(digits=1))*(F+1) ~ X*(mean + stderr) ) )
 @
 \end{center}
 
+ Character values in cells in the table are handled specially; see section \ref{sec:formatdetails}
+ below.
 
 \subsubsection{\code{.Format()}}
 
@@ -723,6 +726,46 @@ latex( tabular( (Species+1) ~ All(iris)*
 @
 \end{center}
 
+\subsubsection{\code{Paste()}}
+
+This function produces table entries made up of multiple values.  It has syntax
+\begin{Schunk}
+\begin{Sinput}
+Paste(..., head, digits=2, justify="c", prefix="", sep="",
+      postfix="")
+\end{Sinput}
+\end{Schunk}
+
+The arguments are
+\begin{description}
+\item[\code{...}] 
+Expressions to be displayed in the columns of the table. 
+\item[\code{head}]
+If not missing, this will be used as a column heading for the combined columns.
+\item[\code{digits}]
+Digits used in formatting.  If a single value
+is given, all columns will be formatted in common.
+If multiple values are given, each is formatted separately.
+\item[\code{justify}]
+One or more justifications to use on the individual columns.
+\item[\code{prefix, sep, postfix}]
+Text to use before, between, and after the columns. 
+\end{description}
+
+Example:  Display a confidence interval.
+\begin{center}
+<<results=tex>>=
+lcl <- function(x) mean(x) - qt(0.975, df=length(x)-1)*stderr(x)
+ucl <- function(x) mean(x) + qt(0.975, df=length(x)-1)*stderr(x)
+latex( tabular( (Species+1) ~ All(iris)*
+          Paste(lcl, ucl, digits=2, 
+                head="95\\% CI", sep=",", prefix="[",
+                postfix="]"), 
+          data=iris ) )
+@
+\end{center}
+
+
 \subsubsection{\code{Factor()}, \code{RowFactor()} and \code{Multicolumn()}}
 \label{sec:RowFactor}
 
@@ -850,9 +893,11 @@ latex( tabular( Multicolumn(Species, width=3,
 As mentioned in \ref{sec:formats}, formatting in \pkg{tables} depends on the standard \code{format()}
 function or other user-selected functions.  Here are the details of how it is done.
 
-The \code{format.tabular()} method does the first part of the work.  It constructs the calls
-to the appropriate formatting functions and uses them to format all of the entries in the table.
+The \code{format.tabular()} method does the first part of the work.  First, it constructs the calls
+to the appropriate formatting functions, and uses them to format all of the non-character entries in the table.
+The character entries are left as-is, except as described below.
 This converts the \code{tabular} object to a character array.
+
 
 The procedure goes as follows:
 \begin{enumerate}
@@ -897,6 +942,15 @@ latex( tabular( mean ~ Factor(A)*All(df), data=df ) )
 @
 \end{center}
 
+As mentioned above, character values in cells in the table are handled
+specially. If the default \code{format} function (or a custom function
+named \code{format}) is used, then those character values are not
+formatted, they are just copied into the result.  (This is  so that a column
+can have mixed numeric and character values, and the numerics are
+not converted to character before formatting.)  If you want to use
+\code{format} on character values, you will need to use a custom formatting
+function with a different name.
+
 \subsection{Missing Values}
 
 By default, most summary statistics in R return \code{NA} if any of the input values are 
@@ -932,6 +986,43 @@ only from some columns, e.g.
 latex( tabular( 
   Mean ~ (1 + Heading(Complete)*complete.cases(dat)) * (a + b), 
                data=dat ) )
+@
+\end{center}
+
+\subsection{Subsetting and Joining Tables}
+
+It is possible to select a subset of a table using the usual R matrix indexing on the table
+object.  For example, this table contains rows with no data in them, and those
+yield ugly NA and NaN statistics:
+\begin{center}
+<<results=tex>>=
+q <- data.frame(p = rep(c("A","B"),each=10,len=30),
+                           a = rep(c(1,2,3),each=10),id=seq(30),
+                           b = round(runif(30,10,20)),
+                           c = round(runif(30,40,70)),
+		stringsAsFactors = FALSE)
+tab <- tabular((Factor(p)*Factor(a)+1) 
+                        ~ (N = 1) + (b + c)*(mean+sd),data=q)
+latex(tab)
+@
+\end{center}
+To omit those rows,  use matrix-like subsetting to select the rows where the
+first column of data (i.e. $N$) is greater than zero:
+\begin{center}
+<<results=tex>>=
+latex(tab[ tab[,1] > 0, ])
+@
+\end{center}
+Similarly, \code{cbind()} can be used to join tables that have identical row labels,
+and \code{rbind()} can be used to join tables with identical column labels.  Thus the
+top part of the table above could be produced in another way:
+\begin{center}
+<<results=tex>>=
+formula <- Factor(p)*Factor(a) ~ 
+	   (N = 1) + (b + c)*(mean+sd)
+tab1 <- tabular( formula, data = subset(q, p == "A") )
+tab2 <- tabular( formula, data = subset(q, p == "B") )
+latex(rbind(tab1, tab2))
 @
 \end{center}
 
