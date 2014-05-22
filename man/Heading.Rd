@@ -4,26 +4,33 @@
 \code{Heading} pseudo-function
 }
 \usage{
-Heading(name = NULL)
+Heading(name = NULL, override = TRUE)
 }
 \arguments{
   \item{name}{
 A legal R variable name, or a character constant.
 }
+  \item{override}{
+Whether this heading should override one that is already present.
+}
 }
 
 \description{
-The \code{Heading} pseudo-function overrides the automatic
-heading on the following items in a table.  
+The \code{Heading} pseudo-function normally overrides the automatic
+heading on the following items in a table.  Setting 
+\code{override=FALSE} is used in automatically 
+generated expressions.
 }
 \details{
 This replaces the automatic heading or row label on the following item
 with the \code{name} or string as specified.  If no argument
-is given, the heading or label is suppressed.
+is given, the heading or label is suppressed.  
 
 An alternative form of \code{Heading(name)} is \code{(name=...)}, where
 \code{...} is an expression to be displayed in the table.
 
+If \code{override = FALSE}, the label is only supplied if there is no other label.
+This is used in the code for \code{\link{Factor}}.
 }
 \section{Pseudo-functions}{
 This is a \dQuote{pseudo-function}:  it takes the form of a function call, but is

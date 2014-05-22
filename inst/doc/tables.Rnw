@@ -75,9 +75,12 @@ latex(
 )
 @
 
-
 \end{center}
 Details on \code{booktabs()} are given in section \ref{sec:booktabs} below.
+
+There is also the \code{html.tabular} method for the \code{Hmisc::html()} generic;
+it produces output in HTML format.  Finally, see section \ref{sec:csv} for other 
+output formats.
 
 The idea of a table in the \pkg{tables} package is a rectangular array of values, with
 each row and column labelled, and possibly with groups of rows and groups of columns
@@ -213,6 +216,7 @@ will be set only for the duration of the call to \code{latex()}.
 \end{description}
 
 \subsubsection{\code{as.matrix(), write.csv.tabular(), write.table.tabular()}}
+\label{sec:csv}
 
 \begin{Schunk}
 \begin{Sinput}
@@ -237,6 +241,21 @@ These functions export tables for further computations.  The arguments are:
 to \code{write.csv()} or \code{write.table()}.
 \end{description}
 
+\subsubsection{\code{as.tabular()}}
+
+\begin{Schunk}
+\begin{Sinput}
+as.tabular(x, ...)
+as.tabular.default(x, like=NULL, ...)
+as.tabular.data.frame(x, ...)
+\end{Sinput}
+\end{Schunk}
+
+These functions create tables from existing matrices or dataframes of values.
+The dimnames of the input are used to construct default row and column names.  If 
+more elaborate labelling is wanted, use a \code{tabular} object as the
+\code{like} argument.  The labelling for \code{like} will be used on the
+newly constructed result.
 
 \subsubsection{\code{table\textunderscore options(), booktabs()}}
 \label{sec:booktabs}
@@ -265,6 +284,8 @@ The defaults are
 <<echo=FALSE>>=
 saved.options
 @
+Some options only apply to HTML output; see the help page 
+\code{?table\textunderscore options} for details.
 
 If you are using the \LaTeX\ \pkg{booktabs} package, the \code{booktabs()} function will
 set different options.  Currently those are:
@@ -300,6 +321,7 @@ latex(tabular(1 ~ (n=1) + Format(digits=2)*
 <<split>>
 @
 \end{center}
+
 
 \subsubsection{\code{latexNumeric()}}
 \label{sec:latexNumeric}
@@ -405,6 +427,7 @@ operators are other expressions.  Other than the pseudo-functions described in s
 and the actions depend on the type of the resulting value.  
 
 \subsubsection{Closures or other functions}
+\label{sec:closures}
 
 If the expression evaluates to a function (e.g. it is the name of a function), then that function
 becomes the summary statistic to be displayed.  The summary statistic should take a vector of values as input, and return a single 
@@ -456,6 +479,7 @@ to be saved and re-used.  For examples, see section \ref{sec:tableformulas}.
 
 
 \subsubsection{Other vectors}
+\label{sec:othervectors}
 
 If the expression evaluates to something other than the above, then it
 is assumed to be a vector of values to be summarized in the table.  If
@@ -482,8 +506,10 @@ latex( tabular( I(X > 0) + I(X < 0)
 \subsection{``Pseudo-functions''}
 \label{sec:pseudo}
 
-Several directives to \pkg{tables} may be embedded in the table formula.  This is done using ``pseudo-functions''.  Syntactically
-they look like function calls, but reserved names are used.  In each case, their action applies to later factors in the term in which they appear.
+Several directives to \pkg{tables} may be embedded in the table formula.  
+This is done using ``pseudo-functions''.  Syntactically
+they look like function calls, but reserved names are used.  In most cases, 
+their action applies to later factors in the term in which they appear.
 For example,
 \begin{center}
  \code{X*Justify(r)*(Y + Format(digits=2)*Z) + A}
@@ -559,7 +585,7 @@ function or a string in quotes, which will be displayed as entered (so \LaTeX\ c
 
 If no argument is passed, the next label is suppressed.
 
-There's an optional third argument, which must be either \code{TRUE}
+There's an optional second argument, which must be either \code{TRUE}
 or \code{FALSE} if present.  If it is \code{TRUE} (or not present),
 then the heading will override a previously specified heading.  If
 \code{FALSE}, it will not.  The latter seems likely only to be of use
@@ -592,26 +618,92 @@ latex( tabular( Justify(r)*(F+1) ~ Justify(c)*(n=1)
 
 \subsubsection{\code{Percent()}}
 
-The \code{Percent()} pseudo-function is used to specify a statistic that depends on other values in the table.  It has two optional arguments:
+The \code{Percent()} pseudo-function is used to specify a statistic that
+depends on other values in the table.  It has two optional arguments:
 \begin{description}
-\item[\code{denom="all"}]  This specifies how the denominator (argument \code{y} to \code{fn} below) is set.  Possible values are \code{"all"}, meaning all values
-are used, \code{"row"}, meaning only the values in the current row are used, \code{"col"}, meaning only the values in the current column
-are used.  If a logical vector is given, it is used to select which values form the denominator.  Anything else is just passed to \code{fn}
-as given.
-\item[\code{fn=percent}]  This is the function which actually does the computation.  The default definition is \code{function(x, y) 100*length(x)/length(y)},
-giving the percentage count, but any other two argument function could be used.
+\item[\code{denom="all"}]  This specifies how the denominator
+(argument \code{y} to \code{fn} below) is set.  The most commonly
+used values are
+\code{"all"}, meaning all values are used, \code{"row"}, meaning only
+the values in the current row are used, \code{"col"}, meaning only the
+values in the current column are used.  
+
+The special syntax \code{Equal(...)}
+will record the expressions in \code{...}, and ignore any factor 
+based subsetting if the factor does not appear among the expressions.
+Similarly \code{Unequal(...)} will use values which differ in any
+of the expressions in \code{...} from the values in the current cell.\footnote{
+In fact, the mechanism is more general.  The expressions in \code{Equal(...)}
+or \code{Unequal(...)} are deparsed and treated as strings.  Any
+logical vector elsewhere in the table may be labelled with a string
+using the \code{labelSubset} function and those labels will be
+respected.  Unlabelled logical vectors in the table formula will always 
+be used for subsetting.}
+
+If a logical vector is given, it is
+used to select which values form the denominator.  Anything else is just
+passed to \code{fn} as given.
+\item[\code{fn=percent}]  This is the function which actually does the
+computation.  The default definition is \code{function(x, y) 100*length(x)
+/length(y)}, giving the percentage count, but any other two argument
+function could be used.
 \end{description}
 
-Example:
+These two examples are different ways of producing the same 
+table:
 \begin{center}
+<<eval=FALSE>>=
+latex( tabular( (Factor(gear, "Gears") + 1)
+          *((n=1) + Percent() 
+            + (RowPct=Percent("row")) 
+            + (ColPct=Percent("col"))) 
+         ~ (Factor(carb, "Carburetors") + 1)
+          *Format(digits=1), data=mtcars ) )
 <<results=tex>>=
 latex( tabular( (Factor(gear, "Gears") + 1)
           *((n=1) + Percent() 
-            + (RowPct=Percent("row")) + (ColPct=Percent("col"))) 
+            + (RowPct=Percent(Equal(gear)))  # Equal, not "row"
+            + (ColPct=Percent(Equal(carb)))) # Equal, not "col"
          ~ (Factor(carb, "Carburetors") + 1)
           *Format(digits=1), data=mtcars ) )
 @
 \end{center}
+
+\subsubsection{\code{Arguments()}}
+
+The \code{Arguments()} pseudo-function is an exception to the rule that pseudo-functions
+apply to later factors in the table.  What it does is to specify (additional) arguments to the
+summary function (see section \ref{sec:closures}).  For example, the \code{weighted.mean()} function
+takes two arguments:  \code{x} and \code{w}.  To use it in a table, you would specify the
+values to use as \code{x} via the usual mechanism for the analysis variable (section \ref{sec:othervectors}),
+and include a term \code{Arguments(w=weights)} either before or after it.  The
+function will be called as \code{weighted.mean(x[subset], w=weights[subset])}, where
+\code{subset} is a logical vector indicating which rows of data belong in the current 
+cell.
+
+It is actually a little more complicated than as described above.  The arguments to \code{Arguments}
+are evaluated in full, then only those which are length \code{n} are subsetted.  And
+if no analysis variable has been specified, but \code{Arguments()} has been, then 
+the function will be called without the \code{x[subset]} argument.  Finally, the
+\code{Arguments()} entry will not create a heading.
+
+For example:
+\begin{center}
+<<results=tex>>=
+# This is the example from the weighted.mean help page
+wt <- c(5,  5,  4,  1)/15
+x <- c(3.7,3.3,3.5,2.8)
+gp <- c(1,1,2,2)
+latex( tabular( (Factor(gp) + 1) 
+                ~ weighted.mean*x*Arguments(w = wt) ) )
+@
+\end{center}
+The same table (without the \code{x} heading) can be produced using
+<<eval=false>>=
+latex( tabular( (Factor(gp) + 1) 
+                ~ Arguments(x, w = wt)*weighted.mean ) )
+@
+The order of the \code{weighted.mean} and \code{Arguments()} factors makes no difference.
 
 \subsection{Formula Functions}
 \label{sec:tableformulas}
@@ -875,6 +967,18 @@ justification to \verb!"l@{}"! to suppress the intercolumn spacing.  Then
 the column of row labels will be there, but it will be zero width and
 invisible.)
 
+\code{RowFactor} with \code{spacing > 1} will add the \code{nopagebreak} macro
+at the beginning of each label except the first in the group.  This can produce \LaTeX\ errors
+in any column except the first one.  One workaround for this is to post-process the table
+to move the macro.  For example, if \code{tab} contains the result of \code{tabular()} and
+\LaTeX complains about misplaced \verb!\nopagebreak! macros, 
+this will allow it to be displayed properly:
+<<eval=FALSE>>=
+code <- capture.output( latex( tab ) )
+code <- sub("^(.*)(\\\\nopagebreak )", "\\2\\1", code)
+cat(code, sep = "\n")
+@
+
 To get group labels to span multiple columns, the \code{levelnames} argument
 can be used with embedded \LaTeX\ code.  For example,
 \begin{center}
@@ -989,6 +1093,20 @@ latex( tabular(
 @
 \end{center}
 
+Missing values in factors are normally ignored, i.e. observations whose 
+value is missing won't match any category.  If you would like \code{NA}
+to be used as an additional category, use \code{exclude = NULL}
+in a call to \code{factor()} when you create the variable, e.g.
+compare the following two tables:
+\begin{center}
+<<results=tex>>=
+A <- factor(dat$a)
+latex( tabular( A + 1 ~ (n=1)) )
+A <- factor(dat$a, exclude = NULL)
+latex( tabular( A + 1 ~ (n=1) ) )
+@
+\end{center}
+
 \subsection{Subsetting and Joining Tables}
 
 It is possible to select a subset of a table using the usual R matrix indexing on the table
@@ -1020,16 +1138,19 @@ top part of the table above could be produced in another way:
 <<results=tex>>=
 formula <- Factor(p)*Factor(a) ~ 
 	   (N = 1) + (b + c)*(mean+sd)
-tab1 <- tabular( formula, data = subset(q, p == "A") )
-tab2 <- tabular( formula, data = subset(q, p == "B") )
-latex(rbind(tab1, tab2))
+tab <- NULL
+for (sub in c("A", "B")) 
+    tab <- rbind(tab, tabular( formula, 
+                               data = subset(q, p == sub) ) )
+latex(rbind(tab))
 @
 \end{center}
 
 \section*{Acknowledgments}
 
 I gratefully acknowledge helpful suggestions and hints from Rich
-Heiberger, Frank Harrell, Dieter Menne and Marius Hofert.
+Heiberger, Frank Harrell, Dieter Menne, Marius Hofert, Jeff Newmiller and Jeffrey
+Miller.
 
 \bibliography{tables}
 

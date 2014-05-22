@@ -3,8 +3,10 @@ Factor <- function(x, name = deparse(expr), levelnames=levels(x),
     force(name)
     force(expr)
     x <- as.factor(x)
-    if (texify) 
-    	levels(x) <- texify(levels(x))    
+    if (texify) {
+    	levs <- sprintf("%s", levels(x)) # convert NA to "NA"
+    	levels(x) <- texify(levs)
+    }
     force(levelnames)
     RowFactor(x, name = name, levelnames = levelnames, spacing=FALSE, 
               texify = FALSE, expr = expr, override = override)
@@ -31,9 +33,10 @@ RowFactor <- function(x, name = deparse(expr), levelnames=levels(x),
     force(name)
     force(expr)
     x <- as.factor(x)
-    if (texify)
-    	levels(x) <- texify(levels(x))        
-    levs <- levels(x)
+    levs <- sprintf("%s", levels(x)) # convert NA to "NA"
+    if (texify) 
+    	levs <- texify(levs)
+    	
     n <- length(levs)
     if (is.numeric(spacing) && spacing > 0) {
         groups <- TRUE
@@ -54,7 +57,9 @@ RowFactor <- function(x, name = deparse(expr), levelnames=levels(x),
             else insert <- nopagebreak
             catname <- paste(insert, levelnames[i], sep="")
     	    test <- i  # Work around a bug in R 2.12.x!
-    	    test <- call("==", call("as.integer", call("as.factor", expr)), i)
+    	    test <- call("labelSubset",
+    	                 subset = call("==", call("as.integer", call("as.factor", expr)), i),
+    	                 label = deparse(expr))
             term <- call("*", call("Heading", as.name(catname)), 
                               test)
             if (i == 1)
@@ -66,3 +71,7 @@ RowFactor <- function(x, name = deparse(expr), levelnames=levels(x),
      } else
         stop("No levels in x!")
 }
+
+labelSubset <- function(subset, label) 
+     structure(subset, label = label,
+    	       class = "labelledSubset")

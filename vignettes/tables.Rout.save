@@ -3,20 +3,13 @@
 
 > library(tables)
 Loading required package: Hmisc
+Loading required package: grid
+Loading required package: lattice
 Loading required package: survival
 Loading required package: splines
 Loading required package: Formula
-Hmisc library by Frank E Harrell Jr
-
-Type library(help='Hmisc'), ?Overview, or ?Hmisc.Overview')
-to see overall documentation.
-
 
 Attaching package: 'Hmisc'
-
-The following object is masked from 'package:survival':
-
-    untangle.specials
 
 The following objects are masked from 'package:base':
 
@@ -163,6 +156,9 @@ $HTMLbody
 
 $HTMLattributes
 [1] "frame=\"hsides\" rules=\"groups\""
+
+$HTMLcaption
+NULL
 
 $HTMLfooter
 NULL
@@ -393,15 +389,15 @@ All  & $10$ & $-0.018$ & $\phantom{-}0.561$ \\
  &  & \multicolumn{2}{c}{X} \\ \cmidrule(lr){3-4}
 F  & n & mean & \multicolumn{1}{c}{sd} \\ 
 \midrule
-\multicolumn{1}{r}{a}  & $\phantom{0}3$ & \multicolumn{1}{r}{$\phantom{-}0.025$} & \multicolumn{1}{r}{$\phantom{-}0.348$} \\
-\multicolumn{1}{r}{b}  & $\phantom{0}7$ & \multicolumn{1}{r}{$-0.036$} & \multicolumn{1}{r}{$\phantom{-}0.656$} \\
-\multicolumn{1}{r}{All}  & $10$ & \multicolumn{1}{r}{$-0.018$} & \multicolumn{1}{r}{$\phantom{-}0.561$} \\
+a  & $\phantom{0}3$ & \multicolumn{1}{r}{$\phantom{-}0.025$} & \multicolumn{1}{r}{$\phantom{-}0.348$} \\
+b  & $\phantom{0}7$ & \multicolumn{1}{r}{$-0.036$} & \multicolumn{1}{r}{$\phantom{-}0.656$} \\
+All  & $10$ & \multicolumn{1}{r}{$-0.018$} & \multicolumn{1}{r}{$\phantom{-}0.561$} \\
 \bottomrule 
 \end{tabular}
 
 > latex(tabular((Factor(gear, "Gears") + 1) * ((n = 1) + 
-+     Percent() + (RowPct = Percent("row")) + (ColPct = Percent("col"))) ~ 
-+     (Factor(ca .... [TRUNCATED] 
++     Percent() + (RowPct = Percent(Equal(gear))) + (ColPct = Percent(Equal(carb)))) ~ 
++    .... [TRUNCATED] 
 \begin{tabular}{llccccccc}
 \toprule
 & & \multicolumn{6}{c}{Carburetors} & \multicolumn{1}{c}{} \\ \cmidrule(lr){3-8}
@@ -423,6 +419,25 @@ All & n  & $\phantom{00}7$ & $\phantom{0}10$ & $\phantom{00}3$ & $\phantom{0}10$
  & Percent  & $\phantom{0}22$ & $\phantom{0}31$ & $\phantom{00}9$ & $\phantom{0}31$ & $\phantom{00}3$ & $\phantom{00}3$ & $100$ \\
  & RowPct  & $\phantom{0}22$ & $\phantom{0}31$ & $\phantom{00}9$ & $\phantom{0}31$ & $\phantom{00}3$ & $\phantom{00}3$ & $100$ \\
  & ColPct  & $100$ & $100$ & $100$ & $100$ & $100$ & $100$ & $100$ \\
+\bottomrule 
+\end{tabular}
+
+> wt <- c(5, 5, 4, 1)/15
+
+> x <- c(3.7, 3.3, 3.5, 2.8)
+
+> gp <- c(1, 1, 2, 2)
+
+> latex(tabular((Factor(gp) + 1) ~ weighted.mean * x * 
++     Arguments(w = wt)))
+\begin{tabular}{lc}
+\toprule
+ & \multicolumn{1}{c}{weighted.mean} \\ 
+gp  & \multicolumn{1}{c}{x} \\ 
+\midrule
+1  & $3.500$ \\
+2  & $3.360$ \\
+All  & $3.453$ \\
 \bottomrule 
 \end{tabular}
 
@@ -693,6 +708,35 @@ Mean  & $2$ & $2.5$ & $2$ & $2$ \\
 \bottomrule 
 \end{tabular}
 
+> A <- factor(dat$a)
+
+> latex(tabular(A + 1 ~ (n = 1)))
+\begin{tabular}{lc}
+\toprule
+A  & \multicolumn{1}{c}{n} \\ 
+\midrule
+1  & $1$ \\
+2  & $1$ \\
+3  & $1$ \\
+All  & $4$ \\
+\bottomrule 
+\end{tabular}
+
+> A <- factor(dat$a, exclude = NULL)
+
+> latex(tabular(A + 1 ~ (n = 1)))
+\begin{tabular}{lc}
+\toprule
+A  & \multicolumn{1}{c}{n} \\ 
+\midrule
+1  & $1$ \\
+2  & $1$ \\
+3  & $1$ \\
+NA  & $1$ \\
+All  & $4$ \\
+\bottomrule 
+\end{tabular}
+
 > q <- data.frame(p = rep(c("A", "B"), each = 10, len = 30), 
 +     a = rep(c(1, 2, 3), each = 10), id = seq(30), b = round(runif(30, 
 +         10, 2 .... [TRUNCATED] 
@@ -732,11 +776,12 @@ B & 2  & $10$ & $14.90$ & $2.283$ & $51.7$ & $8.642$ \\
 > formula <- Factor(p) * Factor(a) ~ (N = 1) + (b + 
 +     c) * (mean + sd)
 
-> tab1 <- tabular(formula, data = subset(q, p == "A"))
+> tab <- NULL
 
-> tab2 <- tabular(formula, data = subset(q, p == "B"))
+> for (sub in c("A", "B")) tab <- rbind(tab, tabular(formula, 
++     data = subset(q, p == sub)))
 
-> latex(rbind(tab1, tab2))
+> latex(rbind(tab))
 \begin{tabular}{llccccc}
 \toprule
 & &  & \multicolumn{2}{c}{b} & \multicolumn{2}{c}{c} \\ \cmidrule(lr){4-5}\cmidrule(lr){6-7}
@@ -751,4 +796,4 @@ B & 2  & $10$ & $14.9$ & $2.283$ & $51.7$ & $8.642$ \\
  *** Run successfully completed ***
 > proc.time()
    user  system elapsed 
-   1.20    0.06    1.24 
+   1.00    0.25    1.46 

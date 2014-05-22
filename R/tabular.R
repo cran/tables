@@ -12,8 +12,11 @@ term2table <- function(rowterm, colterm, env, n) {
     allargs <- c(rowargs, colargs)
     rowsubset <- TRUE
     colsubset <- TRUE
+    pctdenom <- NULL
+    pctsubset <- TRUE
     values <- NULL
     summary <- NULL
+    arguments <- NULL
     format <- NA
     justification <- NA
     for (i in seq_along(allargs)) {
@@ -26,22 +29,35 @@ term2table <- function(rowterm, colterm, env, n) {
         else if (fn == "Percent") {
             env1 <- new.env(parent=env)
             percent <- function(x, y) 100*length(x)/length(y)
+            env1$Equal <- env1$Unequal <- function(...) sys.call()
             env1$Percent <- function(denom="all", fn=percent) {
               if (is.null(summary)) {
                 if (identical(denom, "all")) summary <<- function(x) fn(x, values)
                 else if (identical(denom, "row")) summary <<- function(x) fn(x, values[rowsubset])
                 else if (identical(denom, "col")) summary <<- function(x) fn(x, values[colsubset])
-                else if (is.logical(denom)) summary <<- function(x) fn(x, values[denom])
-                else summary <<- function(x) fn(x, denom)
+                else if (is.call(denom) && deparse(denom[[1]]) %in% c("Equal", "Unequal")) { 
+                    summary <<- local({
+                        pctdenom <<- sapply(as.list(denom), deparse, width.cutoff = 500L)
+             		pctsubset <<- pctdenom[1] == "Equal"
+                    	function(x) {
+			    fn(x, values[pctsubset])
+			}})
+		} else if (is.logical(denom)) summary <<- function(x) fn(x, values[denom])
+		else summary <<- function(x) fn(x, denom)
                 summaryname <<- "Percent"
               } else
     	        stop("Summary fn not allowed with Percent")
             }
             eval(e, env1)
+	} else if (fn == "Arguments") {
+	    if (is.null(arguments)) 
+	      arguments <- e
+	    else
+	      stop("Duplicate Arguments list: ", deparse(arguments), " and ", deparse(e))
         } else if (fn != "Heading" && !identical(e, 1)) {
     	    arg <- eval(e, env)
     	    asis <- inherits(arg, "AsIs")
-    	    if (asis || is.vector(arg)) {
+    	    if (asis || is.vector(arg) || inherits(arg, "labelledSubset")) {
     	    	if (missing(n)) n <- length(arg)
     	    	else if (n != length(arg))
     	    	    stop("Argument ", deparse(e), " is not length ", n)
@@ -71,13 +87,62 @@ term2table <- function(rowterm, colterm, env, n) {
     	    	stop("Unrecognized entry ", deparse(e))
     	}
     }
+    if (!is.null(pctdenom)) { # We need a second pass to find the subsets
+	for (i in seq_along(allargs)) {
+	    e <- allargs[[i]]
+	    fn <- ""
+	    if (is.call(e)) 
+	    	fn <- as.character(e[[1]])
+	    if (!(fn %in% c(".Format", "Justify", "Percent", "Heading"))
+	        && !identical(e, 1)) {
+	        arg <- eval(e, env)
+	        asis <- inherits(arg, "AsIs")
+	        if (!asis && is.logical(arg)) {
+	            if (inherits(arg, "labelledSubset")) {
+	    		argexpr <- attr(arg, "label")
+	    	    	arg <- arg & !is.na(arg)
+	    	    	if (pctdenom[1] == "Equal" && argexpr %in% pctdenom[-1])
+	    	    	    pctsubset <- pctsubset & arg
+	    	    	else if (pctdenom[1] == "Unequal" && argexpr %in% pctdenom[-1])
+	    	    	    pctsubset <- pctsubset | !arg
+	    	    } else
+	    	    	pctsubset <- pctsubset & !is.na(arg) & arg
+	        }
+	    }
+	}
+    }
+    	
     if (missing(n))
     	stop("Length of ", deparse(rowterm), "~", deparse(colterm),
-    	     "indeterminate")    
-    if (is.null(summary)) summary <- length
-    if (is.null(values)) values <- rep(NA, n)
+    	     " indeterminate")    
+    if (is.null(summary)) {
+	if (!is.null(arguments))
+	    stop(deparse(arguments), " specified without summary function.")
+        summary <- length
+    }
+    if (is.null(values) && is.null(arguments)) values <- rep(NA, n)
     subset <- rowsubset & colsubset 
-    value <- summary(values[subset])
+    if (is.null(arguments)) 
+	value <- summary(values[subset])
+    else {
+	arguments[[1]] <- summary
+	for (i in seq_along(arguments)[-1]) {
+	    arg <- eval(arguments[[i]], env)
+	    if (length(arg) == n) 
+		arg <- arg[subset]
+	    arguments[[i]] <- arg
+	}
+	if (!is.null(values)) {
+	    named <- !is.null(names(arguments))
+	    for (i in rev(seq_along(arguments)[-1])) {
+		arguments[[i+1]] <- arguments[[i]]
+		if (named) names(arguments)[i+1] <- names(arguments)[i]
+	    }
+	    arguments[[2]] <- values[subset]
+	    if (named) names(arguments)[2] <- ""
+	}
+	value <- eval(arguments, env)
+    }
     if (length(value) != 1)
 	warning("Summary statistic is length ", length(value), call. = FALSE)
     structure(list(value), n=n, format=format, 
@@ -120,33 +185,46 @@ getLabels <- function(e, rows=TRUE, justify=NA, head=NULL, suppress=0) {
     Heading <- head
     result <- if (rows) matrix(NA, ncol=0, nrow=1)
     	      else      matrix(NA, ncol=1, nrow=0)
+    nrl <- ncl <- leftjustify <- leftheading <- leftsuppress <- 
+           leftjustification <- leftcolnamejust <- 
+           nrr <- ncr <- rightjustify <- rightheading <- rightsuppress <-
+           rightjustification <- rightcolnamejust <- NULL
+    getLeft <- function() {
+	nrl <<- nrow(leftLabels)
+	ncl <<- ncol(leftLabels)
+	leftjustify <<- attr(leftLabels, "justify")
+        leftheading <<- attr(leftLabels, "Heading")
+	leftsuppress <<- attr(leftLabels, "suppress")
+	leftjustification <<- attr(leftLabels, "justification")
+	leftcolnamejust <<- attr(leftLabels, "colnamejust")
+    }
+    getRight <- function() {
+	nrr <<- nrow(rightLabels)
+	ncr <<- ncol(rightLabels)
+	rightjustify <<- attr(rightLabels, "justify")
+        rightheading <<- attr(rightLabels, "Heading")
+	rightsuppress <<- attr(rightLabels, "suppress")
+	rightjustification <- attr(rightLabels, "justification")
+	rightcolnamejust <- attr(rightLabels, "colnamejust")
+    }
     if (is.call(e) && (op <- as.character(e[[1]])) == "*")  {
         leftLabels <- getLabels(e[[2]], rows, justify, head, suppress)
-	nrl <- nrow(leftLabels)
-	ncl <- ncol(leftLabels)
+        getLeft()
 	# Heading and justify are the settings to carry on to later terms
 	# justification is the matrix of justifications for
 	# each label
-	leftjustify <- attr(leftLabels, "justify")
-	Heading <- attr(leftLabels, "Heading")
-	leftsuppress <- attr(leftLabels, "suppress")
-	righthead <- Heading
+	righthead <- Heading <- leftheading
 	suppress <- leftsuppress
 	if (!is.null(leftjustify))
 	    justify <- leftjustify
-	leftjustification <- attr(leftLabels, "justification")
-	leftcolnamejust <- attr(leftLabels, "colnamejust")
 
 	rightLabels <- getLabels(e[[3]], rows, justify, righthead, suppress)
-	nrr <- nrow(rightLabels)
-	ncr <- ncol(rightLabels)
-	rightjustify <- attr(rightLabels, "justify")
-	Heading <- attr(rightLabels, "Heading")
-	suppress <- attr(rightLabels, "suppress")
+	getRight()
+	Heading <- rightheading
+	suppress <- rightsuppress
+	
 	if (!is.null(rightjustify))
 	    justify <- rightjustify
-	rightjustification <- attr(rightLabels, "justification")
-	rightcolnamejust <- attr(rightLabels, "colnamejust")
 
 	if (rows) {
 	    result <- justification <- matrix(NA_character_, nrl*nrr, ncl + ncr)
@@ -181,26 +259,13 @@ getLabels <- function(e, rows=TRUE, justify=NA, head=NULL, suppress=0) {
 	}
     } else if (op == "+") {
         leftLabels <- getLabels(e[[2]], rows, justify, NULL, suppress)
-	nrl <- nrow(leftLabels)
-	ncl <- ncol(leftLabels)
-	# Heading and justify are the settings to carry on to later terms
-	# justification is the matrix of justifications for
-	# each label
-	leftjustify <- attr(leftLabels, "justify")
-	Heading <- attr(leftLabels, "Heading")
-	leftsuppress <- attr(leftLabels, "suppress")
-	leftjustification <- attr(leftLabels, "justification")
-	leftcolnamejust <- attr(leftLabels, "colnamejust")
+        getLeft()
+	Heading <- leftheading
 
 	rightLabels <- getLabels(e[[3]], rows, justify, NULL, suppress)
-	nrr <- nrow(rightLabels)
-	ncr <- ncol(rightLabels)
-	rightjustify <- attr(rightLabels, "justify")
-	Heading <- attr(rightLabels, "Heading")
-	suppress <- attr(rightLabels, "suppress")
-
-	rightjustification <- attr(rightLabels, "justification")
-	rightcolnamejust <- attr(rightLabels, "colnamejust")
+	getRight()
+	Heading <- rightheading
+	suppress <- rightsuppress
 
 	if (rows) {
 	    # Here we have a problem:  we need to stack two things, each of which
@@ -217,9 +282,11 @@ getLabels <- function(e, rows=TRUE, justify=NA, head=NULL, suppress=0) {
 	    if (!identical(rightnames, rep("", ncr)) &&
 	        !identical(leftnames, rightnames)) {
 	        rightLabels <- moveColnames(rightLabels)
+		# some properties may have changed; just get them again
+	        getRight()
 	        leftLabels <- moveColnames(leftLabels)
-	        ncr <- ncol(rightLabels)
-	        ncl <- ncol(leftLabels)
+	        getLeft()
+		Heading <- rightheading
 	        rightnames <- rep("", ncr)
 	        leftnames <- rep("", ncl)
 	    }    
@@ -323,6 +390,8 @@ getLabels <- function(e, rows=TRUE, justify=NA, head=NULL, suppress=0) {
     	    suppress <- suppress + 1
     } else if (op == "Justify") {
     	justify <- as.character(e[[2]])
+    } else if (op == "Arguments") {
+	#suppress <- suppress + 1
     } else if (suppress > 0) {  # The rest just add a single label; suppress it
     	suppress <- suppress - 1
     } else if (!is.null(head)) {
@@ -350,7 +419,7 @@ expandExpressions <- function(e, env) {
 		e[[3]] <- expandExpressions(e[[3]], env)
 	} else if (op == "Format" || op == ".Format" 
 	        || op == "Heading" || op == "Justify"
-	        || op == "Percent")
+	        || op == "Percent" || op == "Arguments")
 	    e
 	else {
 	    v <- eval(e, envir=env)
@@ -385,6 +454,36 @@ collectFormats <- function(table) {
     structure(result, fmtlist=formats)
 }
 
+checkDenomExprs <- function(e, subsetLabels) {
+    if (is.call(e)) 
+	if ((op <- as.character(e[[1]])) %in% c("*", "+", "~", "(", "=") ) {
+	    checkDenomExprs(e[[2]], subsetLabels)
+	    if (length(e) > 2)
+		checkDenomExprs(e[[3]], subsetLabels)
+	} else if (op == "Percent") {
+	    e <- match.call(Percent, e)[["denom"]]
+	    if (is.call(e) && as.character(e[[1]]) %in% c("Equal", "Unequal"))
+		for (i in seq_along(e)[-1])
+		    if (!(deparse(e[[i]]) %in% subsetLabels))
+			stop("In ", deparse(e), ",\n", 
+			    dQuote(deparse(e[[i]])), " is not a subset label.  Legal labels are\n", 
+			    paste(subsetLabels, collapse=", "), call. = FALSE)
+	}
+}
+
+collectSubsets <- function(e) {
+    result <- c()
+    if (is.call(e)) {
+	if ((op <- as.character(e[[1]])) %in%  c("*", "+", "~", "(", "=") ) {
+	    result <- c(result, collectSubsets(e[[2]]))
+	    if (length(e) > 2)
+		result <- c(result, collectSubsets(e[[3]]))
+	} else if (op == "labelSubset") 
+	    result <- c(result, match.call(labelSubset, e)[["label"]])
+    }
+    result
+}
+
 # This both expands factors and rewrites "bindings"
 
 expandFactors <- function(e, env) {
@@ -402,7 +501,7 @@ expandFactors <- function(e, env) {
     	} else
     	    call("*", call("Heading", as.name(deparse(e[[2]]))), rhs)
     } else if (op == ".Format" || op == "Heading" || 
-             op == "Justify" || op == "Percent")
+             op == "Justify" || op == "Percent" || op == "Arguments")
     	e
     else {
     	v <- eval(e, envir=env)
@@ -464,6 +563,7 @@ tabular.default <- function(table, ...) {
 }
 
 tabular.formula <- function(table, data=NULL, n, suppressLabels=0, ...) {
+    formula <- table
     if (length(list(...)))
 	warning(gettextf("extra argument(s) %s will be disregarded",
 			 paste(sQuote(names(list(...))), collapse = ", ")),
@@ -488,8 +588,15 @@ tabular.formula <- function(table, data=NULL, n, suppressLabels=0, ...) {
     dims[[2]] <- expandFactors(dims[[2]], data)
     clabels <- getLabels(dims[[2]], rows=FALSE, justify=justify,
 			 suppress=suppressLabels)
+    
+    # Check if the Percent calls name nonexistent terms
+    subsetLabels <- unique(c(collectSubsets(dims[[1]]), collectSubsets(dims[[2]])))
+    checkDenomExprs(dims[[1]], subsetLabels)
+    checkDenomExprs(dims[[2]], subsetLabels)    
+    
     rows <- sumofprods(dims[[1]])
     cols <- sumofprods(dims[[2]])
+
     result <- NULL
     formats <- NULL
     justifications <- NULL
@@ -511,7 +618,7 @@ tabular.formula <- function(table, data=NULL, n, suppressLabels=0, ...) {
     	formats <- rbind(formats, rowformats)
     	justifications <- rbind(justifications, rowjustification)
     }
-    structure(result, rowLabels=rlabels, colLabels=clabels, table=table,
+    structure(result, formula=formula, rowLabels=rlabels, colLabels=clabels, table=table,
     	      formats = formats, justification = justifications, 
     	      class = "tabular")
 }
