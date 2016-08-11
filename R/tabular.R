@@ -1,6 +1,6 @@
 factors <- function(e) {
     if (is.name(e)) list(e)
-    else switch(as.character(e[[1]]),
+    else switch(deparse(e[[1]]),
     	"*" = c(factors(e[[2]]),factors(e[[3]])),
     	"(" = factors(e[[2]]),
     	list(e))
@@ -22,7 +22,7 @@ term2table <- function(rowterm, colterm, env, n) {
     for (i in seq_along(allargs)) {
         e <- allargs[[i]]
         fn <- ""
-        if (is.call(e) && (fn <- as.character(e[[1]])) == ".Format")
+        if (is.call(e) && (fn <- deparse(e[[1]])) == ".Format")
             format <- e[[2]]
         else if (fn == "Justify") 
             justification <- as.character(e[[if (length(e) > 2) 3 else 2]])
@@ -46,21 +46,21 @@ term2table <- function(rowterm, colterm, env, n) {
 		else summary <<- function(x) fn(x, denom)
                 summaryname <<- "Percent"
               } else
-    	        stop("Summary fn not allowed with Percent")
+    	        stop("Summary fn not allowed with 'Percent'")
             }
             eval(e, env1)
 	} else if (fn == "Arguments") {
 	    if (is.null(arguments)) 
 	      arguments <- e
 	    else
-	      stop("Duplicate Arguments list: ", deparse(arguments), " and ", deparse(e))
+	      stop(gettextf("Duplicate Arguments list: %s and %s", deparse(arguments), deparse(e)))
         } else if (fn != "Heading" && !identical(e, 1)) {
     	    arg <- eval(e, env)
     	    asis <- inherits(arg, "AsIs")
     	    if (asis || is.vector(arg) || inherits(arg, "labelledSubset")) {
     	    	if (missing(n)) n <- length(arg)
     	    	else if (n != length(arg))
-    	    	    stop("Argument ", deparse(e), " is not length ", n)
+    	    	    stop(gettextf("Argument '%s' is not length %d", deparse(e), n))
     	    }
     	    
     	    if (!asis && is.logical(arg)) {
@@ -74,17 +74,17 @@ term2table <- function(rowterm, colterm, env, n) {
     	    	    values <- arg
     	    	    valuename <- e
     	    	} else 
-    	    	    stop("Duplicate values: ", deparse(valuename),
-    	    	         " and ", deparse(e))
+    	    	    stop(gettextf("Duplicate values: %s and %s", deparse(valuename),
+    	    	         deparse(e)))
     	    } else if (is.function(arg)) {
     	    	if (is.null(summary)) {
     	    	    summary <- arg
     	    	    summaryname <- e
     	    	} else
-    	    	    stop("Duplicate summary fn: ", deparse(summaryname),
-    	    	         " and ", deparse(e))
+    	    	    stop(gettextf("Duplicate summary fn: %s and %s", deparse(summaryname),
+    	    	         deparse(e)))
     	    } else 
-    	    	stop("Unrecognized entry ", deparse(e))
+    	    	stop(gettextf("Unrecognized entry '%s'", deparse(e)))
     	}
     }
     if (!is.null(pctdenom)) { # We need a second pass to find the subsets
@@ -92,7 +92,7 @@ term2table <- function(rowterm, colterm, env, n) {
 	    e <- allargs[[i]]
 	    fn <- ""
 	    if (is.call(e)) 
-	    	fn <- as.character(e[[1]])
+	    	fn <- deparse(e[[1]])
 	    if (!(fn %in% c(".Format", "Justify", "Percent", "Heading"))
 	        && !identical(e, 1)) {
 	        arg <- eval(e, env)
@@ -113,11 +113,11 @@ term2table <- function(rowterm, colterm, env, n) {
     }
     	
     if (missing(n))
-    	stop("Length of ", deparse(rowterm), "~", deparse(colterm),
-    	     " indeterminate")    
+    	stop(gettextf("Length of %s ~ %s is indeterminate", deparse(rowterm), 
+    		      deparse(colterm)))    
     if (is.null(summary)) {
 	if (!is.null(arguments))
-	    stop(deparse(arguments), " specified without summary function.")
+	    stop(gettextf("'%s specified without summary function", deparse(arguments)))
         summary <- length
     }
     if (is.null(values) && is.null(arguments)) values <- rep(NA, n)
@@ -144,7 +144,7 @@ term2table <- function(rowterm, colterm, env, n) {
 	value <- eval(arguments, env)
     }
     if (length(value) != 1)
-	warning("Summary statistic is length ", length(value), call. = FALSE)
+	warning(gettextf("Summary statistic is length %d", length(value)), call. = FALSE)
     structure(list(value), n=n, format=format, 
                    justification=justification)
 }
@@ -207,7 +207,7 @@ getLabels <- function(e, rows=TRUE, justify=NA, head=NULL, suppress=0) {
 	rightjustification <- attr(rightLabels, "justification")
 	rightcolnamejust <- attr(rightLabels, "colnamejust")
     }
-    if (is.call(e) && (op <- as.character(e[[1]])) == "*")  {
+    if (is.call(e) && (op <- deparse(e[[1]])) == "*")  {
         leftLabels <- getLabels(e[[2]], rows, justify, head, suppress)
         getLeft()
 	# Heading and justify are the settings to carry on to later terms
@@ -375,7 +375,7 @@ getLabels <- function(e, rows=TRUE, justify=NA, head=NULL, suppress=0) {
     	    if (length(e) > 2) {
     	    	override <- as.logical(e[[3]])
     	    	if (is.na(override))
-    	    	    stop("Second argument in ", deparse(e), " must be logical",
+    	    	    stop(gettextf("Second argument in %s must be logical", deparse(e)), 
     	    	         call. = FALSE)
     	    }
     	    if (suppress <= 0 && (is.null(Heading) || override)) {
@@ -398,9 +398,9 @@ getLabels <- function(e, rows=TRUE, justify=NA, head=NULL, suppress=0) {
     	result <- matrix(head, 1,1, dimnames=list(NULL, ""))
     	Heading <- NULL
     } else if (op == "Percent") {
-        result <- matrix("Percent", 1,1, dimnames=list(NULL, ""))
+        result <- matrix(gettext("Percent"), 1,1, dimnames=list(NULL, ""))
     } else if (identical(e, 1)) 
-    	result <- matrix("All", 1,1, dimnames=list(NULL, ""))
+    	result <- matrix(gettext("All"), 1,1, dimnames=list(NULL, ""))
     else
     	result <- matrix(deparse(e), 1,1, dimnames=list(NULL, ""))
     if (is.null(justification))
@@ -413,7 +413,7 @@ getLabels <- function(e, rows=TRUE, justify=NA, head=NULL, suppress=0) {
 
 expandExpressions <- function(e, env) {
     if (is.call(e)) {
-	if ((op <- as.character(e[[1]])) %in% c("*", "+", "~", "(", "=") ) {
+	if ((op <- deparse(e[[1]])) %in% c("*", "+", "~", "(", "=") ) {
 	    e[[2]] <- expandExpressions(e[[2]], env)
 	    if (length(e) > 2)
 		e[[3]] <- expandExpressions(e[[3]], env)
@@ -434,15 +434,17 @@ collectFormats <- function(table) {
     formats <- list()
     recurse <- function(e) {
     	if (is.call(e)) {
-    	    if ((op <- as.character(e[[1]])) %in% c("*", "+", "~", "(") ) {
+    	    if ((op <- deparse(e[[1]])) %in% c("*", "+", "~", "(") ) {
     	    	e[[2]] <- recurse(e[[2]])
     	    	if (length(e) > 2)
 	    	    e[[3]] <- recurse(e[[3]])
     	    } else if (op == c("Format")) {
-    	    	if (length(e) == 2 && is.null(names(e)))
+    	    	if (length(e) == 2 && is.null(names(e))) {
+    	    	    if (is.language(e[[c(2,1)]]))
+    	    	    	e[[c(2,1)]] <- eval(e[[c(2,1)]], environment(table))
     	    	    formats <<- c(formats, list(e[[2]]))
-    	    	else {
-    	    	    e[[1]] <- as.name("format")
+    	    	} else {
+    	    	    e[[1]] <- format
     	    	    formats <<- c(formats, list(e))
     	    	}    
     	    	e <- call(".Format", length(formats))
@@ -456,25 +458,25 @@ collectFormats <- function(table) {
 
 checkDenomExprs <- function(e, subsetLabels) {
     if (is.call(e)) 
-	if ((op <- as.character(e[[1]])) %in% c("*", "+", "~", "(", "=") ) {
+	if ((op <- deparse(e[[1]])) %in% c("*", "+", "~", "(", "=") ) {
 	    checkDenomExprs(e[[2]], subsetLabels)
 	    if (length(e) > 2)
 		checkDenomExprs(e[[3]], subsetLabels)
 	} else if (op == "Percent") {
 	    e <- match.call(Percent, e)[["denom"]]
-	    if (is.call(e) && as.character(e[[1]]) %in% c("Equal", "Unequal"))
+	    if (is.call(e) && deparse(e[[1]]) %in% c("Equal", "Unequal"))
 		for (i in seq_along(e)[-1])
 		    if (!(deparse(e[[i]]) %in% subsetLabels))
-			stop("In ", deparse(e), ",\n", 
-			    dQuote(deparse(e[[i]])), " is not a subset label.  Legal labels are\n", 
-			    paste(subsetLabels, collapse=", "), call. = FALSE)
+			stop(gettextf("In %s\n'%s' is not a subset label.  Legal labels are\n%s",
+				      deparse(e), deparse(e[[i]]),
+			              paste(subsetLabels, collapse=", ")), call. = FALSE)
 	}
 }
 
 collectSubsets <- function(e) {
     result <- c()
     if (is.call(e)) {
-	if ((op <- as.character(e[[1]])) %in%  c("*", "+", "~", "(", "=") ) {
+	if ((op <- deparse(e[[1]])) %in%  c("*", "+", "~", "(", "=") ) {
 	    result <- c(result, collectSubsets(e[[2]]))
 	    if (length(e) > 2)
 		result <- c(result, collectSubsets(e[[3]]))
@@ -488,14 +490,14 @@ collectSubsets <- function(e) {
 
 expandFactors <- function(e, env) {
     op <- ""
-    if (is.call(e) && (op <- as.character(e[[1]])) %in% c("*", "+") ) 
+    if (is.call(e) && (op <- deparse(e[[1]])) %in% c("*", "+") ) 
     	call(op, expandFactors(e[[2]],env),expandFactors(e[[3]],env))
     else if (op == "(")
     	expandFactors(e[[2]],env)
     else if (op == "=") {
     	rhs <- expandFactors(e[[3]], env)
-    	if (is.call(rhs) && as.character(rhs[[1]]) == "*"
-    	 && is.call(rhs[[2]]) && as.character(rhs[[c(2,1)]]) == "Heading") {
+    	if (is.call(rhs) && deparse(rhs[[1]]) == "*"
+    	 && is.call(rhs[[2]]) && deparse(rhs[[c(2,1)]]) == "Heading") {
     	    rhs[[c(2,2)]] <- as.name(deparse(e[[2]]))
     	    rhs
     	} else
@@ -519,7 +521,7 @@ sumofprods <- function(e) {
     if (is.expression(e)) e <- e[[1]]
     if (is.name(e)) result <- list(e)
     else {
-	chr <- as.character(e[[1]])
+	chr <- deparse(e[[1]])
 	if (chr == "+") result <- c(sumofprods(e[[2]]),sumofprods(e[[3]]))
     	else if (chr == "*") {
 	    left <- sumofprods(e[[2]])
@@ -529,7 +531,7 @@ sumofprods <- function(e) {
 	       for (j in 1:length(right)) 
 		    result <- c(result, list(call("*", left[[i]], right[[j]])))
     	} else if (chr == "(") result <- sumofprods(e[[2]])
-    	else if (chr == "~") stop("nested formulas not supported")
+    	else if (chr == "~") stop("Nested formulas not supported")
     	else result <- list(e)
 
     }    	
@@ -543,7 +545,7 @@ tabledims <- function(e) {
     if (is.name(e)) result <- list(e)
     else {
         result <- list()
-	chr <- as.character(e[[1]])
+	chr <- deparse(e[[1]])
 	if (chr == "~") {
 	    if (length(e) == 2)
 		result <- c(result, tabledims(e[[2]]))
@@ -551,7 +553,7 @@ tabledims <- function(e) {
 	    	result <- c(result, tabledims(e[[2]]),tabledims(e[[3]]))
     	} else result <- list(e)
     }    	
-    if (length(result) > 2) stop("only 2 dim tables supported")
+    if (length(result) > 2) stop("Only 2 dim tables supported")
     result
 }
 
@@ -575,7 +577,7 @@ tabular.formula <- function(table, data=NULL, n, suppressLabels=0, ...) {
     else if (is.list(data))
     	data <- list2env(data, parent=environment(table))
     else if (!is.environment(data))
-    	stop("data must be a dataframe, list or environment")
+    	stop("'data' must be a dataframe, list or environment")
     	
     table <- expandExpressions(table, data)
     table <- collectFormats(table)
@@ -688,7 +690,8 @@ format.tabular <- function(x, digits=4, justification="n",
     if (latex && html) stop("Only one of 'latex' and 'html' may be requested")
     result <- unclass(x) 
     formats <- attr(x, "formats")
-    fmtlist <- attr(attr(x, "table"), "fmtlist")
+    table <- attr(x, "table")
+    fmtlist <- attr(table, "fmtlist")
     justify <- attr(x, "justification")
     justify[is.na(justify)] <- justification
     ischar <- sapply(result, is.character)
@@ -713,14 +716,14 @@ format.tabular <- function(x, digits=4, justification="n",
     	ind <- !is.na(formats) & formats == i
     	if (any(ind)) {        
             call <- fmtlist[[i]]
-            isformat <- identical(call[[1]], as.name("format"))
+            isformat <- identical(call[[1]], format)
             if (isformat) skip <- ischar | (lengths != 1)
             else skip <- ischar & FALSE
 	    last <- length(call)
        	    x <- do.call(c, result[ind & !skip])
        	    call[[last+1]] <- x
        	    names(call)[last+1] <- "x"
-       	    chars[ind & !skip] <- eval(call, parent.frame())
+       	    chars[ind & !skip] <- eval(call, environment(table))
        	    if (isformat) {
        	    	if (latex) {
        	    	    if (is.numeric(x))

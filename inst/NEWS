@@ -84,4 +84,22 @@
       Added Arguments() function to allow multi-argument analysis
       functions.
       
+0.7.86:
+      Fixed scoping bug:  locally defined format functions were not
+      always found.  (Reported by Doug Ezra Morrison.)
+
+0.7.87:
+      Added "append" argument to latex.tabular() and html.tabular(),
+      and made explicit that connections are allowed for the "file"
+      argument. (Suggestion of Marc Halperin.)
+
+0.7.88:
+      Edited messages to allow internationalization.  No translations 
+      added so far.
       
+0.7.91:
+      Updated options for html.tabular to use better CSS and HTML5 in
+      the tables.
+      Added an HTML vignette.
+      Fixed bug:  functions prefixed by "pkg::" in formulas led to warning
+      messages. (Reported by Lars Bishop.)

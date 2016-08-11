@@ -49,13 +49,14 @@ CSSclassname <- function(just)
     ifelse(just == "c", "center",
     ifelse(just == "r", "right", just)))
 
-html.tabular <- function(object, file="", 
-                         options=NULL, id=NULL, ...) {
+html.tabular <- function(object, file = "", 
+                         options = NULL, id = NULL, 
+			 append = FALSE, ...) {
     if (is.character(file)) {
 	if (file == "")
     	    out <- ""
     	else {
-    	    out <- file(file, open="wt")
+    	    out <- file(file, open=if (append) "at" else "wt")
     	    on.exit(close(out))
     	}
     } else
@@ -172,3 +173,12 @@ html.tabular <- function(object, file="",
     	mycat("</table>\n")
     invisible(structure(list(file=file), class="html"))
 }
+
+writeCSS <- function(CSS = htmloptions()$CSS, id = NULL) {
+  if (is.null(id)) 
+    css <- gsub("#ID ", "", CSS, fixed=TRUE)
+  else
+    css <- gsub("#ID", paste0("#", id), CSS, fixed=TRUE)
+  cat(css)
+}
+  
