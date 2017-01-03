@@ -1,10 +1,9 @@
-PlusMinus <- function(x, y, head, xhead, yhead, digits=2, ...) {
-    head <- if (missing(head)) quote(Heading())
-	else substitute(Heading(head), list(head=substitute(head)))
-    xhead <- if (missing(xhead)) quote(Heading())
-	else substitute(Heading(head), list(head=substitute(xhead)))
-    yhead <- if (missing(yhead)) quote(Heading())
-	else substitute(Heading(head), list(head=substitute(yhead)))
+PlusMinus <- function(x, y, head, xhead, yhead, digits=2, character.only = FALSE, 
+		      ...) {
+    head <- getHeading(head, substitute(head), character.only)
+    xhead <- getHeading(xhead, substitute(xhead), character.only)
+    yhead <- getHeading(yhead, substitute(yhead), character.only)
+
     fmt <- function(x){
 		 s <- format(x, digits=digits, ...)
 		 is_stderr <- (1:length(s)) > length(s) %/% 2

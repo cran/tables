@@ -1,4 +1,4 @@
-Heading <- function(name = NULL, override = TRUE) 
+Heading <- function(name = NULL, override = TRUE, character.only = FALSE) 
     stop("This is a pseudo-function, not meant to be called.")
     
 Justify <- function(labels, data=labels)
@@ -16,4 +16,7 @@ Percent <- function(denom = "all", fn = percent)
 percent <- function(x, y) 100*length(x)/length(y)
 
 Arguments <- function (...)
+    stop("This is a pseudo-function, not meant to be called.")
+
+DropEmpty <- function (empty = "", which = c("row", "col", "cell"))
     stop("This is a pseudo-function, not meant to be called.")

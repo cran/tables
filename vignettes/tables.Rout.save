@@ -3,7 +3,6 @@
 
 > library(tables)
 Loading required package: Hmisc
-Loading required package: grid
 Loading required package: lattice
 Loading required package: survival
 Loading required package: Formula
@@ -441,6 +440,50 @@ All  & $3.453$ \\
 \bottomrule 
 \end{tabular}
 
+> set.seed(730)
+
+> df <- data.frame(Label = LETTERS[1:9], Group = rep(letters[1:3], 
++     each = 3), Value = rnorm(9), stringsAsFactors = TRUE)
+
+> latex(tabular(Label ~ Group * Value * mean, data = df[1:6, 
++     ]))
+\begin{tabular}{lccc}
+\toprule
+ & \multicolumn{3}{c}{Group} \\ \cmidrule(lr){2-4}
+ & a & b & \multicolumn{1}{c}{c} \\ 
+ & Value & Value & \multicolumn{1}{c}{Value} \\ 
+Label  & mean & mean & \multicolumn{1}{c}{mean} \\ 
+\midrule
+A  & $-0.92605$ & $\phantom{000}\phantom{-}NaN$ & $NaN$ \\
+B  & $-0.69747$ & $\phantom{000}\phantom{-}NaN$ & $NaN$ \\
+C  & $\phantom{-}0.05293$ & $\phantom{000}\phantom{-}NaN$ & $NaN$ \\
+D  & $\phantom{0000}\phantom{-}NaN$ & $\phantom{-}0.7782$ & $NaN$ \\
+E  & $\phantom{0000}\phantom{-}NaN$ & $\phantom{-}0.9822$ & $NaN$ \\
+F  & $\phantom{0000}\phantom{-}NaN$ & $-1.0628$ & $NaN$ \\
+G  & $\phantom{0000}\phantom{-}NaN$ & $\phantom{000}\phantom{-}NaN$ & $NaN$ \\
+H  & $\phantom{0000}\phantom{-}NaN$ & $\phantom{000}\phantom{-}NaN$ & $NaN$ \\
+I  & $\phantom{0000}\phantom{-}NaN$ & $\phantom{000}\phantom{-}NaN$ & $NaN$ \\
+\bottomrule 
+\end{tabular}
+
+> latex(tabular(Label ~ Group * Value * mean * DropEmpty(empty = "."), 
++     data = df[1:6, ]))
+\begin{tabular}{lcc}
+\toprule
+ & \multicolumn{2}{c}{Group} \\ \cmidrule(lr){2-3}
+ & a & \multicolumn{1}{c}{b} \\ 
+ & Value & \multicolumn{1}{c}{Value} \\ 
+Label  & mean & \multicolumn{1}{c}{mean} \\ 
+\midrule
+A  & $-0.92605$ & . \\
+B  & $-0.69747$ & . \\
+C  & $\phantom{-}0.05293$ & . \\
+D  & . & $\phantom{-}0.7782$ \\
+E  & . & $\phantom{-}0.9822$ \\
+F  & . & $-1.0628$ \\
+\bottomrule 
+\end{tabular}
+
 > latex(tabular(Species ~ Heading() * mean * All(iris), 
 +     data = iris))
 \begin{tabular}{lcccc}
@@ -450,6 +493,74 @@ Species  & Sepal.Length & Sepal.Width & Petal.Length & \multicolumn{1}{c}{Petal.
 setosa  & $5.006$ & $3.428$ & $1.462$ & $0.246$ \\
 versicolor  & $5.936$ & $2.770$ & $4.260$ & $1.326$ \\
 virginica  & $6.588$ & $2.974$ & $5.552$ & $2.026$ \\
+\bottomrule 
+\end{tabular}
+
+> df <- mtcars[1:10, ]
+
+> latex(tabular(Factor(cyl) * Factor(gear) * AllObs(df) ~ 
++     rownames(df) + mpg, data = df))
+\begin{tabular}{llcc}
+\toprule
+cyl & gear & rownames(df) & \multicolumn{1}{c}{mpg} \\ 
+\midrule
+4 & 4  & Datsun 710 & $22.8$ \\
+ &   & Merc 240D & $24.4$ \\
+ &   & Merc 230 & $22.8$ \\
+6 & 3  & Hornet 4 Drive & $21.4$ \\
+ &   & Valiant & $18.1$ \\
+ & 4  & Mazda RX4 & $21.0$ \\
+ &   & Mazda RX4 Wag & $21.0$ \\
+ &   & Merc 280 & $19.2$ \\
+8 & 3  & Hornet Sportabout & $18.7$ \\
+ &   & Duster 360 & $14.3$ \\
+\bottomrule 
+\end{tabular}
+
+> rownum <- with(mtcars, RowNum(list(cyl, gear)))
+
+> latex(tabular(Factor(cyl) * Factor(gear) * I(rownum) ~ 
++     mpg * AllObs(mtcars, within = list(cyl, gear, rownum)), data = mtcars))
+\begin{tabular}{llccccc}
+\toprule
+cyl & gear & \multicolumn{5}{c}{mpg} \\ 
+\midrule
+4 & 3  & $21.5$ &  &  &  &  \\
+ & 4  & $22.8$ & $24.4$ & $22.8$ & $32.4$ & $30.4$ \\
+ &   & $33.9$ & $27.3$ & $21.4$ &  &  \\
+ & 5  & $26.0$ & $30.4$ &  &  &  \\
+6 & 3  & $21.4$ & $18.1$ &  &  &  \\
+ & 4  & $21.0$ & $21.0$ & $19.2$ & $17.8$ &  \\
+ & 5  & $19.7$ &  &  &  &  \\
+8 & 3  & $18.7$ & $14.3$ & $16.4$ & $17.3$ & $15.2$ \\
+ &   & $10.4$ & $10.4$ & $14.7$ & $15.5$ & $15.2$ \\
+ &   & $13.3$ & $19.2$ &  &  &  \\
+ & 5  & $15.8$ & $15.0$ &  &  &  \\
+\bottomrule 
+\end{tabular}
+
+> rownum <- with(mtcars, RowNum(list(cyl, gear), perrow = 2))
+
+> latex(tabular(Factor(cyl) * Factor(gear) * AllObs(mtcars, 
++     within = list(cyl, gear, rownum)) ~ mpg * I(rownum), data = mtcars))
+\begin{tabular}{llcccccc}
+\toprule
+cyl & gear & \multicolumn{6}{c}{mpg} \\ 
+\midrule
+4 & 3  & $21.5$ &  &  &  &  &  \\
+ & 4  & $22.8$ & $22.8$ & $30.4$ & $27.3$ &  &  \\
+ &   & $24.4$ & $32.4$ & $33.9$ & $21.4$ &  &  \\
+ & 5  & $26.0$ &  &  &  &  &  \\
+ &   & $30.4$ &  &  &  &  &  \\
+6 & 3  & $21.4$ &  &  &  &  &  \\
+ &   & $18.1$ &  &  &  &  &  \\
+ & 4  & $21.0$ & $19.2$ &  &  &  &  \\
+ &   & $21.0$ & $17.8$ &  &  &  &  \\
+ & 5  & $19.7$ &  &  &  &  &  \\
+8 & 3  & $18.7$ & $16.4$ & $15.2$ & $10.4$ & $15.5$ & $13.3$ \\
+ &   & $14.3$ & $17.3$ & $10.4$ & $14.7$ & $15.2$ & $19.2$ \\
+ & 5  & $15.8$ &  &  &  &  &  \\
+ &   & $15.0$ &  &  &  &  &  \\
 \bottomrule 
 \end{tabular}
 
@@ -530,6 +641,8 @@ $i$  & Sepal.Length & Sepal.Width & Petal.Length & Petal.Width & \multicolumn{1}
 \bottomrule 
 \end{tabular}
 
+> set.seed(1000)
+
 > dat <- expand.grid(Block = 1:3, Treatment = LETTERS[1:2], 
 +     Subset = letters[1:2])
 
@@ -542,18 +655,18 @@ $i$  & Sepal.Length & Sepal.Width & Petal.Length & Petal.Width & \multicolumn{1}
 \toprule
 Block & Treatment & Subset & \multicolumn{1}{c}{Response} \\ 
 \midrule
-\nopagebreak 1 & \nopagebreak A & a  & $-0.02932$ \\
- &  & b  & $\phantom{-}0.76406$ \\
- & \rule{0pt}{1.2\normalbaselineskip}B & a  & $-0.91381$ \\
- &  & b  & $-0.81438$ \\
-\rule{0pt}{1.7\normalbaselineskip}2 & \nopagebreak A & a  & $-0.38885$ \\
- &  & b  & $\phantom{-}0.26196$ \\
- & \rule{0pt}{1.2\normalbaselineskip}B & a  & $\phantom{-}2.31030$ \\
- &  & b  & $-0.43845$ \\
-\rule{0pt}{1.7\normalbaselineskip}3 & \nopagebreak A & a  & $\phantom{-}0.51086$ \\
- &  & b  & $\phantom{-}0.77340$ \\
- & \rule{0pt}{1.2\normalbaselineskip}B & a  & $-0.43809$ \\
- &  & b  & $-0.72022$ \\
+\nopagebreak 1 & \nopagebreak A & a  & $-0.44578$ \\
+ &  & b  & $-0.47587$ \\
+ & \rule{0pt}{1.2\normalbaselineskip}B & a  & $\phantom{-}0.63939$ \\
+ &  & b  & $-1.37312$ \\
+\rule{0pt}{1.7\normalbaselineskip}2 & \nopagebreak A & a  & $-1.20586$ \\
+ &  & b  & $\phantom{-}0.71975$ \\
+ & \rule{0pt}{1.2\normalbaselineskip}B & a  & $-0.78655$ \\
+ &  & b  & $-0.98243$ \\
+\rule{0pt}{1.7\normalbaselineskip}3 & \nopagebreak A & a  & $\phantom{-}0.04113$ \\
+ &  & b  & $-0.01851$ \\
+ & \rule{0pt}{1.2\normalbaselineskip}B & a  & $-0.38549$ \\
+ &  & b  & $-0.55449$ \\
 \bottomrule 
 \end{tabular}
 
@@ -737,6 +850,8 @@ All  & $4$ \\
 \bottomrule 
 \end{tabular}
 
+> set.seed(1206)
+
 > q <- data.frame(p = rep(c("A", "B"), each = 10, len = 30), 
 +     a = rep(c(1, 2, 3), each = 10), id = seq(30), b = round(runif(30, 
 +         10, 2 .... [TRUNCATED] 
@@ -750,13 +865,13 @@ All  & $4$ \\
 & &  & \multicolumn{2}{c}{b} & \multicolumn{2}{c}{c} \\ \cmidrule(lr){4-5}\cmidrule(lr){6-7}
 p & a & N & mean & sd & mean & \multicolumn{1}{c}{sd} \\ 
 \midrule
-A & 1  & $10$ & $14.80$ & $2.781$ & $53.5$ & $8.303$ \\
- & 2  & $\phantom{0}0$ & $\phantom{00}NaN$ & $\phantom{000}NA$ & $\phantom{0}NaN$ & $\phantom{000}NA$ \\
- & 3  & $10$ & $16.90$ & $2.601$ & $56.2$ & $9.987$ \\
-B & 1  & $\phantom{0}0$ & $\phantom{00}NaN$ & $\phantom{000}NA$ & $\phantom{0}NaN$ & $\phantom{000}NA$ \\
- & 2  & $10$ & $14.90$ & $2.283$ & $51.7$ & $8.642$ \\
- & 3  & $\phantom{0}0$ & $\phantom{00}NaN$ & $\phantom{000}NA$ & $\phantom{0}NaN$ & $\phantom{000}NA$ \\
- & All  & $30$ & $15.53$ & $2.662$ & $53.8$ & $8.892$ \\
+A & 1  & $10$ & $14.40$ & $3.026$ & $55.70$ & $6.447$ \\
+ & 2  & $\phantom{0}0$ & $\phantom{00}NaN$ & $\phantom{000}NA$ & $\phantom{00}NaN$ & $\phantom{000}NA$ \\
+ & 3  & $10$ & $14.50$ & $2.877$ & $52.80$ & $8.954$ \\
+B & 1  & $\phantom{0}0$ & $\phantom{00}NaN$ & $\phantom{000}NA$ & $\phantom{00}NaN$ & $\phantom{000}NA$ \\
+ & 2  & $10$ & $14.40$ & $2.836$ & $56.30$ & $7.889$ \\
+ & 3  & $\phantom{0}0$ & $\phantom{00}NaN$ & $\phantom{000}NA$ & $\phantom{00}NaN$ & $\phantom{000}NA$ \\
+ & All  & $30$ & $14.43$ & $2.812$ & $54.93$ & $7.714$ \\
 \bottomrule 
 \end{tabular}
 
@@ -766,10 +881,10 @@ B & 1  & $\phantom{0}0$ & $\phantom{00}NaN$ & $\phantom{000}NA$ & $\phantom{0}Na
 & &  & \multicolumn{2}{c}{b} & \multicolumn{2}{c}{c} \\ \cmidrule(lr){4-5}\cmidrule(lr){6-7}
 p & a & N & mean & sd & mean & \multicolumn{1}{c}{sd} \\ 
 \midrule
-A & 1  & $10$ & $14.80$ & $2.781$ & $53.5$ & $8.303$ \\
- & 3  & $10$ & $16.90$ & $2.601$ & $56.2$ & $9.987$ \\
-B & 2  & $10$ & $14.90$ & $2.283$ & $51.7$ & $8.642$ \\
- & All  & $30$ & $15.53$ & $2.662$ & $53.8$ & $8.892$ \\
+A & 1  & $10$ & $14.40$ & $3.026$ & $55.70$ & $6.447$ \\
+ & 3  & $10$ & $14.50$ & $2.877$ & $52.80$ & $8.954$ \\
+B & 2  & $10$ & $14.40$ & $2.836$ & $56.30$ & $7.889$ \\
+ & All  & $30$ & $14.43$ & $2.812$ & $54.93$ & $7.714$ \\
 \bottomrule 
 \end{tabular}
 
@@ -781,19 +896,43 @@ B & 2  & $10$ & $14.90$ & $2.283$ & $51.7$ & $8.642$ \\
 > for (sub in c("A", "B")) tab <- rbind(tab, tabular(formula, 
 +     data = subset(q, p == sub)))
 
-> latex(rbind(tab))
+> latex(tab)
 \begin{tabular}{llccccc}
 \toprule
 & &  & \multicolumn{2}{c}{b} & \multicolumn{2}{c}{c} \\ \cmidrule(lr){4-5}\cmidrule(lr){6-7}
  & a & N & mean & sd & mean & \multicolumn{1}{c}{sd} \\ 
 \midrule
-A & 1  & $10$ & $14.8$ & $2.781$ & $53.5$ & $8.303$ \\
- & 3  & $10$ & $16.9$ & $2.601$ & $56.2$ & $9.987$ \\
-B & 2  & $10$ & $14.9$ & $2.283$ & $51.7$ & $8.642$ \\
+A & 1  & $10$ & $14.4$ & $3.026$ & $55.7$ & $6.447$ \\
+ & 3  & $10$ & $14.5$ & $2.877$ & $52.8$ & $8.954$ \\
+B & 2  & $10$ & $14.4$ & $2.836$ & $56.3$ & $7.889$ \\
+\bottomrule 
+\end{tabular}
+
+> colLabels(tab)
+     [,1] [,2] [,3] [,4] [,5]
+[1,]      b    <NA> c    <NA>
+[2,] N    mean sd   mean sd  
+Attributes:  dim, justification, colnamejust, justify, suppress, class 
+
+> labs <- colLabels(tab)
+
+> labs[1, 2] <- "New label"
+
+> colLabels(tab) <- labs
+
+> latex(tab)
+\begin{tabular}{llccccc}
+\toprule
+& &  & \multicolumn{2}{c}{New label} & \multicolumn{2}{c}{c} \\ \cmidrule(lr){4-5}\cmidrule(lr){6-7}
+ & a & N & mean & sd & mean & \multicolumn{1}{c}{sd} \\ 
+\midrule
+A & 1  & $10$ & $14.4$ & $3.026$ & $55.7$ & $6.447$ \\
+ & 3  & $10$ & $14.5$ & $2.877$ & $52.8$ & $8.954$ \\
+B & 2  & $10$ & $14.4$ & $2.836$ & $56.3$ & $7.889$ \\
 \bottomrule 
 \end{tabular}
 
  *** Run successfully completed ***
 > proc.time()
    user  system elapsed 
-  1.339   0.050   1.384 
+  3.541   0.139   3.761 

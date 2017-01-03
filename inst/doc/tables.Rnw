@@ -580,12 +580,15 @@ latex( tabular( (F+1) ~ X*(Format(digits=2)*mean
 
 Normally \code{tabular()} generates row and column labels by deparsing the expression
 being tabulated.  These can be changed by using the \code{Heading()} pseudo-function, which
-replaces the heading on the next object found.  The heading can either be the name of a 
-function or a string in quotes, which will be displayed as entered (so \LaTeX\ codes can be used).
+replaces the heading on the next object found.  The heading can either be a name or a string in quotes.  If the \code{character.only} argument
+is \code{TRUE}, the expression will be evaluated to a string which
+will be used as a heading.  \LaTeX\ codes which are not syntactically
+valid R can be used either in
+quoted strings or with \code{character.only = TRUE}.
 
 If no argument is passed, the next label is suppressed.
 
-There's an optional second argument, which must be either \code{TRUE}
+There's an optional argument \code{override}, which must be either \code{TRUE}
 or \code{FALSE} if present.  If it is \code{TRUE} (or not present),
 then the heading will override a previously specified heading.  If
 \code{FALSE}, it will not.  The latter seems likely only to be of use
@@ -705,6 +708,46 @@ latex( tabular( (Factor(gp) + 1)
 @
 The order of the \code{weighted.mean} and \code{Arguments()} factors makes no difference.
 
+\subsubsection{\code{DropEmpty()}}
+
+\code{DropEmpty()} indicates that cells (or whole
+rows or columns of the table) should be dropped if they 
+contain no observations.  This will prevent 
+ugly results like \code{NA} or \code{NaN} from showing
+up in the table.
+
+This pseudo-function takes two optional arguments,
+\code{which} (with default value \code{c("row", "col", "cell")}) and \code{empty} (with default value \code{""}).
+
+If the \code{which} argument contains \code{"row"}, then
+any row in the table in which all cells are empty will be dropped.
+Similarly, if it contains \code{"col"}, empty columns
+will be dropped.  If it contains \code{"cell"}, then cells
+in rows and columns that are not dropped will be set to
+the \code{empty} string.
+
+For example, without using \code{DropEmpty()}, this 
+table is ugly:
+\begin{center}
+<<results=tex>>=
+set.seed(730)
+df <- data.frame(Label = LETTERS[1:9], 
+		 Group = rep(letters[1:3], each=3), 
+		 Value = rnorm(9), 
+		 stringsAsFactors = TRUE)
+latex( tabular( Label ~ Group*Value*mean, 
+		data = df[1:6,]))
+@
+\end{center}
+This looks much better:
+\begin{center}
+<<results=tex>>=
+latex( tabular( Label ~ Group*Value*mean*
+			DropEmpty(empty="."), 
+		data = df[1:6,]))
+@
+\end{center}
+
 \subsection{Formula Functions}
 \label{sec:tableformulas}
 
@@ -746,6 +789,55 @@ Example:  Show the means of the numeric columns in the iris data.
 \begin{center}
 <<results=tex>>=
 latex( tabular( Species ~ Heading()*mean*All(iris), data=iris) )
+@
+\end{center}
+
+\subsubsection{\code{AllObs(), RowNum()}}
+
+The \code{AllObs()} function displays all of the observations 
+in a dataset.  It does this by creating a factor with a different
+level for each observation, and a summary statistic function
+which just displays the observation.  It works with \code{DropEmpty()}
+to drop rows (or columns) from the table if they
+correspond to non-existent observations.  For example,
+\begin{center}
+<<results=tex>>=
+df <- mtcars[1:10,]
+latex( tabular(Factor(cyl)*Factor(gear)*AllObs(df) ~ 
+               rownames(df) + mpg, data=df) )
+@
+\end{center}
+
+Often (as with the \code{mtcars} dataset) the full dataset
+takes a lot of space to display.  In that case, it 
+can be displayed in multiple columns using a combination of
+the \code{AllObs()} and \code{RowNum()} functions.  Because
+this affects both rows and columns in the resulting table,
+the code is a little unusual.   You would normally compute
+the \code{RowNum()} formula function outside the call to
+\code{tabular()}, and include it in the row specification
+wrapped in \code{I()} and in the column specification
+in the \code{within} argument to \code{AllObs()}. For example,
+\begin{center}
+<<results=tex>>=
+rownum <- with(mtcars, RowNum(list(cyl, gear)))
+latex( tabular(Factor(cyl)*Factor(gear)*I(rownum) ~
+        mpg * AllObs(mtcars, within = list(cyl, gear, rownum)), 
+        data=mtcars) )
+@
+\end{center}
+
+Despite its name, \code{RowNum} can be used to specify columns
+instead of rows, for a column-major display.  In this
+case, its \code{perrow} argument should be interpreted
+as ``per column''.  For example,
+\begin{center}
+<<results=tex>>=
+rownum <- with(mtcars, RowNum(list(cyl, gear), perrow = 2))
+latex( tabular(Factor(cyl)*Factor(gear)*
+	       AllObs(mtcars, within = list(cyl, gear, rownum)) ~
+               mpg * I(rownum), 
+        data=mtcars) )
 @
 \end{center}
 
@@ -908,6 +1000,7 @@ To add extra space after each high level group in a multi-way
 classification, use \code{spacing = 1}.  For example:
 \begin{center}
 <<results=tex>>=
+set.seed(1000)
 dat <- expand.grid(Block=1:3, Treatment=LETTERS[1:2], 
                                 Subset=letters[1:2])
 dat$Response <- rnorm(12)
@@ -1114,6 +1207,7 @@ object.  For example, this table contains rows with no data in them, and those
 yield ugly NA and NaN statistics:
 \begin{center}
 <<results=tex>>=
+set.seed(1206)
 q <- data.frame(p = rep(c("A","B"),each=10,len=30),
                            a = rep(c(1,2,3),each=10),id=seq(30),
                            b = round(runif(30,10,20)),
@@ -1142,9 +1236,27 @@ tab <- NULL
 for (sub in c("A", "B")) 
     tab <- rbind(tab, tabular( formula, 
                                data = subset(q, p == sub) ) )
-latex(rbind(tab))
+latex(tab)
 @
 \end{center}
+
+It is also possible to edit the row or column labels after constructing 
+the table.  For example, 
+<<>>=
+colLabels(tab)
+labs <- colLabels(tab)
+labs[1, 2] <- "New label"
+colLabels(tab) <- labs
+@
+\begin{center}
+<<results=tex>>=
+latex(tab)
+@
+\end{center}
+Note that \verb!<NA>! in the column labels means ``same as 
+the label to the left'', and in the row labels it means
+``same as the label above''.  This is used in constructing
+multi-column or multi-row labels.
 
 \section*{Acknowledgments}
 

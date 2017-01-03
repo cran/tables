@@ -4,7 +4,7 @@
 \code{Heading} pseudo-function
 }
 \usage{
-Heading(name = NULL, override = TRUE)
+Heading(name = NULL, override = TRUE, character.only = FALSE)
 }
 \arguments{
   \item{name}{
@@ -12,6 +12,10 @@ A legal R variable name, or a character constant.
 }
   \item{override}{
 Whether this heading should override one that is already present.
+}
+  \item{character.only}{
+If \code{TRUE}, the \code{name} argument will be interpreted
+as an expression evaluating to a character value.
 }
 }
 
@@ -41,4 +45,9 @@ handled specially by \code{\link{tabular}}.
 \examples{
 tabular( (Sepal.Length+Sepal.Width) ~ 
          (Heading(Mean)*mean + (S.D.=sd)), data=iris )
+
+heading <- "Variable Heading"
+tabular( (Sepal.Length+Sepal.Width) ~ 
+         (Heading(heading, character.only = TRUE)*mean + (S.D.=sd)), 
+         data=iris )
 }

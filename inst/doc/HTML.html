@@ -79,8 +79,6 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h2>Initializing</h2>
 <p>First, you need to load <code>tables</code>. Packages that it uses print banner messages, so you’ll usually want to set a chunk option of <code>message=FALSE</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tables)</code></pre></div>
-<pre><code>## Warning: package 'Hmisc' was built under R version 3.2.5</code></pre>
-<pre><code>## Warning: package 'survival' was built under R version 3.2.5</code></pre>
 <p>The table is now constructed in the usual way.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">X &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">125</span>, <span class="dt">sd=</span><span class="dv">100</span>)
 Group &lt;-<span class="st"> </span><span class="kw">factor</span>(<span class="kw">sample</span>(letters[<span class="dv">1</span>:<span class="dv">5</span>], <span class="dv">125</span>, <span class="dt">rep=</span><span class="ot">TRUE</span>))
@@ -146,13 +144,13 @@ Std Dev
 a
 </th>
 <td>
-29
+25
 </td>
 <td>
--7.1
+-38
 </td>
 <td>
-94.0
+110
 </td>
 </tr>
 <tr class="center">
@@ -160,13 +158,13 @@ a
 b
 </th>
 <td>
-32
+22
 </td>
 <td>
--6.8
+-22
 </td>
 <td>
-97.7
+80
 </td>
 </tr>
 <tr class="center">
@@ -174,13 +172,13 @@ b
 c
 </th>
 <td>
-24
+29
 </td>
 <td>
-17.4
+18
 </td>
 <td>
-87.5
+116
 </td>
 </tr>
 <tr class="center">
@@ -188,13 +186,13 @@ c
 d
 </th>
 <td>
-18
+25
 </td>
 <td>
-20.3
+-33
 </td>
 <td>
-75.3
+88
 </td>
 </tr>
 <tr class="center">
@@ -202,13 +200,13 @@ d
 e
 </th>
 <td>
-22
+24
 </td>
 <td>
-8.3
+-16
 </td>
 <td>
-72.0
+103
 </td>
 </tr>
 </tbody>
@@ -250,13 +248,13 @@ Std Dev
 a
 </th>
 <td>
-29
+25
 </td>
 <td>
--7.1
+-38
 </td>
 <td>
-94.0
+110
 </td>
 </tr>
 <tr class="right">
@@ -264,13 +262,13 @@ a
 b
 </th>
 <td>
-32
+22
 </td>
 <td>
--6.8
+-22
 </td>
 <td>
-97.7
+80
 </td>
 </tr>
 <tr class="right">
@@ -278,13 +276,13 @@ b
 c
 </th>
 <td>
-24
+29
 </td>
 <td>
-17.4
+18
 </td>
 <td>
-87.5
+116
 </td>
 </tr>
 <tr class="right">
@@ -292,13 +290,13 @@ c
 d
 </th>
 <td>
-18
+25
 </td>
 <td>
-20.3
+-33
 </td>
 <td>
-75.3
+88
 </td>
 </tr>
 <tr class="right">
@@ -306,13 +304,13 @@ d
 e
 </th>
 <td>
-22
+24
 </td>
 <td>
-8.3
+-16
 </td>
 <td>
-72.0
+103
 </td>
 </tr>
 </tbody>
@@ -354,13 +352,13 @@ Std Dev
 a
 </th>
 <td>
-29
+25
 </td>
 <td>
- −7.1
+ −38
 </td>
 <td>
- 94.0
+ 110
 </td>
 </tr>
 <tr class="center">
@@ -368,13 +366,13 @@ a
 b
 </th>
 <td>
-32
+22
 </td>
 <td>
- −6.8
+ −22
 </td>
 <td>
- 97.7
+  80
 </td>
 </tr>
 <tr class="center">
@@ -382,13 +380,13 @@ b
 c
 </th>
 <td>
-24
+29
 </td>
 <td>
- 17.4
+  18
 </td>
 <td>
- 87.5
+ 116
 </td>
 </tr>
 <tr class="center">
@@ -396,13 +394,13 @@ c
 d
 </th>
 <td>
-18
+25
 </td>
 <td>
- 20.3
+ −33
 </td>
 <td>
- 75.3
+  88
 </td>
 </tr>
 <tr class="center">
@@ -410,13 +408,13 @@ d
 e
 </th>
 <td>
-22
+24
 </td>
 <td>
-  8.3
+ −16
 </td>
 <td>
- 72.0
+ 103
 </td>
 </tr>
 </tbody>

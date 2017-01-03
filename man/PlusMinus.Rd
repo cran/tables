@@ -9,7 +9,8 @@ two columns separated by a \code{+/-} sign.  It is
 designed only for LaTeX output.
 }
 \usage{
-PlusMinus(x, y, head, xhead, yhead, digits = 2, ...)
+PlusMinus(x, y, head, xhead, yhead, digits = 2, 
+          character.only = FALSE, ...)
 }
 \arguments{
   \item{x,y}{
@@ -24,6 +25,11 @@ If not missing, these will be used as individual column headings.
 }
   \item{digits, \dots}{
 Parameters to pass to the \code{\link{format}} function.
+}
+  \item{character.only}{
+If \code{TRUE}, the \code{head}, \code{xhead} and \code{yhead} 
+arguments will be interpreted
+as expressions evaluating to character values.
 }
 }
 \value{

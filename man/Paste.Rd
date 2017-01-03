@@ -9,7 +9,8 @@ multiple columns with punctuation between.  It is
 designed only for LaTeX output.
 }
 \usage{
-Paste(..., head, digits=2, justify="c", prefix="", sep="", postfix="")
+Paste(..., head, digits=2, justify="c", prefix="", sep="", postfix="",
+      character.only = FALSE)
 }
 \arguments{
   \item{...}{
@@ -32,6 +33,10 @@ One or more separators to use between columns.
 }
   \item{prefix, postfix}{
 Additional text to insert before and after the group of columns.
+}
+  \item{character.only}{
+If \code{TRUE}, the \code{head} argument will be interpreted
+as an expression evaluating to a character value.
 }
 }
 \value{

@@ -1,13 +1,15 @@
 export(tabular, htmlNumeric, labelSubset, latexNumeric, PlusMinus, 
-       Paste, Hline, Factor, RowFactor, All, Literal,
+       Paste, Hline, Factor, RowFactor, All, Literal, AllObs, RowNum,
        Multicolumn, table_options, booktabs, htmloptions, write.csv.tabular, write.table.tabular,
-       as.tabular, writeCSS)
+       as.tabular, writeCSS,
+       rowLabels, colLabels, "rowLabels<-", "colLabels<-")
 
 # pseudo-function exports; not meant to be called, but meant to make the checks happy
-export(Format, Heading, Justify, Percent, Arguments)
+export(Format, Heading, Justify, Percent, Arguments, DropEmpty)
 
 importFrom(Hmisc, latex, html)
 S3method(print, tabular)
+S3method(print, tabularLabels)
 S3method(format, tabular)
 S3method(latex, tabular)
 S3method(html, tabular)
@@ -15,6 +17,8 @@ S3method(as.matrix, tabular)
 S3method(tabular, default)
 S3method(tabular, formula)
 S3method("[", tabular)
+S3method("[", tabularRowLabels)
+S3method("[", tabularColLabels)
 S3method(cbind, tabular)
 S3method(rbind, tabular)
 S3method(as.tabular, default)

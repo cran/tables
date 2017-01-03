@@ -201,21 +201,21 @@ latex( tabular( (F+1) ~ X*(Format(digits=2)*mean
 
 
 ###################################################
-### code chunk number 26: tables.Rnw:597-599
+### code chunk number 26: tables.Rnw:600-602
 ###################################################
 latex( tabular( (Heading("$\\Phi$")*F+1) ~ (n=1) 
            + Format(digits=2)*Heading()*X*(mean + sd) ) )
 
 
 ###################################################
-### code chunk number 27: tables.Rnw:613-615
+### code chunk number 27: tables.Rnw:616-618
 ###################################################
 latex( tabular( Justify(r)*(F+1) ~ Justify(c)*(n=1) 
    + Justify(c,r)*Format(digits=2)*X*(mean + sd) ) )
 
 
 ###################################################
-### code chunk number 28: tables.Rnw:655-661 (eval = FALSE)
+### code chunk number 28: tables.Rnw:658-664 (eval = FALSE)
 ###################################################
 ## latex( tabular( (Factor(gear, "Gears") + 1)
 ##           *((n=1) + Percent() 
@@ -226,7 +226,7 @@ latex( tabular( Justify(r)*(F+1) ~ Justify(c)*(n=1)
 
 
 ###################################################
-### code chunk number 29: tables.Rnw:662-668
+### code chunk number 29: tables.Rnw:665-671
 ###################################################
 latex( tabular( (Factor(gear, "Gears") + 1)
           *((n=1) + Percent() 
@@ -237,7 +237,7 @@ latex( tabular( (Factor(gear, "Gears") + 1)
 
 
 ###################################################
-### code chunk number 30: tables.Rnw:692-698
+### code chunk number 30: tables.Rnw:695-701
 ###################################################
 # This is the example from the weighted.mean help page
 wt <- c(5,  5,  4,  1)/15
@@ -248,27 +248,74 @@ latex( tabular( (Factor(gp) + 1)
 
 
 ###################################################
-### code chunk number 31: tables.Rnw:702-704 (eval = FALSE)
+### code chunk number 31: tables.Rnw:705-707 (eval = FALSE)
 ###################################################
 ## latex( tabular( (Factor(gp) + 1) 
 ##                 ~ Arguments(x, w = wt)*weighted.mean ) )
 
 
 ###################################################
-### code chunk number 32: tables.Rnw:747-748
+### code chunk number 32: tables.Rnw:732-739
+###################################################
+set.seed(730)
+df <- data.frame(Label = LETTERS[1:9], 
+		 Group = rep(letters[1:3], each=3), 
+		 Value = rnorm(9), 
+		 stringsAsFactors = TRUE)
+latex( tabular( Label ~ Group*Value*mean, 
+		data = df[1:6,]))
+
+
+###################################################
+### code chunk number 33: tables.Rnw:744-747
+###################################################
+latex( tabular( Label ~ Group*Value*mean*
+			DropEmpty(empty="."), 
+		data = df[1:6,]))
+
+
+###################################################
+### code chunk number 34: tables.Rnw:790-791
 ###################################################
 latex( tabular( Species ~ Heading()*mean*All(iris), data=iris) )
 
 
 ###################################################
-### code chunk number 33: tables.Rnw:773-775
+### code chunk number 35: tables.Rnw:804-807
+###################################################
+df <- mtcars[1:10,]
+latex( tabular(Factor(cyl)*Factor(gear)*AllObs(df) ~ 
+               rownames(df) + mpg, data=df) )
+
+
+###################################################
+### code chunk number 36: tables.Rnw:822-826
+###################################################
+rownum <- with(mtcars, RowNum(list(cyl, gear)))
+latex( tabular(Factor(cyl)*Factor(gear)*I(rownum) ~
+        mpg * AllObs(mtcars, within = list(cyl, gear, rownum)), 
+        data=mtcars) )
+
+
+###################################################
+### code chunk number 37: tables.Rnw:835-840
+###################################################
+rownum <- with(mtcars, RowNum(list(cyl, gear), perrow = 2))
+latex( tabular(Factor(cyl)*Factor(gear)*
+	       AllObs(mtcars, within = list(cyl, gear, rownum)) ~
+               mpg * I(rownum), 
+        data=mtcars) )
+
+
+###################################################
+### code chunk number 38: tables.Rnw:865-867
 ###################################################
 latex( tabular( Species + Hline(2:5) + 1 
                          ~ Heading()*mean*All(iris), data=iris) )
 
 
 ###################################################
-### code chunk number 34: tables.Rnw:814-817
+### code chunk number 39: tables.Rnw:906-909
 ###################################################
 stderr <- function(x) sd(x)/sqrt(length(x))
 latex( tabular( (Species+1) ~ All(iris)*
@@ -276,7 +323,7 @@ latex( tabular( (Species+1) ~ All(iris)*
 
 
 ###################################################
-### code chunk number 35: tables.Rnw:849-856
+### code chunk number 40: tables.Rnw:941-948
 ###################################################
 lcl <- function(x) mean(x) - qt(0.975, df=length(x)-1)*stderr(x)
 ucl <- function(x) mean(x) + qt(0.975, df=length(x)-1)*stderr(x)
@@ -288,7 +335,7 @@ latex( tabular( (Species+1) ~ All(iris)*
 
 
 ###################################################
-### code chunk number 36: tables.Rnw:900-903
+### code chunk number 41: tables.Rnw:992-995
 ###################################################
 subset <- 1:15
 latex( tabular( RowFactor(subset, "$i$", spacing=5)  ~ 
@@ -296,8 +343,9 @@ latex( tabular( RowFactor(subset, "$i$", spacing=5)  ~
 
 
 ###################################################
-### code chunk number 37: tables.Rnw:910-918
+### code chunk number 42: tables.Rnw:1002-1011
 ###################################################
+set.seed(1000)
 dat <- expand.grid(Block=1:3, Treatment=LETTERS[1:2], 
                                 Subset=letters[1:2])
 dat$Response <- rnorm(12)
@@ -309,7 +357,7 @@ latex( tabular( RowFactor(Block, spacing=1)
 
 
 ###################################################
-### code chunk number 38: tables.Rnw:940-948
+### code chunk number 43: tables.Rnw:1033-1041
 ###################################################
 subset <- 1:50
 latex( tabular( RowFactor(subset, "$i$", spacing=5, 
@@ -322,7 +370,7 @@ midrule="\\midrule\\\\[-2\\normalbaselineskip]\\endhead\\hline\\endfoot") )
 
 
 ###################################################
-### code chunk number 39: tables.Rnw:957-961
+### code chunk number 44: tables.Rnw:1050-1054
 ###################################################
 subset <- 1:10
 latex( tabular( Factor(subset)  ~ 
@@ -331,7 +379,7 @@ latex( tabular( Factor(subset)  ~
 
 
 ###################################################
-### code chunk number 40: tables.Rnw:976-979 (eval = FALSE)
+### code chunk number 45: tables.Rnw:1069-1072 (eval = FALSE)
 ###################################################
 ## code <- capture.output( latex( tab ) )
 ## code <- sub("^(.*)(\\\\nopagebreak )", "\\2\\1", code)
@@ -339,7 +387,7 @@ latex( tabular( Factor(subset)  ~
 
 
 ###################################################
-### code chunk number 41: tables.Rnw:985-988
+### code chunk number 46: tables.Rnw:1078-1081
 ###################################################
 latex( tabular( Multicolumn(Species, width=3, 
             levelnames=paste("\\textit{Iris", levels(Species),"}")) 
@@ -347,25 +395,25 @@ latex( tabular( Multicolumn(Species, width=3,
 
 
 ###################################################
-### code chunk number 42: tables.Rnw:1035-1036
+### code chunk number 47: tables.Rnw:1128-1129
 ###################################################
 df <- data.frame(A = factor(c( "$", "\\" ) ), B_label=1:2)
 
 
 ###################################################
-### code chunk number 43: tables.Rnw:1039-1040 (eval = FALSE)
+### code chunk number 48: tables.Rnw:1132-1133 (eval = FALSE)
 ###################################################
 ## latex( tabular( mean ~ A*B_label, data=df ) ) 
 
 
 ###################################################
-### code chunk number 44: tables.Rnw:1044-1045
+### code chunk number 49: tables.Rnw:1137-1138
 ###################################################
 latex( tabular( mean ~ Factor(A)*All(df), data=df ) ) 
 
 
 ###################################################
-### code chunk number 45: tables.Rnw:1063-1066
+### code chunk number 50: tables.Rnw:1156-1159
 ###################################################
 dat <- data.frame( a = c(1, 2, 3, NA), b = 1:4 )
 mean(dat$a)
@@ -373,20 +421,20 @@ mean(dat$a, na.rm=TRUE)
 
 
 ###################################################
-### code chunk number 46: tables.Rnw:1074-1076
+### code chunk number 51: tables.Rnw:1167-1169
 ###################################################
 Mean <- function(x) base::mean(x, na.rm=TRUE)
 latex( tabular( Mean ~ a + b, data=dat ) )
 
 
 ###################################################
-### code chunk number 47: tables.Rnw:1082-1083
+### code chunk number 52: tables.Rnw:1175-1176
 ###################################################
 latex( tabular( mean ~ a + b, data = na.omit(dat) ) )
 
 
 ###################################################
-### code chunk number 48: tables.Rnw:1089-1092
+### code chunk number 53: tables.Rnw:1182-1185
 ###################################################
 latex( tabular( 
   Mean ~ (1 + Heading(Complete)*complete.cases(dat)) * (a + b), 
@@ -394,7 +442,7 @@ latex( tabular(
 
 
 ###################################################
-### code chunk number 49: tables.Rnw:1102-1106
+### code chunk number 54: tables.Rnw:1195-1199
 ###################################################
 A <- factor(dat$a)
 latex( tabular( A + 1 ~ (n=1)) )
@@ -403,8 +451,9 @@ latex( tabular( A + 1 ~ (n=1) ) )
 
 
 ###################################################
-### code chunk number 50: tables.Rnw:1116-1124
+### code chunk number 55: tables.Rnw:1209-1218
 ###################################################
+set.seed(1206)
 q <- data.frame(p = rep(c("A","B"),each=10,len=30),
                            a = rep(c(1,2,3),each=10),id=seq(30),
                            b = round(runif(30,10,20)),
@@ -416,13 +465,13 @@ latex(tab)
 
 
 ###################################################
-### code chunk number 51: tables.Rnw:1130-1131
+### code chunk number 56: tables.Rnw:1224-1225
 ###################################################
 latex(tab[ tab[,1] > 0, ])
 
 
 ###################################################
-### code chunk number 52: tables.Rnw:1138-1145
+### code chunk number 57: tables.Rnw:1232-1239
 ###################################################
 formula <- Factor(p)*Factor(a) ~ 
 	   (N = 1) + (b + c)*(mean+sd)
@@ -430,6 +479,21 @@ tab <- NULL
 for (sub in c("A", "B")) 
     tab <- rbind(tab, tabular( formula, 
                                data = subset(q, p == sub) ) )
-latex(rbind(tab))
+latex(tab)
+
+
+###################################################
+### code chunk number 58: tables.Rnw:1245-1249
+###################################################
+colLabels(tab)
+labs <- colLabels(tab)
+labs[1, 2] <- "New label"
+colLabels(tab) <- labs
+
+
+###################################################
+### code chunk number 59: tables.Rnw:1252-1253
+###################################################
+latex(tab)
 
 

@@ -103,3 +103,9 @@
       Added an HTML vignette.
       Fixed bug:  functions prefixed by "pkg::" in formulas led to warning
       messages. (Reported by Lars Bishop.)
+      
+0.8:
+      Allow editing of the row and column labels.
+      Added DropEmpty() pseudo-function.
+      Added AllObs() and RowNum() formula functions.
+      Added character.only argument to Heading() and Paste().
