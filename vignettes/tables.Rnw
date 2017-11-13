@@ -595,11 +595,27 @@ then the heading will override a previously specified heading.  If
 in automatically generated code, and is used in the automatically
 generated labels for factors.
 
+Another optional argument is \code{nearData}.  This is used only when
+two terms in a table are concatenated using \code{+}, and they don't have the same number of rows or columns.  Under the default \code{TRUE} value, the
+smaller one is moved closer to the data in the table
+(i.e. to the right for row labels, down for column
+labels); if \code{FALSE}, it is moved in the opposite direction.
+
+
 Example:  Replace \code{F} with a Greek $\Phi$, and suppress the label for \code{X}.
 \begin{center}
 <<results=tex>>=
 latex( tabular( (Heading("$\\Phi$")*F+1) ~ (n=1) 
            + Format(digits=2)*Heading()*X*(mean + sd) ) )
+@
+\end{center}
+
+Example:  Use \code{nearData = FALSE} to push a 
+label away from the data:
+\begin{center}
+<<results=tex>>=
+latex( tabular( X*F + Heading("near")*X 
+		+ Heading("far", nearData = FALSE)*X ~ mean + sd ) )
 @
 \end{center}
 

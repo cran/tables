@@ -60,6 +60,11 @@ term2table <- function(rowterm, colterm, env, n) {
         } else if (fn == "DropEmpty") {
             env1 <- new.env(parent = env)
             env1$DropEmpty <- function(empty = "", which = c("row", "col", "cell")) {
+              good <- which %in% c("row", "col", "cell")
+              if (!all(good))
+              	stop(gettextf("bad 'which' value(s):  %s in %s", 
+                              paste0("'", which[!good], "'", collapse = ","), deparse(e)), 
+                     call. = FALSE)
               dropcell <<- "cell" %in% which
               droprow <<- "row" %in% which
               dropcol <<- "col" %in% which
@@ -156,8 +161,10 @@ term2table <- function(rowterm, colterm, env, n) {
 	}
 	value <- eval(arguments, env)
     }
-    if (length(value) != 1)
+    if (length(value) != 1) {
 	warning(gettextf("Summary statistic is length %d", length(value)), call. = FALSE)
+    	value <- value[1]
+    }
     structure(list(value), n=n, format=format, 
               justification=justification,
     	      dropcell = ifelse(dropcell && !any(subset), empty, NA_character_),
@@ -211,6 +218,7 @@ getLabels <- function(e, rows=TRUE, justify=NA, head=NULL, suppress=0,
            leftjustification <- leftcolnamejust <- 
            nrr <- ncr <- rightjustify <- rightheading <- rightsuppress <-
            rightjustification <- rightcolnamejust <- NULL
+    nearData <- leftnearData <- rightnearData <- TRUE
     getLeft <- function() {
 	nrl <<- nrow(leftLabels)
 	ncl <<- ncol(leftLabels)
@@ -219,6 +227,7 @@ getLabels <- function(e, rows=TRUE, justify=NA, head=NULL, suppress=0,
 	leftsuppress <<- attr(leftLabels, "suppress")
 	leftjustification <<- attr(leftLabels, "justification")
 	leftcolnamejust <<- attr(leftLabels, "colnamejust")
+	leftnearData <<- attr(leftLabels, "nearData")
     }
     getRight <- function() {
 	nrr <<- nrow(rightLabels)
@@ -226,8 +235,9 @@ getLabels <- function(e, rows=TRUE, justify=NA, head=NULL, suppress=0,
 	rightjustify <<- attr(rightLabels, "justify")
         rightheading <<- attr(rightLabels, "Heading")
 	rightsuppress <<- attr(rightLabels, "suppress")
-	rightjustification <- attr(rightLabels, "justification")
-	rightcolnamejust <- attr(rightLabels, "colnamejust")
+	rightjustification <<- attr(rightLabels, "justification")
+	rightcolnamejust <<- attr(rightLabels, "colnamejust")
+	rightnearData <<- attr(rightLabels, "nearData")
     }
     if (is.call(e) && (op <- deparse(e[[1]])) == "*")  {
         leftLabels <- getLabels(e[[2]], rows, justify, head, suppress, env)
@@ -237,6 +247,7 @@ getLabels <- function(e, rows=TRUE, justify=NA, head=NULL, suppress=0,
 	# each label
 	righthead <- Heading <- leftheading
 	suppress <- leftsuppress
+	nearData <- leftnearData
 	if (!is.null(leftjustify))
 	    justify <- leftjustify
 
@@ -288,6 +299,7 @@ getLabels <- function(e, rows=TRUE, justify=NA, head=NULL, suppress=0,
 	getRight()
 	Heading <- rightheading
 	suppress <- rightsuppress
+	neardata <- leftnearData & rightnearData # neardata=FALSE is needed for Hline
 
 	if (rows) {
 	    # Here we have a problem:  we need to stack two things, each of which
@@ -314,32 +326,44 @@ getLabels <- function(e, rows=TRUE, justify=NA, head=NULL, suppress=0,
 	    }    
 	    cols <- max(ncl, ncr)
 	    # Pad all to same width
+	    padblank <- rep("", abs(ncr - ncl))
+	    padNA    <- rep(NA_character_, abs(ncr - ncl))
 	    if (ncl < ncr) {
-	        pad <- rep("", ncr-ncl)
-	    	leftnames <- c(pad, leftnames)
-	    	if (length(leftcolnamejust)) {
-	    	  pad[TRUE] <- NA_character_
-	    	  leftcolnamejust <- c(pad, leftcolnamejust)
-	    	}
-	    	pad <- matrix("", nrl, ncr-ncl)
-	    	leftLabels <- cbind(pad, leftLabels)
-	    	if (!is.null(leftjustification)) {
-	    	  pad[TRUE] <- NA_character_
-	    	  leftjustification <- cbind(pad, leftjustification)
+	    	padblankmat <- matrix("", nrl, abs(ncr - ncl))
+	    	padNAmat <- matrix(NA_character_, NROW(leftjustification), abs(ncr - ncl)) 
+	    	if (leftnearData) {
+	    	    leftnames <- c(padblank, leftnames)
+	    	    if (length(leftcolnamejust)) 
+	    	        leftcolnamejust <- c(padNA, leftcolnamejust)
+	    	    leftLabels <- cbind(padblankmat, leftLabels)
+	    	    if (!is.null(leftjustification)) 
+	    	        leftjustification <- cbind(padNA, leftjustification)
+	    	} else {
+	    	    leftnames <- c(leftnames, padblank)
+	    	    if (length(leftcolnamejust)) 
+	    		leftcolnamejust <- c(leftcolnamejust, padNA)
+	    	    leftLabels <- cbind(leftLabels, padblankmat)
+	    	    if (!is.null(leftjustification)) 
+	    		leftjustification <- cbind(leftjustification, padNAmat)
 	    	}
 	    	ncl <- ncr
 	    } else if (ncl > ncr) {
-	        pad <- rep("", ncl-ncr)
-	    	rightnames <- c(pad, rightnames)
-	    	if (length(rightcolnamejust)) {
-	    	  pad[TRUE] <- NA_character_
-	    	  rightcolnamejust <- c(pad, rightcolnamejust)
-	    	}
-	    	pad <- matrix("", nrr, ncl-ncr)
-	    	rightLabels <- cbind(pad, rightLabels)
-	    	if (!is.null(rightjustification)) {
-	    	  pad[TRUE] <- NA_character_
-	    	  rightjustification <- cbind(pad, rightjustification)
+	    	padblankmat <- matrix("", nrr, abs(ncr - ncl))
+	    	padNAmat <- matrix(NA_character_, NROW(rightjustification), abs(ncr - ncl)) 
+	    	if (rightnearData) {
+	    	    rightnames <- c(padblank, rightnames)
+	    	    if (length(rightcolnamejust)) 
+	    		rightcolnamejust <- c(padNA, rightcolnamejust)
+	    	    rightLabels <- cbind(padblankmat, rightLabels)
+	    	    if (!is.null(rightjustification)) 
+	    		rightjustification <- cbind(padNAmat, rightjustification)
+	    	} else {
+	    	    rightnames <- c(rightnames, padblank)
+	    	    if (length(rightcolnamejust))
+	    	  	rightcolnamejust <- c(rightcolnamejust, padNA)
+	    	    rightLabels <- cbind(rightLabels, padblankmat)
+	    	    if (!is.null(rightjustification)) 
+	    	    	rightjustification <- cbind(rightjustification, padNAmat)
 	    	}
 	    	ncr <- ncl
 	    }
@@ -369,12 +393,16 @@ getLabels <- function(e, rows=TRUE, justify=NA, head=NULL, suppress=0,
 	    nrows <- max(nrl, nrr)
 	    result <- matrix("", nrows, ncl + ncr)
 	    justification <- matrix(NA_character_, nrows, ncl + ncr)
-	    j <- (nrows-nrl) + seq_len(nrl)
+	    j <- seq_len(nrl)
+	    if (leftnearData)
+	    	j <- j + (nrows - nrl)
 	    k <- seq_len(ncl)
 	    result[j, k] <- leftLabels
 	    if (!is.null(leftjustification))
 		justification[j, k] <- leftjustification
-	    j <- (nrows-nrr) + seq_len(nrr)
+	    j <- seq_len(nrr)
+	    if (rightnearData)
+	    	j <- j + (nrows - nrr)
 	    k <- ncl+seq_len(ncr)
 	    result[j,k] <- rightLabels
 	    if (!is.null(rightjustification))
@@ -393,7 +421,8 @@ getLabels <- function(e, rows=TRUE, justify=NA, head=NULL, suppress=0,
     		  else      matrix(NA, ncol=1, nrow=0)
     } else if (op == "Heading") {
     	env1 <- new.env(parent = env)
-    	env1$Heading <- function(name = NULL, override = TRUE, character.only = FALSE) {
+    	env1$Heading <- function(name = NULL, override = TRUE, character.only = FALSE,
+    				 nearData = TRUE) {
     	    if (missing(name))
     	    	suppress <<- suppress + 1
     	    else {
@@ -407,6 +436,7 @@ getLabels <- function(e, rows=TRUE, justify=NA, head=NULL, suppress=0,
     	            suppress <<- 0
     	        } else
     	            suppress <<- suppress - 1
+    	        nearData <<- nearData
     	    }
     	}
     	eval(e, env1)
@@ -431,7 +461,8 @@ getLabels <- function(e, rows=TRUE, justify=NA, head=NULL, suppress=0,
     stopifnot(identical(dim(result), dim(justification)))
     structure(result, justification = justification, 
     	colnamejust = colnamejust, justify = justify,
-   	Heading = Heading, suppress = suppress)
+   	Heading = Heading, suppress = suppress,
+   	nearData = nearData)
 }
 
 expandExpressions <- function(e, env) {

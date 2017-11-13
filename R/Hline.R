@@ -1,9 +1,9 @@
-Literal <- function(x) {
-    substitute(Heading(literal)*1*Format((function(x)"")()),
-               list(literal=x))
+Literal <- function(x, nearData = TRUE) {
+    substitute(Heading(literal, nearData = ndval)*1*Format((function(x)"")()),
+               list(literal=x, ndval = nearData))
 }
 
-Hline <- function(columns) {
+Hline <- function(columns, nearData = FALSE) {
     opts <- table_options()
     if (missing(columns))
     	latex <- opts$midrule
@@ -29,5 +29,5 @@ Hline <- function(columns) {
         }
     }    	    
     latex <- paste(latex, "%")
-    Literal(latex)
+    Literal(latex, nearData = nearData)
 }

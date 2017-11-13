@@ -4,7 +4,7 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
@@ -81,8 +81,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tables)</code></pre></div>
 <p>The table is now constructed in the usual way.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">X &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">125</span>, <span class="dt">sd=</span><span class="dv">100</span>)
-Group &lt;-<span class="st"> </span><span class="kw">factor</span>(<span class="kw">sample</span>(letters[<span class="dv">1</span>:<span class="dv">5</span>], <span class="dv">125</span>, <span class="dt">rep=</span><span class="ot">TRUE</span>))
-tab &lt;-<span class="st"> </span><span class="kw">tabular</span>( Group ~<span class="st"> </span>(<span class="dt">N=</span><span class="dv">1</span>)+<span class="kw">Format</span>(<span class="dt">digits=</span><span class="dv">2</span>)*X*((<span class="dt">Mean=</span>mean) +<span class="st"> </span><span class="kw">Heading</span>(<span class="st">&quot;Std Dev&quot;</span>)*sd) )</code></pre></div>
+Group &lt;-<span class="st"> </span><span class="kw">factor</span>(<span class="kw">sample</span>(letters[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>], <span class="dv">125</span>, <span class="dt">rep=</span><span class="ot">TRUE</span>))
+tab &lt;-<span class="st"> </span><span class="kw">tabular</span>( Group <span class="op">~</span><span class="st"> </span>(<span class="dt">N=</span><span class="dv">1</span>)<span class="op">+</span><span class="kw">Format</span>(<span class="dt">digits=</span><span class="dv">2</span>)<span class="op">*</span>X<span class="op">*</span>((<span class="dt">Mean=</span>mean) <span class="op">+</span><span class="st"> </span><span class="kw">Heading</span>(<span class="st">&quot;Std Dev&quot;</span>)<span class="op">*</span>sd) )</code></pre></div>
 <p>In an R Markdown document, you don’t want each table to output the HTML document header, so turn off those options:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">table_options</span>(<span class="kw">htmloptions</span>(<span class="dt">head=</span><span class="ot">FALSE</span>))</code></pre></div>
 </div>
@@ -144,13 +144,13 @@ Std Dev
 a
 </th>
 <td>
-25
+22
 </td>
 <td>
--38
+10.6
 </td>
 <td>
-110
+98.1
 </td>
 </tr>
 <tr class="center">
@@ -158,13 +158,13 @@ a
 b
 </th>
 <td>
-22
+27
 </td>
 <td>
--22
+-9.3
 </td>
 <td>
-80
+82.1
 </td>
 </tr>
 <tr class="center">
@@ -172,13 +172,13 @@ b
 c
 </th>
 <td>
-29
+22
 </td>
 <td>
-18
+4.3
 </td>
 <td>
-116
+88.2
 </td>
 </tr>
 <tr class="center">
@@ -186,13 +186,13 @@ c
 d
 </th>
 <td>
-25
+20
 </td>
 <td>
--33
+20.6
 </td>
 <td>
-88
+117.4
 </td>
 </tr>
 <tr class="center">
@@ -200,13 +200,13 @@ d
 e
 </th>
 <td>
-24
+34
 </td>
 <td>
--16
+-8.6
 </td>
 <td>
-103
+102.1
 </td>
 </tr>
 </tbody>
@@ -248,13 +248,13 @@ Std Dev
 a
 </th>
 <td>
-25
+22
 </td>
 <td>
--38
+10.6
 </td>
 <td>
-110
+98.1
 </td>
 </tr>
 <tr class="right">
@@ -262,13 +262,13 @@ a
 b
 </th>
 <td>
-22
+27
 </td>
 <td>
--22
+-9.3
 </td>
 <td>
-80
+82.1
 </td>
 </tr>
 <tr class="right">
@@ -276,13 +276,13 @@ b
 c
 </th>
 <td>
-29
+22
 </td>
 <td>
-18
+4.3
 </td>
 <td>
-116
+88.2
 </td>
 </tr>
 <tr class="right">
@@ -290,13 +290,13 @@ c
 d
 </th>
 <td>
-25
+20
 </td>
 <td>
--33
+20.6
 </td>
 <td>
-88
+117.4
 </td>
 </tr>
 <tr class="right">
@@ -304,13 +304,13 @@ d
 e
 </th>
 <td>
-24
+34
 </td>
 <td>
--16
+-8.6
 </td>
 <td>
-103
+102.1
 </td>
 </tr>
 </tbody>
@@ -352,13 +352,13 @@ Std Dev
 a
 </th>
 <td>
-25
+22
 </td>
 <td>
- −38
+  10.6
 </td>
 <td>
- 110
+  98.1
 </td>
 </tr>
 <tr class="center">
@@ -366,13 +366,13 @@ a
 b
 </th>
 <td>
-22
+27
 </td>
 <td>
- −22
+  −9.3
 </td>
 <td>
-  80
+  82.1
 </td>
 </tr>
 <tr class="center">
@@ -380,13 +380,13 @@ b
 c
 </th>
 <td>
-29
+22
 </td>
 <td>
-  18
+   4.3
 </td>
 <td>
- 116
+  88.2
 </td>
 </tr>
 <tr class="center">
@@ -394,13 +394,13 @@ c
 d
 </th>
 <td>
-25
+20
 </td>
 <td>
- −33
+  20.6
 </td>
 <td>
-  88
+ 117.4
 </td>
 </tr>
 <tr class="center">
@@ -408,13 +408,13 @@ d
 e
 </th>
 <td>
-24
+34
 </td>
 <td>
- −16
+  −8.6
 </td>
 <td>
- 103
+ 102.1
 </td>
 </tr>
 </tbody>
@@ -455,7 +455,7 @@ e
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

@@ -8,12 +8,15 @@ This function inserts a LaTeX directive to draw a full or partial
 line in a table.  
 }
 \usage{
-Hline(columns)
+Hline(columns, nearData = FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{columns}{
 Which columns should receive the line?
+}
+  \item{nearData}{
+See the Details section of \code{\link{Heading}}.
 }
 }
 \details{

@@ -4,7 +4,7 @@
 \code{Heading} pseudo-function
 }
 \usage{
-Heading(name = NULL, override = TRUE, character.only = FALSE)
+Heading(name = NULL, override = TRUE, character.only = FALSE, nearData = TRUE)
 }
 \arguments{
   \item{name}{
@@ -16,6 +16,9 @@ Whether this heading should override one that is already present.
   \item{character.only}{
 If \code{TRUE}, the \code{name} argument will be interpreted
 as an expression evaluating to a character value.
+}
+  \item{nearData}{
+See Details below.
 }
 }
 
@@ -35,6 +38,15 @@ An alternative form of \code{Heading(name)} is \code{(name=...)}, where
 
 If \code{override = FALSE}, the label is only supplied if there is no other label.
 This is used in the code for \code{\link{Factor}}.
+
+The \code{nearData} argument is rarely used.  It
+affects the situation where \code{"+"} is used to
+join tables with different numbers of labels.  
+If \code{nearData = TRUE} (the default), the shorter
+list of labels are pushed close to the data, i.e.
+to the right side for row labels, the bottom for
+column labels.  If \code{FALSE}, they are pushed
+to the opposite side.
 }
 \section{Pseudo-functions}{
 This is a \dQuote{pseudo-function}:  it takes the form of a function call, but is

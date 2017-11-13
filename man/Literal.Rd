@@ -7,11 +7,14 @@ Insert a literal entry into a table margin.
 This allows insertion of arbitrary LaTeX text into a table.
 }
 \usage{
-Literal(x)
+Literal(x, nearData = TRUE)
 }
 \arguments{
   \item{x}{
 A character string to insert.
+}
+  \item{nearData}{
+See the Details section of \code{\link{Heading}}.
 }
 }
 \details{

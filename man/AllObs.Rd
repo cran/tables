@@ -43,7 +43,7 @@ factor levels are restarted within each grouping.  (\code{within}
 is interpreted as the \code{INDEX} argument of \code{\link{tapply}},
 with one exception described below.)  This may be useful when
 displaying the observation number, and is definitely useful
-of \code{AllObs} is used as a column specification in the table.
+if \code{AllObs} is used as a column specification in the table.
 It will also save some computation time if the table is very
 large, since fewer factor levels will be generated and 
 later dropped.

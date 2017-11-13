@@ -380,6 +380,19 @@ All  & $10$ & $-0.018$ & $\phantom{-}0.561$ \\
 \bottomrule 
 \end{tabular}
 
+> latex(tabular(X * F + Heading("near") * X + Heading("far", 
++     nearData = FALSE) * X ~ mean + sd))
+\begin{tabular}{llcc}
+\toprule
+ & F & mean & \multicolumn{1}{c}{sd} \\ 
+\midrule
+X & a  & $\phantom{-}0.02525$ & $0.3484$ \\
+ & b  & $-0.03647$ & $0.6561$ \\
+ & near  & $-0.01796$ & $0.5611$ \\
+far &   & $-0.01796$ & $0.5611$ \\
+\bottomrule 
+\end{tabular}
+
 > latex(tabular(Justify(r) * (F + 1) ~ Justify(c) * 
 +     (n = 1) + Justify(c, r) * Format(digits = 2) * X * (mean + 
 +     sd)))
@@ -388,9 +401,9 @@ All  & $10$ & $-0.018$ & $\phantom{-}0.561$ \\
  &  & \multicolumn{2}{c}{X} \\ \cmidrule(lr){3-4}
 F  & n & mean & \multicolumn{1}{c}{sd} \\ 
 \midrule
-a  & $\phantom{0}3$ & \multicolumn{1}{r}{$\phantom{-}0.025$} & \multicolumn{1}{r}{$\phantom{-}0.348$} \\
-b  & $\phantom{0}7$ & \multicolumn{1}{r}{$-0.036$} & \multicolumn{1}{r}{$\phantom{-}0.656$} \\
-All  & $10$ & \multicolumn{1}{r}{$-0.018$} & \multicolumn{1}{r}{$\phantom{-}0.561$} \\
+\multicolumn{1}{r}{a}  & $\phantom{0}3$ & \multicolumn{1}{r}{$\phantom{-}0.025$} & \multicolumn{1}{r}{$\phantom{-}0.348$} \\
+\multicolumn{1}{r}{b}  & $\phantom{0}7$ & \multicolumn{1}{r}{$-0.036$} & \multicolumn{1}{r}{$\phantom{-}0.656$} \\
+\multicolumn{1}{r}{All}  & $10$ & \multicolumn{1}{r}{$-0.018$} & \multicolumn{1}{r}{$\phantom{-}0.561$} \\
 \bottomrule 
 \end{tabular}
 
@@ -912,7 +925,7 @@ B & 2  & $10$ & $14.4$ & $2.836$ & $56.3$ & $7.889$ \\
      [,1] [,2] [,3] [,4] [,5]
 [1,]      b    <NA> c    <NA>
 [2,] N    mean sd   mean sd  
-Attributes:  dim, justification, colnamejust, justify, suppress, class 
+Attributes:  dim, justification, colnamejust, justify, suppress, nearData, class 
 
 > labs <- colLabels(tab)
 
@@ -935,4 +948,4 @@ B & 2  & $10$ & $14.4$ & $2.836$ & $56.3$ & $7.889$ \\
  *** Run successfully completed ***
 > proc.time()
    user  system elapsed 
-  3.541   0.139   3.761 
+  2.821   0.076   2.895 

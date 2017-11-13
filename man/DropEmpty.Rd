@@ -45,5 +45,5 @@ tabular(row ~ value*mean, data = subset)
 tabular(row*DropEmpty() ~ value*mean, data = subset)
 
 # This shows empty cells as "(empty)"
-tabular(row*DropEmpty("cell", "(empty)") ~ value*mean, data = subset)
+tabular(row*DropEmpty("(empty)", "cell") ~ value*mean, data = subset)
 }
