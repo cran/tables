@@ -35,6 +35,9 @@ Default justification for row labels.
   \item{\code{doBegin, doHeader, doBody, doFooter, doEnd}}{
 These logical values (all defaults are \code{TRUE}) control the inclusion of specific parts of
 the output table.}
+  \item{\code{knit_print = TRUE}}{
+Do auto formatting when printing in a \pkg{knitr} document.
+  }
 }
 These options are only used for LaTeX output:
 \describe{

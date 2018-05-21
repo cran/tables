@@ -16,6 +16,7 @@
 
 <title>HTML Tables</title>
 
+<script src="data:application/x-javascript;base64,JChkb2N1bWVudCkucmVhZHkoZnVuY3Rpb24oKXsKICAgICQoJ1tkYXRhLXRvZ2dsZT0idG9vbHRpcCJdJykudG9vbHRpcCgpOwogICAgJCgnW2RhdGEtdG9nZ2xlPSJwb3BvdmVyIl0nKS5wb3BvdmVyKCk7Cn0pOwo="></script>
 
 
 <style type="text/css">code{white-space: pre;}</style>
@@ -88,7 +89,223 @@ tab &lt;-<span class="st"> </span><span class="kw">tabular</span>( Group <span c
 </div>
 <div id="inserting-a-table" class="section level2">
 <h2>Inserting a Table</h2>
-<p>To format a table in HTML, use the <code>results = 'asis'</code> knitr option. Before the first table in a document, also add a call to <code>writeCSS()</code> with <code>results = 'asis'</code>:</p>
+<p>There are two ways to insert a table into a knitr/rmarkdown document. Since tables version 0.8.4, you can just print the object, and it will be automatically formatted according to the current <code>table_options()</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab</code></pre></div>
+<table class="Rtable">
+<thead>
+<tr class="center">
+<th>
+ 
+</th>
+<th>
+ 
+</th>
+<th colspan="2">
+X
+</th>
+</tr>
+<tr class="center">
+<th>
+Group
+</th>
+<th>
+N
+</th>
+<th>
+Mean
+</th>
+<th>
+Std Dev
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="center">
+<th class="left">
+a
+</th>
+<td>
+21
+</td>
+<td>
+-31.6
+</td>
+<td>
+101.1
+</td>
+</tr>
+<tr class="center">
+<th class="left">
+b
+</th>
+<td>
+25
+</td>
+<td>
+-20.3
+</td>
+<td>
+98.0
+</td>
+</tr>
+<tr class="center">
+<th class="left">
+c
+</th>
+<td>
+31
+</td>
+<td>
+23.4
+</td>
+<td>
+102.3
+</td>
+</tr>
+<tr class="center">
+<th class="left">
+d
+</th>
+<td>
+20
+</td>
+<td>
+-12.5
+</td>
+<td>
+83.9
+</td>
+</tr>
+<tr class="center">
+<th class="left">
+e
+</th>
+<td>
+28
+</td>
+<td>
+2.3
+</td>
+<td>
+122.3
+</td>
+</tr>
+</tbody>
+</table>
+<p>The previous behaviour required an explicit call to the <code>html()</code> function, and knitr option <code>results = 'asis'</code> for the chunk. To <em>require</em> the older method, use <code>table_options(knit_print = FALSE)</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">table_options</span>(<span class="dt">knit_print =</span> <span class="ot">FALSE</span>)
+tab        <span class="co"># This chunk uses the default results = 'markup'</span></code></pre></div>
+<pre><code>##                        
+##           X            
+##  Group N  Mean  Std Dev
+##  a     21 -31.6 101.1  
+##  b     25 -20.3  98.0  
+##  c     31  23.4 102.3  
+##  d     20 -12.5  83.9  
+##  e     28   2.3 122.3</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">html</span>(tab)  <span class="co"># This chunk uses results = 'asis'</span></code></pre></div>
+<table class="Rtable">
+<thead>
+<tr class="center">
+<th>
+ 
+</th>
+<th>
+ 
+</th>
+<th colspan="2">
+X
+</th>
+</tr>
+<tr class="center">
+<th>
+Group
+</th>
+<th>
+N
+</th>
+<th>
+Mean
+</th>
+<th>
+Std Dev
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="center">
+<th class="left">
+a
+</th>
+<td>
+21
+</td>
+<td>
+-31.6
+</td>
+<td>
+101.1
+</td>
+</tr>
+<tr class="center">
+<th class="left">
+b
+</th>
+<td>
+25
+</td>
+<td>
+-20.3
+</td>
+<td>
+98.0
+</td>
+</tr>
+<tr class="center">
+<th class="left">
+c
+</th>
+<td>
+31
+</td>
+<td>
+23.4
+</td>
+<td>
+102.3
+</td>
+</tr>
+<tr class="center">
+<th class="left">
+d
+</th>
+<td>
+20
+</td>
+<td>
+-12.5
+</td>
+<td>
+83.9
+</td>
+</tr>
+<tr class="center">
+<th class="left">
+e
+</th>
+<td>
+28
+</td>
+<td>
+2.3
+</td>
+<td>
+122.3
+</td>
+</tr>
+</tbody>
+</table>
+<p>In either case, some styling information needs to be included in the document. Ideally this should be in the header, but it can be inserted anywhere by calling <code>writeCSS</code> with <code>results = 'asis'</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">writeCSS</span>()</code></pre></div>
 <style>
 .Rtable thead, .Rtable .even {
@@ -109,111 +326,12 @@ tab &lt;-<span class="st"> </span><span class="kw">tabular</span>( Group <span c
   border-width: 0;
 }
 </style>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">html</span>(tab)</code></pre></div>
-<table class="Rtable">
-<thead>
-<tr class="center">
-<th>
- 
-</th>
-<th>
- 
-</th>
-<th colspan="2">
-X
-</th>
-</tr>
-<tr class="center">
-<th>
-Group
-</th>
-<th>
-N
-</th>
-<th>
-Mean
-</th>
-<th>
-Std Dev
-</th>
-</tr>
-</thead>
-<tbody>
-<tr class="center">
-<th class="left">
-a
-</th>
-<td>
-22
-</td>
-<td>
-10.6
-</td>
-<td>
-98.1
-</td>
-</tr>
-<tr class="center">
-<th class="left">
-b
-</th>
-<td>
-27
-</td>
-<td>
--9.3
-</td>
-<td>
-82.1
-</td>
-</tr>
-<tr class="center">
-<th class="left">
-c
-</th>
-<td>
-22
-</td>
-<td>
-4.3
-</td>
-<td>
-88.2
-</td>
-</tr>
-<tr class="center">
-<th class="left">
-d
-</th>
-<td>
-20
-</td>
-<td>
-20.6
-</td>
-<td>
-117.4
-</td>
-</tr>
-<tr class="center">
-<th class="left">
-e
-</th>
-<td>
-34
-</td>
-<td>
--8.6
-</td>
-<td>
-102.1
-</td>
-</tr>
-</tbody>
-</table>
+</div>
+<div id="improving-the-look" class="section level2">
+<h2>Improving the Look</h2>
 <p>The default justification makes the columns of numbers look messy. You can set the justification to the right, but the headers look wrong:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">table_options</span>(<span class="kw">htmloptions</span>(<span class="dt">head =</span> <span class="ot">FALSE</span>, <span class="dt">justification =</span> <span class="st">&quot;r&quot;</span>))
-<span class="kw">html</span>(tab)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">table_options</span>(<span class="kw">htmloptions</span>(<span class="dt">head =</span> <span class="ot">FALSE</span>, <span class="dt">justification =</span> <span class="st">&quot;r&quot;</span>, <span class="dt">knit_print =</span> <span class="ot">TRUE</span>))
+tab</code></pre></div>
 <table class="Rtable">
 <thead>
 <tr class="right">
@@ -248,13 +366,13 @@ Std Dev
 a
 </th>
 <td>
-22
+21
 </td>
 <td>
-10.6
+-31.6
 </td>
 <td>
-98.1
+101.1
 </td>
 </tr>
 <tr class="right">
@@ -262,13 +380,13 @@ a
 b
 </th>
 <td>
-27
+25
 </td>
 <td>
--9.3
+-20.3
 </td>
 <td>
-82.1
+98.0
 </td>
 </tr>
 <tr class="right">
@@ -276,13 +394,13 @@ b
 c
 </th>
 <td>
-22
+31
 </td>
 <td>
-4.3
+23.4
 </td>
 <td>
-88.2
+102.3
 </td>
 </tr>
 <tr class="right">
@@ -293,10 +411,10 @@ d
 20
 </td>
 <td>
-20.6
+-12.5
 </td>
 <td>
-117.4
+83.9
 </td>
 </tr>
 <tr class="right">
@@ -304,20 +422,20 @@ d
 e
 </th>
 <td>
-34
+28
 </td>
 <td>
--8.6
+2.3
 </td>
 <td>
-102.1
+122.3
 </td>
 </tr>
 </tbody>
 </table>
 <p>The best look comes with the <code>pad = TRUE</code> option. This adds nonbreaking spaces around the numbers so that centering looks good. It also changes the hyphens to proper minus signs:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">table_options</span>(<span class="kw">htmloptions</span>(<span class="dt">head =</span> <span class="ot">FALSE</span>, <span class="dt">justification =</span> <span class="st">&quot;c&quot;</span>, <span class="dt">pad =</span> <span class="ot">TRUE</span>))
-<span class="kw">html</span>(tab)</code></pre></div>
+tab</code></pre></div>
 <table class="Rtable">
 <thead>
 <tr class="center">
@@ -352,13 +470,13 @@ Std Dev
 a
 </th>
 <td>
-22
+21
 </td>
 <td>
-  10.6
+ −31.6
 </td>
 <td>
-  98.1
+ 101.1
 </td>
 </tr>
 <tr class="center">
@@ -366,13 +484,13 @@ a
 b
 </th>
 <td>
-27
+25
 </td>
 <td>
-  −9.3
+ −20.3
 </td>
 <td>
-  82.1
+  98.0
 </td>
 </tr>
 <tr class="center">
@@ -380,13 +498,13 @@ b
 c
 </th>
 <td>
-22
+31
 </td>
 <td>
-   4.3
+  23.4
 </td>
 <td>
-  88.2
+ 102.3
 </td>
 </tr>
 <tr class="center">
@@ -397,10 +515,10 @@ d
 20
 </td>
 <td>
-  20.6
+ −12.5
 </td>
 <td>
- 117.4
+  83.9
 </td>
 </tr>
 <tr class="center">
@@ -408,13 +526,13 @@ d
 e
 </th>
 <td>
-34
+28
 </td>
 <td>
-  −8.6
+   2.3
 </td>
 <td>
- 102.1
+ 122.3
 </td>
 </tr>
 </tbody>
@@ -445,7 +563,356 @@ e
   border-width: 0;
 }
 &lt;/style&gt;</code></pre>
-<p>Note that the <code>#ID</code> values will be replaced with the <code>id</code> string given in <code>writeCSS()</code>.</p>
+<p>Note that the <code>#ID</code> values will be replaced with the <code>id</code> string given in <code>writeCSS()</code>, and <code>html()</code> has a corresponding argument to allow you to make changes for one specific table. If you are using the newer form of display with <code>table_options(knit_print = TRUE)</code>, you can get customized display for one table by also using <code>table_options(doCSS = TRUE)</code>. For example,</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">table_options</span>(<span class="dt">CSS =</span>
+<span class="st">&quot;&lt;style&gt;</span>
+<span class="st">#ID .center { </span>
+<span class="st">  text-align:center;</span>
+<span class="st">  background-color: aliceblue;</span>
+<span class="st">}</span>
+<span class="st">&lt;/style&gt;&quot;</span>, <span class="dt">doCSS =</span> <span class="ot">TRUE</span>)
+tab</code></pre></div>
+<style>
+#table2140e82dde5 .center { 
+  text-align:center;
+  background-color: aliceblue;
+}
+</style>
+<table id="table2140e82dde5" class="Rtable">
+<thead>
+<tr class="center">
+<th>
+ 
+</th>
+<th>
+ 
+</th>
+<th colspan="2">
+X
+</th>
+</tr>
+<tr class="center">
+<th>
+Group
+</th>
+<th>
+N
+</th>
+<th>
+Mean
+</th>
+<th>
+Std Dev
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="center">
+<th class="left">
+a
+</th>
+<td>
+21
+</td>
+<td>
+ −31.6
+</td>
+<td>
+ 101.1
+</td>
+</tr>
+<tr class="center">
+<th class="left">
+b
+</th>
+<td>
+25
+</td>
+<td>
+ −20.3
+</td>
+<td>
+  98.0
+</td>
+</tr>
+<tr class="center">
+<th class="left">
+c
+</th>
+<td>
+31
+</td>
+<td>
+  23.4
+</td>
+<td>
+ 102.3
+</td>
+</tr>
+<tr class="center">
+<th class="left">
+d
+</th>
+<td>
+20
+</td>
+<td>
+ −12.5
+</td>
+<td>
+  83.9
+</td>
+</tr>
+<tr class="center">
+<th class="left">
+e
+</th>
+<td>
+28
+</td>
+<td>
+   2.3
+</td>
+<td>
+ 122.3
+</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">table_options</span>(<span class="dt">doCSS =</span> <span class="ot">FALSE</span>)
+tab</code></pre></div>
+<table class="Rtable">
+<thead>
+<tr class="center">
+<th>
+ 
+</th>
+<th>
+ 
+</th>
+<th colspan="2">
+X
+</th>
+</tr>
+<tr class="center">
+<th>
+Group
+</th>
+<th>
+N
+</th>
+<th>
+Mean
+</th>
+<th>
+Std Dev
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="center">
+<th class="left">
+a
+</th>
+<td>
+21
+</td>
+<td>
+ −31.6
+</td>
+<td>
+ 101.1
+</td>
+</tr>
+<tr class="center">
+<th class="left">
+b
+</th>
+<td>
+25
+</td>
+<td>
+ −20.3
+</td>
+<td>
+  98.0
+</td>
+</tr>
+<tr class="center">
+<th class="left">
+c
+</th>
+<td>
+31
+</td>
+<td>
+  23.4
+</td>
+<td>
+ 102.3
+</td>
+</tr>
+<tr class="center">
+<th class="left">
+d
+</th>
+<td>
+20
+</td>
+<td>
+ −12.5
+</td>
+<td>
+  83.9
+</td>
+</tr>
+<tr class="center">
+<th class="left">
+e
+</th>
+<td>
+28
+</td>
+<td>
+   2.3
+</td>
+<td>
+ 122.3
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="kableextra-support" class="section level2">
+<h2>kableExtra support</h2>
+<p>The kableExtra package contains a large number of functions to customize the look of tables generated by the <code>knitr::kable()</code> function. These can also be made to work with tables from this package, using the <code>toKable()</code> function. For example,</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(magrittr)
+<span class="kw">library</span>(kableExtra)
+<span class="kw">toKable</span>(tab) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">kable_styling</span>(<span class="st">&quot;striped&quot;</span>, <span class="dt">position =</span> <span class="st">&quot;float_right&quot;</span>, <span class="dt">full_width =</span> <span class="ot">FALSE</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">add_header_above</span>(<span class="kw">c</span>(<span class="st">&quot;Row Label&quot;</span> =<span class="st"> </span><span class="dv">1</span>, <span class="st">&quot;Statistics&quot;</span> =<span class="st"> </span><span class="dv">3</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">column_spec</span>(<span class="dv">4</span>, <span class="dt">color =</span> <span class="st">&quot;red&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">row_spec</span>(<span class="dv">1</span>, <span class="dt">color =</span> <span class="st">&quot;blue&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">group_rows</span>(<span class="st">&quot;Subgroup&quot;</span>, <span class="dv">3</span>, <span class="dv">5</span>)</code></pre></div>
+<table class="Rtable table table-striped" style="width: auto !important; float: right; margin-left: 10px;">
+<thead>
+<tr>
+<th style="border-bottom:hidden; padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1">
+<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px;">
+Row Label
+</div>
+</th>
+<th style="border-bottom:hidden; padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="3">
+<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px;">
+Statistics
+</div>
+</th>
+</tr>
+<tr class="center">
+<th>
+ 
+</th>
+<th>
+ 
+</th>
+<th colspan="2">
+X
+</th>
+</tr>
+<tr class="center">
+<th>
+Group
+</th>
+<th>
+N
+</th>
+<th>
+Mean
+</th>
+<th>
+Std Dev
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="center">
+<th class="left" style="color: blue;">
+a
+</th>
+<td style="color: blue;">
+21
+</td>
+<td style="color: blue;">
+ −31.6
+</td>
+<td style="color: red;color: blue;">
+ 101.1
+</td>
+</tr>
+<tr class="center">
+<th class="left">
+b
+</th>
+<td>
+25
+</td>
+<td>
+ −20.3
+</td>
+<td style="color: red;">
+  98.0
+</td>
+</tr>
+<tr grouplength="3">
+<td colspan="4" style="border-bottom: 1px solid;">
+<strong>Subgroup</strong>
+</td>
+</tr>
+<tr class="center">
+<th class="left" style="NA padding-left: 2em;" indentlevel="1">
+c
+</th>
+<td>
+31
+</td>
+<td>
+  23.4
+</td>
+<td style="color: red;">
+ 102.3
+</td>
+</tr>
+<tr class="center">
+<th class="left" style="NA padding-left: 2em;" indentlevel="1">
+d
+</th>
+<td>
+20
+</td>
+<td>
+ −12.5
+</td>
+<td style="color: red;">
+  83.9
+</td>
+</tr>
+<tr class="center">
+<th class="left" style="NA padding-left: 2em;" indentlevel="1">
+e
+</th>
+<td>
+28
+</td>
+<td>
+   2.3
+</td>
+<td style="color: red;">
+ 122.3
+</td>
+</tr>
+</tbody>
+</table>
+<p>There are conflicts between the styling options from <code>kableExtra</code> and the ones specified in <code>table_options()$CSS</code>; some modifications might be needed to make everything work. For instance, the code above requests striping, but that did not show up. Experimentation may be needed!</p>
 </div>
 
 

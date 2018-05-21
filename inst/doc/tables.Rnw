@@ -3,6 +3,11 @@
 \usepackage{hyperref}
 \usepackage{booktabs}
 \usepackage{longtable}
+\usepackage{array}
+\usepackage[table]{xcolor}
+\usepackage{colortbl}
+\usepackage{tabu}
+
 
 \usepackage[authoryear,round,comma]{natbib}
 \bibliographystyle{plainnat}
@@ -1080,7 +1085,7 @@ invisible.)
 at the beginning of each label except the first in the group.  This can produce \LaTeX\ errors
 in any column except the first one.  One workaround for this is to post-process the table
 to move the macro.  For example, if \code{tab} contains the result of \code{tabular()} and
-\LaTeX complains about misplaced \verb!\nopagebreak! macros, 
+\LaTeX\ complains about misplaced \verb!\nopagebreak! macros, 
 this will allow it to be displayed properly:
 <<eval=FALSE>>=
 code <- capture.output( latex( tab ) )
@@ -1274,11 +1279,42 @@ the label to the left'', and in the row labels it means
 ``same as the label above''.  This is used in constructing
 multi-column or multi-row labels.
 
+\subsection{\pkg{knitr},  \pkg{rmarkdown} and \pkg{kableExtra} support}
+
+This vignette was originally written many years ago using \code{Sweave}, and is still in that format.
+Nowadays I would recommend most users to use \pkg{knitr} instead:
+it is easier and more flexible.  The input may be in Noweb syntax
+very similar to this file, or Markdown syntax using the \pkg{rmarkdown}
+package.  
+
+One specific advantage of using \pkg{knitr} or \pkg{rmarkdown} is that 
+explicit calls to \code{latex()} are not needed:  by default, 
+tabular objects will print in the appropriate formatting for
+\LaTeX\ or HTML output.
+
+The \pkg{kableExtra} package
+may be used to customize displays.  
+For example, the code below causes the table to be full width,
+and the colour of
+the 4th column is changed.
+These features require additional \LaTeX\ packages; see the
+\pkg{kableExtra} documentation for details.
+
+<<results=tex>>=
+library(magrittr)
+library(kableExtra)
+toKable(tab) %>% 
+  kable_styling(full_width = TRUE) %>%
+  column_spec(4, color = "red")
+@
+
+See the HTML vignette (which is written in rmarkdown) for more discussion and examples.
+
 \section*{Acknowledgments}
 
 I gratefully acknowledge helpful suggestions and hints from Rich
 Heiberger, Frank Harrell, Dieter Menne, Marius Hofert, Jeff Newmiller and Jeffrey
-Miller.
+Miller.  Hao Zhu was extremely helpful in adding the \pkg{kableExtra} support.
 
 \bibliography{tables}
 

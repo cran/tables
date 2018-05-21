@@ -38,6 +38,7 @@ table_options <- local({
     		 doBody=TRUE,
     		 doFooter=TRUE,
     		 doEnd=TRUE,
+    		 knit_print=TRUE,
     		 latexleftpad=TRUE,
     		 latexrightpad=TRUE,
     		 latexminus=TRUE,

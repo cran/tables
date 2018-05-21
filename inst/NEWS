@@ -110,7 +110,7 @@
       Added AllObs() and RowNum() formula functions.
       Added character.only argument to Heading() and Paste().
 
-0.8.3:
+0.8.4:
       Added check for bad args to DropEmpty(), and fixed
       example which had them.
       Added "nearData" argument to Heading() etc,
@@ -118,3 +118,8 @@
       Fixed bug in justification of row labels.
       Fixed bug when statistic had the wrong length,
       reported by Stefan Marr.
+      Added toKable() function, for use with the kableExtra
+      package.
+      Added knit_print.tabular() method, so that tabular
+      objects will print with correct formatting in knitr 
+      documents.
