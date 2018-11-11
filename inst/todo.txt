@@ -5,6 +5,8 @@ Change storage to allow matrices of things to be displayed, all
 using the same conventions:  main table in the middle, row and column labels to the left and top respectively, plus new matrix in 
 top left --- or even larger matrices to allow labels on all sides.
 
+as.tabular.data.frame doesn't handle columns which are factors.  FIXED
+
 Add conversion of result to kable() format, so kableExtra()
 formatting tweaks can be applied.  DONE
 

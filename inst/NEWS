@@ -123,3 +123,14 @@
       Added knit_print.tabular() method, so that tabular
       objects will print with correct formatting in knitr 
       documents.
+      
+0.8.7:
+      Added ... argument to toKable() so that options can be
+      passed to control the conversion.  (Thanks to Mary Putt
+      for pointing out the need for this.)
+      Fixed bug in as.tabular.data.frame() that failed if any
+      columns were factors.  (Reported by Daniel Farewell.)
+      Fixed incompatibility with new version of fancyvrb.  
+      (Thanks to Prof. Brian Ripley for working out the
+      solution.)
+      Fixed incompatibility with rmarkdown/knitr new version.

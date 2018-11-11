@@ -1,5 +1,5 @@
 \documentclass[12pt]{article}
-\usepackage{Sweave}
+
 \usepackage{hyperref}
 \usepackage{booktabs}
 \usepackage{longtable}
@@ -7,7 +7,7 @@
 \usepackage[table]{xcolor}
 \usepackage{colortbl}
 \usepackage{tabu}
-
+\usepackage{Sweave}
 
 \usepackage[authoryear,round,comma]{natbib}
 \bibliographystyle{plainnat}

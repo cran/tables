@@ -37,6 +37,7 @@ as.tabular.data.frame <- function(x, like = NULL) {
   mode(res) <- "list"
   for (j in seq_len(ncol(x))) {
     col <- x[,j]
+    if (is.factor(col)) col <- as.character(col)
     mode(col) <- "list"
     res[,j] <- col
   }

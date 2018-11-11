@@ -11,7 +11,7 @@ functions to a format consistent with the output of the
 customized using the \pkg{kableExtra} package.
 }
 \usage{
-toKable(table, format = getKnitrFormat(), booktabs = TRUE)
+toKable(table, format = getKnitrFormat(), booktabs = TRUE, ...)
 getKnitrFormat(default = "latex")
 }
 \arguments{
@@ -25,6 +25,9 @@ only \code{"latex"} and \code{"html"} are supported.
   \item{booktabs}{
 Should the table be rendered in \code{\link{booktabs}} style?
 This only affects LaTeX output.
+}
+  \item{...}{
+Additional arguments to pass to \code{\link{html.tabular}} or \code{\link{latex.tabular}}.
 }
   \item{default}{
 The default type of output if not running in a \pkg{knitr}
@@ -43,6 +46,8 @@ to functions in the \pkg{kableExtra} package.
 if (requireNamespace("kableExtra")) {
   tab <-  tabular( (Species + 1) ~ (n=1) + Format(digits=2)*
           (Sepal.Length + Sepal.Width)*(mean + sd), data=iris )
-  kableExtra::kable_styling(toKable(tab), latex_options = "striped")
+  print(kableExtra::kable_styling(toKable(tab), latex_options = "striped"))
+  cat("\n")
+  toKable(tab, format = "html", options = list(HTMLcaption = "Fisher's iris data"))
 }
 }
