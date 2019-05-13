@@ -119,7 +119,7 @@ html.tabular <- function(object, file = "",
     	prevmulti[!ind] <- 0
     }
     colspan <- ifelse(multi < 2, "", sprintf(' colspan="%d"', multi))
-    class <-   ifelse(cjust == defjust || multi == 0, "", sprintf(' class="%s"', CSSclassname(cjust)))
+    class <-   ifelse(cjust == defjust | multi == 0, "", sprintf(' class="%s"', CSSclassname(cjust)))
     clabels[clabels == ""] <- "&nbsp;"
     clabels <- ifelse(multi == 0, "", sprintf('  <th%s%s>%s</th>\n', colspan, class, clabels))
     

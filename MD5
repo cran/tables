@@ -1,4 +1,4 @@
-3c503b7f71778281336105fd11e5f2b4 *DESCRIPTION
+95c192a5ee192eb0fbec0944ca33e5fb *DESCRIPTION
 d5780132709872571b31dfd35ad653d0 *NAMESPACE
 f10513d03ad98f0dfa2bf54f7339dbe2 *R/All.R
 2f2af156a2d61dd12f45f7d68c5c12ca *R/AllObs.R
@@ -7,7 +7,7 @@ f10513d03ad98f0dfa2bf54f7339dbe2 *R/All.R
 c7c924c71144661733ecf3ea0fd33117 *R/PlusMinus.R
 3c0b7653ad56b08bc7de271383c3e791 *R/RowFactor.R
 f5c0777e7eb42462b7ff6b6621445b56 *R/asTabular.R
-c0ee849e1bb6c0f2dd98def210d66e85 *R/html.tabular.R
+9770c7a89a9aaea14409867ae799b6e6 *R/html.tabular.R
 2488857e8fcae63563c2d363872ce17f *R/knit_print.R
 9f485c4afbb6c823ed5e924d472058d0 *R/latex.tabular.R
 edd3a6b3922c89d24ac328a6da534700 *R/options.R
@@ -16,14 +16,14 @@ a1641c082097896f4411efba7ebd7628 *R/pseudo.R
 c40a09d832f3ff6a2cccce04ff6842a3 *R/tabular.R
 4c3385c5ea69c3b88e5961217089027b *R/toKable.R
 698eaf98da9c8942274e5652b2e58395 *R/write.R
-712ae765066513bffd962de7c3130fa3 *build/vignette.rds
-f9891c80ac478e32cc65a2b1a3e1de56 *inst/NEWS
+a681d6a373719f0993621f5f0ab3b6d1 *build/vignette.rds
+ff0892ae1db32002ed9fe0e6afde7eb6 *inst/NEWS
 98bb6a833984ef39b890e04fde15d4d5 *inst/doc/HTML.R
 4c253790bd0daedefd553fc7f9b871ae *inst/doc/HTML.Rmd
-3d235e5d9ef67e3ab1588298079d9daf *inst/doc/HTML.html
+9b00246dab10a8a2ad692a4e95c0c2bf *inst/doc/HTML.html
 1a8c431e543cf694fa716e099e1f881f *inst/doc/tables.R
 3fb60415c6646aabd40994d639c4bee0 *inst/doc/tables.Rnw
-90d621cf27cf4133845ed403fc78110b *inst/doc/tables.pdf
+c1ee4ff6a5c945a6dd085bef834a2cd2 *inst/doc/tables.pdf
 14b17779a5663ae77a704b384b0e1236 *inst/todo.txt
 757f46b32cf7bebda6dfc0ca32572bbf *man/All.Rd
 b90a6a3746be2cf5c0c04b4eb3d6cbbf *man/AllObs.Rd
@@ -39,7 +39,7 @@ a46483a776306bb31ffe2a9e8392a66f *man/Paste.Rd
 71856a93c16f4ae9c43d99e533fd109c *man/PlusMinus.Rd
 0ccc122a8f5fbde68baf621054445959 *man/RowFactor.Rd
 911c24dc42fb66bc157541b9cc4a3ec4 *man/as.matrix.tabular.Rd
-442b8f9f86978ff8089f068f3817d175 *man/as.tabular.Rd
+de465321a6d805075a51610bfc1f48b6 *man/as.tabular.Rd
 643b1727b34bdbaf137d662f80b7cb23 *man/html.tabular.Rd
 1c9d71407d092dc0b5b34fb78b20f788 *man/knit_print.tabular.Rd
 8e7acf6b1480976709d45472577df5e2 *man/labelSubset.Rd
@@ -52,5 +52,5 @@ cd360c69f96f7ee931b81d7ccbc197c9 *man/tabular.Rd
 f4a9e4f471b61ac3576f8cd9d32085ea *man/write.csv.tabular.Rd
 4c253790bd0daedefd553fc7f9b871ae *vignettes/HTML.Rmd
 3fb60415c6646aabd40994d639c4bee0 *vignettes/tables.Rnw
-5e34e8e5726eaa0555db07945e983ddd *vignettes/tables.Rout.save
+26db5dbc298d6a5cb88b80d4f8710644 *vignettes/tables.Rout.save
 d29e140876506deac1c04ecdeb4c9f5d *vignettes/tables.bib

@@ -81,12 +81,12 @@ All  & $150$ & $5.84$ & $0.83$ & $3.06$ & $0.44$ \\
 > A <- sample(letters[1:2], 10, rep = TRUE)
 
 > A
- [1] "b" "b" "b" "b" "a" "a" "b" "b" "b" "a"
+ [1] "a" "b" "b" "a" "b" "a" "a" "b" "b" "a"
 
 > F <- factor(A)
 
 > F
- [1] b b b b a a b b b a
+ [1] a b b a b a a b b a
 Levels: a b
 
 > saved.options
@@ -232,8 +232,8 @@ All  & $150$ & $5.84$ & $0.83$ & $3.06$ & $0.44$ \\
 \toprule
 F  & \multicolumn{1}{c}{All} \\ 
 \midrule
-a  & $\phantom{0}3$ \\
-b  & $\phantom{0}7$ \\
+a  & $\phantom{0}5$ \\
+b  & $\phantom{0}5$ \\
 All  & $10$ \\
 \bottomrule 
 \end{tabular}
@@ -243,10 +243,10 @@ All  & $10$ \\
 \toprule
  & F &  & \multicolumn{1}{c}{All} \\ 
 \midrule
-X & a & mean  & $\phantom{-}0.02525$ \\
- &  & sd  & $\phantom{-}0.34842$ \\
- & b & mean  & $-0.03647$ \\
- &  & sd  & $\phantom{-}0.65611$ \\
+X & a & mean  & $-0.04769$ \\
+ &  & sd  & $\phantom{-}0.63181$ \\
+ & b & mean  & $\phantom{-}0.01177$ \\
+ &  & sd  & $\phantom{-}0.55410$ \\
 \bottomrule 
 \end{tabular}
 
@@ -255,8 +255,8 @@ X & a & mean  & $\phantom{-}0.02525$ \\
 \toprule
  & F & mean & \multicolumn{1}{c}{sd} \\ 
 \midrule
-X & a  & $\phantom{-}0.02525$ & $0.3484$ \\
- & b  & $-0.03647$ & $0.6561$ \\
+X & a  & $-0.04769$ & $0.6318$ \\
+ & b  & $\phantom{-}0.01177$ & $0.5541$ \\
 \bottomrule 
 \end{tabular}
 
@@ -265,8 +265,8 @@ X & a  & $\phantom{-}0.02525$ & $0.3484$ \\
 \toprule
  & Newname & mean & \multicolumn{1}{c}{sd} \\ 
 \midrule
-X & a  & $\phantom{-}0.02525$ & $0.3484$ \\
- & b  & $-0.03647$ & $0.6561$ \\
+X & a  & $-0.04769$ & $0.6318$ \\
+ & b  & $\phantom{-}0.01177$ & $0.5541$ \\
 \bottomrule 
 \end{tabular}
 
@@ -276,8 +276,8 @@ X & a  & $\phantom{-}0.02525$ & $0.3484$ \\
  &  & \multicolumn{2}{c}{X} \\ \cmidrule(lr){3-4}
 F  & n & mean & \multicolumn{1}{c}{sd} \\ 
 \midrule
-a  & $\phantom{0}3$ & $\phantom{-}0.02525$ & $0.3484$ \\
-b  & $\phantom{0}7$ & $-0.03647$ & $0.6561$ \\
+a  & $\phantom{0}5$ & $-0.04769$ & $0.6318$ \\
+b  & $\phantom{0}5$ & $\phantom{-}0.01177$ & $0.5541$ \\
 All  & $10$ & $-0.01796$ & $0.5611$ \\
 \bottomrule 
 \end{tabular}
@@ -288,13 +288,13 @@ All  & $10$ & $-0.01796$ & $0.5611$ \\
 \toprule
 i  & X & A & \multicolumn{1}{c}{F} \\ 
 \midrule
-1  & $-0.50219$ & b & b \\
+1  & $-0.50219$ & a & a \\
 2  & $\phantom{-}0.13153$ & b & b \\
 3  & $-0.07892$ & b & b \\
-4  & $\phantom{-}0.88678$ & b & b \\
-5  & $\phantom{-}0.11697$ & a & a \\
+4  & $\phantom{-}0.88678$ & a & a \\
+5  & $\phantom{-}0.11697$ & b & b \\
 6  & $\phantom{-}0.31863$ & a & a \\
-7  & $-0.58179$ & b & b \\
+7  & $-0.58179$ & a & a \\
 8  & $\phantom{-}0.71453$ & b & b \\
 9  & $-0.82526$ & b & b \\
 10  & $-0.35986$ & a & a \\
@@ -332,8 +332,8 @@ I(X < 0)  & $10$ & $0.5$ & $0.527$ \\
  &  & \multicolumn{2}{c}{X} \\ \cmidrule(lr){3-4}
 F  & n & mean & \multicolumn{1}{c}{sd} \\ 
 \midrule
-a  & $\phantom{0}3$ & $\phantom{-}0.025$ & $\phantom{-}0.348$ \\
-b  & $\phantom{0}7$ & $-0.036$ & $\phantom{-}0.656$ \\
+a  & $\phantom{0}5$ & $-0.048$ & $\phantom{-}0.632$ \\
+b  & $\phantom{0}5$ & $\phantom{-}0.012$ & $\phantom{-}0.554$ \\
 All  & $10$ & $-0.018$ & $\phantom{-}0.561$ \\
 \bottomrule 
 \end{tabular}
@@ -352,8 +352,8 @@ All  & $10$ & $-0.018$ & $\phantom{-}0.561$ \\
  & \multicolumn{2}{c}{X} \\ \cmidrule(lr){2-3}
 F  & mean & \multicolumn{1}{c}{stderr} \\ 
 \midrule
-a  & $\phantom{-}0.03$ & $( 0.20)$ \\
-b  & $-0.04$ & $( 0.25)$ \\
+a  & $-0.05$ & $( 0.28)$ \\
+b  & $\phantom{-}0.01$ & $( 0.25)$ \\
 All  & $-0.02$ & $( 0.18)$ \\
 \bottomrule 
 \end{tabular}
@@ -365,8 +365,8 @@ All  & $-0.02$ & $( 0.18)$ \\
  & \multicolumn{3}{c}{X} \\ \cmidrule(lr){2-4}
 F  & mean & n & \multicolumn{1}{c}{sd} \\ 
 \midrule
-a  & $\phantom{-}0.025$ & $\phantom{0}3$ & $\phantom{-}0.348$ \\
-b  & $-0.036$ & $\phantom{0}7$ & $\phantom{-}0.656$ \\
+a  & $-0.048$ & $\phantom{0}5$ & $\phantom{-}0.632$ \\
+b  & $\phantom{-}0.012$ & $\phantom{0}5$ & $\phantom{-}0.554$ \\
 All  & $-0.018$ & $10$ & $\phantom{-}0.561$ \\
 \bottomrule 
 \end{tabular}
@@ -377,8 +377,8 @@ All  & $-0.018$ & $10$ & $\phantom{-}0.561$ \\
 \toprule
 $\Phi$  & n & mean & \multicolumn{1}{c}{sd} \\ 
 \midrule
-a  & $\phantom{0}3$ & $\phantom{-}0.025$ & $\phantom{-}0.348$ \\
-b  & $\phantom{0}7$ & $-0.036$ & $\phantom{-}0.656$ \\
+a  & $\phantom{0}5$ & $-0.048$ & $\phantom{-}0.632$ \\
+b  & $\phantom{0}5$ & $\phantom{-}0.012$ & $\phantom{-}0.554$ \\
 All  & $10$ & $-0.018$ & $\phantom{-}0.561$ \\
 \bottomrule 
 \end{tabular}
@@ -389,8 +389,8 @@ All  & $10$ & $-0.018$ & $\phantom{-}0.561$ \\
 \toprule
  & F & mean & \multicolumn{1}{c}{sd} \\ 
 \midrule
-X & a  & $\phantom{-}0.02525$ & $0.3484$ \\
- & b  & $-0.03647$ & $0.6561$ \\
+X & a  & $-0.04769$ & $0.6318$ \\
+ & b  & $\phantom{-}0.01177$ & $0.5541$ \\
  & near  & $-0.01796$ & $0.5611$ \\
 far &   & $-0.01796$ & $0.5611$ \\
 \bottomrule 
@@ -404,8 +404,8 @@ far &   & $-0.01796$ & $0.5611$ \\
  &  & \multicolumn{2}{c}{X} \\ \cmidrule(lr){3-4}
 F  & n & mean & \multicolumn{1}{c}{sd} \\ 
 \midrule
-\multicolumn{1}{r}{a}  & $\phantom{0}3$ & \multicolumn{1}{r}{$\phantom{-}0.025$} & \multicolumn{1}{r}{$\phantom{-}0.348$} \\
-\multicolumn{1}{r}{b}  & $\phantom{0}7$ & \multicolumn{1}{r}{$-0.036$} & \multicolumn{1}{r}{$\phantom{-}0.656$} \\
+\multicolumn{1}{r}{a}  & $\phantom{0}5$ & \multicolumn{1}{r}{$-0.048$} & \multicolumn{1}{r}{$\phantom{-}0.632$} \\
+\multicolumn{1}{r}{b}  & $\phantom{0}5$ & \multicolumn{1}{r}{$\phantom{-}0.012$} & \multicolumn{1}{r}{$\phantom{-}0.554$} \\
 \multicolumn{1}{r}{All}  & $10$ & \multicolumn{1}{r}{$-0.018$} & \multicolumn{1}{r}{$\phantom{-}0.561$} \\
 \bottomrule 
 \end{tabular}
