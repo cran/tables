@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 <meta name="author" content="Duncan Murdoch" />
 
@@ -105,7 +105,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -126,9 +126,6 @@ padding-right: 2em;
 font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 font-size: 14px;
 line-height: 1.35;
-}
-#header {
-text-align: center;
 }
 #TOC {
 clear: both;
@@ -297,7 +294,8 @@ code > span.st { color: #d14; }
 code > span.co { color: #888888; font-style: italic; } 
 code > span.ot { color: #007020; } 
 code > span.al { color: #ff0000; font-weight: bold; } 
-code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
 
 
@@ -366,13 +364,13 @@ Std Dev
 a
 </th>
 <td>
-21
+27
 </td>
 <td>
--6.9
+-11.2
 </td>
 <td>
-99.5
+110.9
 </td>
 </tr>
 <tr class="center">
@@ -380,13 +378,13 @@ a
 b
 </th>
 <td>
-29
+26
 </td>
 <td>
--5.3
+-19.8
 </td>
 <td>
-121.3
+111.0
 </td>
 </tr>
 <tr class="center">
@@ -394,13 +392,13 @@ b
 c
 </th>
 <td>
-28
+22
 </td>
 <td>
--24.8
+7.6
 </td>
 <td>
-110.1
+97.2
 </td>
 </tr>
 <tr class="center">
@@ -408,13 +406,13 @@ c
 d
 </th>
 <td>
-25
+21
 </td>
 <td>
--9.9
+-22.1
 </td>
 <td>
-83.4
+85.2
 </td>
 </tr>
 <tr class="center">
@@ -422,130 +420,77 @@ d
 e
 </th>
 <td>
-22
+29
 </td>
 <td>
--5.3
+12.3
 </td>
 <td>
-113.4
+102.5
 </td>
 </tr>
 </tbody>
 </table>
-<p>The previous behaviour required an explicit call to the <code>html()</code> function, and knitr option <code>results = 'asis'</code> for the chunk. To <em>require</em> the older method, use <code>table_options(knit_print = FALSE)</code>:</p>
+<p>The previous behaviour required an explicit call to the <code>toHTML()</code> function, and knitr option <code>results = 'asis'</code> for the chunk. To <em>require</em> the older method, use <code>table_options(knit_print = FALSE)</code>:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">table_options</span>(<span class="dt">knit_print =</span> <span class="ot">FALSE</span>)</a>
 <a class="sourceLine" id="cb5-2" data-line-number="2">tab        <span class="co"># This chunk uses the default results = 'markup'</span></a></code></pre></div>
 <pre><code>##                        
 ##           X            
 ##  Group N  Mean  Std Dev
-##  a     21  -6.9  99.5  
-##  b     29  -5.3 121.3  
-##  c     28 -24.8 110.1  
-##  d     25  -9.9  83.4  
-##  e     22  -5.3 113.4</code></pre>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">html</span>(tab)  <span class="co"># This chunk uses results = 'asis'</span></a></code></pre></div>
+##  a     27 -11.2 110.9  
+##  b     26 -19.8 111.0  
+##  c     22   7.6  97.2  
+##  d     21 -22.1  85.2  
+##  e     29  12.3 102.5</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">toHTML</span>(tab)  <span class="co"># This chunk uses results = 'asis'</span></a></code></pre></div>
 <table class="Rtable">
-<thead>
-<tr class="center">
-<th>
- 
-</th>
-<th>
- 
-</th>
-<th colspan="2">
-X
-</th>
+ <thead>
+ <tr class="center">
+  <th>&nbsp;</th>
+  <th>&nbsp;</th>
+  <th colspan="2">X</th>
 </tr>
-<tr class="center">
-<th>
-Group
-</th>
-<th>
-N
-</th>
-<th>
-Mean
-</th>
-<th>
-Std Dev
-</th>
+ <tr class="center">
+  <th>Group</th>
+  <th>N</th>
+  <th>Mean</th>
+  <th>Std Dev</th>
 </tr>
-</thead>
-<tbody>
-<tr class="center">
-<th class="left">
-a
-</th>
-<td>
-21
-</td>
-<td>
--6.9
-</td>
-<td>
-99.5
-</td>
+ </thead>
+ <tbody>
+ <tr class="center">
+  <th class="left">a</th>
+  <td>27</td>
+  <td>-11.2</td>
+  <td>110.9</td>
 </tr>
-<tr class="center">
-<th class="left">
-b
-</th>
-<td>
-29
-</td>
-<td>
--5.3
-</td>
-<td>
-121.3
-</td>
+ <tr class="center">
+  <th class="left">b</th>
+  <td>26</td>
+  <td>-19.8</td>
+  <td>111.0</td>
 </tr>
-<tr class="center">
-<th class="left">
-c
-</th>
-<td>
-28
-</td>
-<td>
--24.8
-</td>
-<td>
-110.1
-</td>
+ <tr class="center">
+  <th class="left">c</th>
+  <td>22</td>
+  <td>  7.6</td>
+  <td> 97.2</td>
 </tr>
-<tr class="center">
-<th class="left">
-d
-</th>
-<td>
-25
-</td>
-<td>
--9.9
-</td>
-<td>
-83.4
-</td>
+ <tr class="center">
+  <th class="left">d</th>
+  <td>21</td>
+  <td>-22.1</td>
+  <td> 85.2</td>
 </tr>
-<tr class="center">
-<th class="left">
-e
-</th>
-<td>
-22
-</td>
-<td>
--5.3
-</td>
-<td>
-113.4
-</td>
+ <tr class="center">
+  <th class="left">e</th>
+  <td>29</td>
+  <td> 12.3</td>
+  <td>102.5</td>
 </tr>
-</tbody>
-</table>
+ </tbody>
+ </table>
+
 <p>In either case, some styling information needs to be included in the document. Ideally this should be in the header, but it can be inserted anywhere by calling <code>writeCSS</code> with <code>results = 'asis'</code>:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">writeCSS</span>()</a></code></pre></div>
 <style>
@@ -607,13 +552,13 @@ Std Dev
 a
 </th>
 <td>
-21
+27
 </td>
 <td>
--6.9
+-11.2
 </td>
 <td>
-99.5
+110.9
 </td>
 </tr>
 <tr class="right">
@@ -621,13 +566,13 @@ a
 b
 </th>
 <td>
-29
+26
 </td>
 <td>
--5.3
+-19.8
 </td>
 <td>
-121.3
+111.0
 </td>
 </tr>
 <tr class="right">
@@ -635,13 +580,13 @@ b
 c
 </th>
 <td>
-28
+22
 </td>
 <td>
--24.8
+7.6
 </td>
 <td>
-110.1
+97.2
 </td>
 </tr>
 <tr class="right">
@@ -649,13 +594,13 @@ c
 d
 </th>
 <td>
-25
+21
 </td>
 <td>
--9.9
+-22.1
 </td>
 <td>
-83.4
+85.2
 </td>
 </tr>
 <tr class="right">
@@ -663,13 +608,13 @@ d
 e
 </th>
 <td>
-22
+29
 </td>
 <td>
--5.3
+12.3
 </td>
 <td>
-113.4
+102.5
 </td>
 </tr>
 </tbody>
@@ -711,13 +656,13 @@ Std Dev
 a
 </th>
 <td>
-21
+27
 </td>
 <td>
-  −6.9
+ −11.2
 </td>
 <td>
-  99.5
+ 110.9
 </td>
 </tr>
 <tr class="center">
@@ -725,13 +670,13 @@ a
 b
 </th>
 <td>
-29
+26
 </td>
 <td>
-  −5.3
+ −19.8
 </td>
 <td>
- 121.3
+ 111.0
 </td>
 </tr>
 <tr class="center">
@@ -739,13 +684,13 @@ b
 c
 </th>
 <td>
-28
+22
 </td>
 <td>
- −24.8
+   7.6
 </td>
 <td>
- 110.1
+  97.2
 </td>
 </tr>
 <tr class="center">
@@ -753,13 +698,13 @@ c
 d
 </th>
 <td>
-25
+21
 </td>
 <td>
-  −9.9
+ −22.1
 </td>
 <td>
-  83.4
+  85.2
 </td>
 </tr>
 <tr class="center">
@@ -767,13 +712,13 @@ d
 e
 </th>
 <td>
-22
+29
 </td>
 <td>
-  −5.3
+  12.3
 </td>
 <td>
- 113.4
+ 102.5
 </td>
 </tr>
 </tbody>
@@ -804,7 +749,7 @@ e
   border-width: 0;
 }
 &lt;/style&gt;</code></pre>
-<p>Note that the <code>#ID</code> values will be replaced with the <code>id</code> string given in <code>writeCSS()</code>, and <code>html()</code> has a corresponding argument to allow you to make changes for one specific table. If you are using the newer form of display with <code>table_options(knit_print = TRUE)</code>, you can get customized display for one table by also using <code>table_options(doCSS = TRUE)</code>. For example,</p>
+<p>Note that the <code>#ID</code> values will be replaced with the <code>id</code> string given in <code>writeCSS()</code>, and <code>toHTML()</code> has a corresponding argument to allow you to make changes for one specific table. If you are using the newer form of display with <code>table_options(knit_print = TRUE)</code>, you can get customized display for one table by also using <code>table_options(doCSS = TRUE)</code>. For example,</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw">table_options</span>(<span class="dt">CSS =</span></a>
 <a class="sourceLine" id="cb12-2" data-line-number="2"><span class="st">&quot;&lt;style&gt;</span></a>
 <a class="sourceLine" id="cb12-3" data-line-number="3"><span class="st">#ID .center { </span></a>
@@ -814,12 +759,12 @@ e
 <a class="sourceLine" id="cb12-7" data-line-number="7"><span class="st">&lt;/style&gt;&quot;</span>, <span class="dt">doCSS =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb12-8" data-line-number="8">tab</a></code></pre></div>
 <style>
-#table158b3214935ec .center { 
+#table3663587ebf07 .center { 
   text-align:center;
   background-color: aliceblue;
 }
 </style>
-<table id="table158b3214935ec" class="Rtable">
+<table id="table3663587ebf07" class="Rtable">
 <thead>
 <tr class="center">
 <th>
@@ -853,13 +798,13 @@ Std Dev
 a
 </th>
 <td>
-21
+27
 </td>
 <td>
-  −6.9
+ −11.2
 </td>
 <td>
-  99.5
+ 110.9
 </td>
 </tr>
 <tr class="center">
@@ -867,13 +812,13 @@ a
 b
 </th>
 <td>
-29
+26
 </td>
 <td>
-  −5.3
+ −19.8
 </td>
 <td>
- 121.3
+ 111.0
 </td>
 </tr>
 <tr class="center">
@@ -881,13 +826,13 @@ b
 c
 </th>
 <td>
-28
+22
 </td>
 <td>
- −24.8
+   7.6
 </td>
 <td>
- 110.1
+  97.2
 </td>
 </tr>
 <tr class="center">
@@ -895,13 +840,13 @@ c
 d
 </th>
 <td>
-25
+21
 </td>
 <td>
-  −9.9
+ −22.1
 </td>
 <td>
-  83.4
+  85.2
 </td>
 </tr>
 <tr class="center">
@@ -909,13 +854,13 @@ d
 e
 </th>
 <td>
-22
+29
 </td>
 <td>
-  −5.3
+  12.3
 </td>
 <td>
- 113.4
+ 102.5
 </td>
 </tr>
 </tbody>
@@ -956,13 +901,13 @@ Std Dev
 a
 </th>
 <td>
-21
+27
 </td>
 <td>
-  −6.9
+ −11.2
 </td>
 <td>
-  99.5
+ 110.9
 </td>
 </tr>
 <tr class="center">
@@ -970,13 +915,13 @@ a
 b
 </th>
 <td>
-29
+26
 </td>
 <td>
-  −5.3
+ −19.8
 </td>
 <td>
- 121.3
+ 111.0
 </td>
 </tr>
 <tr class="center">
@@ -984,13 +929,13 @@ b
 c
 </th>
 <td>
-28
+22
 </td>
 <td>
- −24.8
+   7.6
 </td>
 <td>
- 110.1
+  97.2
 </td>
 </tr>
 <tr class="center">
@@ -998,13 +943,13 @@ c
 d
 </th>
 <td>
-25
+21
 </td>
 <td>
-  −9.9
+ −22.1
 </td>
 <td>
-  83.4
+  85.2
 </td>
 </tr>
 <tr class="center">
@@ -1012,13 +957,13 @@ d
 e
 </th>
 <td>
-22
+29
 </td>
 <td>
-  −5.3
+  12.3
 </td>
 <td>
- 113.4
+ 102.5
 </td>
 </tr>
 </tbody>
@@ -1028,16 +973,13 @@ e
 <h2>kableExtra support</h2>
 <p>The kableExtra package contains a large number of functions to customize the look of tables generated by the <code>knitr::kable()</code> function. These can also be made to work with tables from this package, using the <code>toKable()</code> function. For example,</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw">library</span>(magrittr)</a>
-<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="kw">library</span>(kableExtra)</a></code></pre></div>
-<pre><code>## Registered S3 method overwritten by 'rvest':
-##   method            from
-##   read_xml.response xml2</code></pre>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw">toKable</span>(tab) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb16-2" data-line-number="2"><span class="st">  </span><span class="kw">kable_styling</span>(<span class="st">&quot;striped&quot;</span>, <span class="dt">position =</span> <span class="st">&quot;float_right&quot;</span>, <span class="dt">full_width =</span> <span class="ot">FALSE</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="st">  </span><span class="kw">add_header_above</span>(<span class="kw">c</span>(<span class="st">&quot;Row Label&quot;</span> =<span class="st"> </span><span class="dv">1</span>, <span class="st">&quot;Statistics&quot;</span> =<span class="st"> </span><span class="dv">3</span>)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb16-4" data-line-number="4"><span class="st">  </span><span class="kw">column_spec</span>(<span class="dv">4</span>, <span class="dt">color =</span> <span class="st">&quot;red&quot;</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb16-5" data-line-number="5"><span class="st">  </span><span class="kw">row_spec</span>(<span class="dv">1</span>, <span class="dt">color =</span> <span class="st">&quot;blue&quot;</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb16-6" data-line-number="6"><span class="st">  </span><span class="kw">group_rows</span>(<span class="st">&quot;Subgroup&quot;</span>, <span class="dv">3</span>, <span class="dv">5</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="kw">library</span>(kableExtra)</a>
+<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="kw">toKable</span>(tab, <span class="dt">format=</span><span class="st">&quot;html&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="st">  </span><span class="kw">kable_styling</span>(<span class="st">&quot;striped&quot;</span>, <span class="dt">position =</span> <span class="st">&quot;float_right&quot;</span>, <span class="dt">full_width =</span> <span class="ot">FALSE</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb14-5" data-line-number="5"><span class="st">  </span><span class="kw">add_header_above</span>(<span class="kw">c</span>(<span class="st">&quot;Row Label&quot;</span> =<span class="st"> </span><span class="dv">1</span>, <span class="st">&quot;Statistics&quot;</span> =<span class="st"> </span><span class="dv">3</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb14-6" data-line-number="6"><span class="st">  </span><span class="kw">column_spec</span>(<span class="dv">4</span>, <span class="dt">color =</span> <span class="st">&quot;red&quot;</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb14-7" data-line-number="7"><span class="st">  </span><span class="kw">row_spec</span>(<span class="dv">1</span>, <span class="dt">color =</span> <span class="st">&quot;blue&quot;</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb14-8" data-line-number="8"><span class="st">  </span><span class="kw">group_rows</span>(<span class="st">&quot;Subgroup&quot;</span>, <span class="dv">3</span>, <span class="dv">5</span>)</a></code></pre></div>
 <table class="Rtable table table-striped" style="width: auto !important; float: right; margin-left: 10px;">
 <thead>
 <tr>
@@ -1084,13 +1026,13 @@ Std Dev
 a
 </th>
 <td style="color: blue !important;">
-21
+27
 </td>
 <td style="color: blue !important;">
-  −6.9
+ −11.2
 </td>
 <td style="color: red !important;color: blue !important;">
-  99.5
+ 110.9
 </td>
 </tr>
 <tr class="center">
@@ -1098,13 +1040,13 @@ a
 b
 </th>
 <td>
-29
+26
 </td>
 <td>
-  −5.3
+ −19.8
 </td>
 <td style="color: red !important;">
- 121.3
+ 111.0
 </td>
 </tr>
 <tr grouplength="3">
@@ -1117,13 +1059,13 @@ b
 c
 </th>
 <td>
-28
+22
 </td>
 <td>
- −24.8
+   7.6
 </td>
 <td style="color: red !important;">
- 110.1
+  97.2
 </td>
 </tr>
 <tr class="center">
@@ -1131,13 +1073,13 @@ c
 d
 </th>
 <td>
-25
+21
 </td>
 <td>
-  −9.9
+ −22.1
 </td>
 <td style="color: red !important;">
-  83.4
+  85.2
 </td>
 </tr>
 <tr class="center">
@@ -1145,13 +1087,13 @@ d
 e
 </th>
 <td>
-22
+29
 </td>
 <td>
-  −5.3
+  12.3
 </td>
 <td style="color: red !important;">
- 113.4
+ 102.5
 </td>
 </tr>
 </tbody>
@@ -1159,6 +1101,9 @@ e
 <p>There are conflicts between the styling options from <code>kableExtra</code> and the ones specified in <code>table_options()$CSS</code>; some modifications might be needed to make everything work. For instance, the code above requests striping, but that did not show up. Experimentation may be needed!</p>
 </div>
 
+
+
+<!-- code folding -->
 
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

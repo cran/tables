@@ -21,10 +21,11 @@ toKable <- function(table, format = getKnitrFormat(), booktabs = TRUE, ...)
   
   if (format == "latex") {
     save <- if (booktabs) booktabs() else table_options()
-    lines <- paste0(capture.output(latex(table, ...)), collapse = "\n")
+    lines <- paste(toLatex(table)$text, collapse = "")
     table_options(save)
-  } else
-    lines <- paste0(capture.output(html(table, ...)), collapse = "\n")
+  } else {
+    lines <- toHTML(table)
+  }
   structure(lines,
 	  format = format, class = "knitr_kable",
 	  n_head = nrow(attr(table, "colLabels")))

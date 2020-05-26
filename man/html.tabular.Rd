@@ -1,5 +1,6 @@
 \name{html.tabular}
 \alias{html.tabular}
+\alias{toHTML}
 \alias{writeCSS}
 \title{
 Display a tabular object using HTML.
@@ -9,8 +10,10 @@ This is similar to \code{\link{print.tabular}}, but it inserts the code to
 display the table in an HTML table.
 }
 \usage{
-\method{html}{tabular}(object, file = "", options = NULL, 
-                       id = NULL, append = FALSE, ...)
+toHTML(object, file = "", options = NULL, 
+                       id = NULL, append = FALSE, 
+                       browsable = TRUE, ...)
+html.tabular(object, ...)
 writeCSS(CSS = htmloptions()$CSS, id = NULL)
 }
 \arguments{
@@ -32,6 +35,9 @@ CSS style, or \code{NULL}, for no id.
 If \code{TRUE}, opens \code{file} for appending (if it is
 a filename rather than a connection).
 }
+  \item{browsable}{
+Should the output be marked as browsable?  
+}
   \item{...}{
 Settings for default formatting.  See Details below.
 }  
@@ -40,7 +46,12 @@ A character vector to use as CSS.
 }
 }
 \details{
-The \code{html()} method produces HTML output suitable for inclusion in an HTML page.
+The \code{toHTML()} function produces HTML output suitable for inclusion in an HTML page.
+
+The \code{html.tabular} function is set up
+to work as a method for the \code{html} generic in \pkg{Hmisc},
+but is not registered as a method, so that \pkg{tables} can
+work when \pkg{Hmisc} is not installed.
 
 In HTML, it is mainly the CSS style sheet that determines the look of the table.  
 When formatting a table, \code{html.tabular} sets the CSS class according to the
@@ -53,11 +64,11 @@ See \code{\link{table_options}} for a number of options that control formatting,
 the default style sheet.
 }
 \value{
-The \code{html()} method writes the HTML code to \code{file} and returns a list containing 
-that name, with class \code{"html"}.
+The \code{toHTML()} function creates an HTML object using the
+\code{htmltools::HTML} function.
 }
 \seealso{
-\code{\link{print.tabular}}, \code{\link{latex.tabular}}, \code{\link[Hmisc]{html}}, \code{\link{htmloptions}}
+\code{\link{print.tabular}}, \code{\link{toLatex.tabular}}, \code{\link[Hmisc]{html}}, \code{\link{htmloptions}}
 }
 \examples{
 \donttest{
@@ -72,24 +83,24 @@ table_options(rowlabeljustification="c")
 f <- tempfile(fileext=".html")
 con <- file(f, "wt")
 
-html(tab, con, options=htmloptions(head=TRUE, table=FALSE))
+toHTML(tab, con, options=htmloptions(head=TRUE, table=FALSE))
 
 writeLines("<p>This table has pad = FALSE.  The centered numbers look
 sloppy.<br>", con)
 
-html(tab, con, options=htmloptions(head=FALSE, table=TRUE, pad=FALSE))
+toHTML(tab, con, options=htmloptions(head=FALSE, table=TRUE, pad=FALSE))
 
 writeLines("<p>This table has pad = FALSE and justification=\"r\".
 The justification makes the columns of numbers look all right (except
 for the hyphens used as minus signs), but they are placed poorly
 relative to the labels.<br>", con)
 
-html(tab, con, options=htmloptions(head=FALSE, table=TRUE, pad=FALSE, justification="r"))
+toHTML(tab, con, options=htmloptions(head=FALSE, table=TRUE, pad=FALSE, justification="r"))
 
 writeLines("<p>This one has pad = TRUE. It looks best, but if you cut
 and paste, the spacing characters may cause problems.<br>", con)
 
-html(tab, con, options=htmloptions(head=FALSE, table=TRUE, pad=TRUE))
+toHTML(tab, con, options=htmloptions(head=FALSE, table=TRUE, pad=TRUE))
 
 table_options(save)
 close(con)

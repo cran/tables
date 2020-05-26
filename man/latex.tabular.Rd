@@ -1,14 +1,19 @@
 \name{latex.tabular}
+\alias{toLatex}
 \alias{latex.tabular}
+\alias{toLatex.tabular}
 \title{
 Display a tabular object using LaTeX.
 }
 \description{
 This is similar to \code{\link{print.tabular}}, but it inserts the code to
-display the table in a LaTeX tabular environment.
+display the table in a LaTeX tabular environment.  The \code{toLatex.tabular} method works with the \code{\link{toLatex}} generic
+from \pkg{utils}.  
 }
 \usage{
-\method{latex}{tabular}(object, file = "", options = NULL, append = FALSE, ...)
+toLatex(object, ...)
+\method{toLatex}{tabular}(object, file = "", options = NULL, append = FALSE, ...)
+latex.tabular(object, ...)
 }
 \arguments{
   \item{object}{
@@ -30,21 +35,27 @@ Settings for default formatting.  See Details below.
 }  
 }
 \details{
-The \code{latex()} method produces LaTeX output suitable for inclusion in a \code{\link{Sweave}} document.
+The \code{toLatex()} method produces LaTeX output suitable for inclusion in a \code{\link{Sweave}} document. 
+
+The \code{latex.tabular} function is set up
+to work as a method for the \code{latex} generic in \pkg{Hmisc},
+but is not registered as a method, so that \pkg{tables} can
+work when \pkg{Hmisc} is not installed.
 }
 \value{
-The \code{latex()} method returns \code{x} invisibly, and prints the LaTeX script to the console.
+The \code{toLatex()} method returns \code{x} invisibly, and prints the LaTeX script to the console.
 
 \code{table_options()} and \code{booktabs()} return the previous settings.
 }
 \seealso{
-\code{\link{print.tabular}}, \code{\link{table_options}}, \code{\link[Hmisc]{latex}}
+\code{\link{print.tabular}}, \code{\link{table_options}},
+\code{\link{toLatex}}, \code{\link[Hmisc]{latex}}
 }
 \examples{
 tab <- tabular( (Species + 1) ~ (n=1) + Format(digits=2)*
          (Sepal.Length + Sepal.Width)*(mean + sd), data=iris )
-latex(tab)
+toLatex(tab)
 save <- booktabs()
-latex(tab)
+toLatex(tab)
 table_options(save)
 }

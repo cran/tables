@@ -1,6 +1,6 @@
 All <- function(df, numeric=TRUE, character=FALSE, logical=FALSE, factor=FALSE,
 		    complex=FALSE, raw=FALSE, other=FALSE,
-		    texify=TRUE) {
+		    texify=getOption("tables.texify", FALSE)) {
 
     if (is.character(numeric)) numeric <- get(numeric, mode="function", 
     	envir=parent.frame())

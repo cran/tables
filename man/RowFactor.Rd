@@ -13,17 +13,20 @@ LaTeX, and displays the label in a style with the level on a line by
 itself, spanning multiple columns.
 }
 \usage{
-Factor(x, name = deparse(expr), levelnames = levels(x), texify = TRUE, 
+Factor(x, name = deparse(expr), levelnames = levels(x), 
+       texify = getOption("tables.texify", FALSE), 
        expr = substitute(x), override = TRUE)
 RowFactor(x, name = deparse(expr), 
 	  levelnames = levels(x), 
           spacing = 3, space = 1, suppressfirst = TRUE,
           nopagebreak = "\\\\nopagebreak ",
-          texify = TRUE, expr = substitute(x),
+          texify = getOption("tables.texify", FALSE), 
+          expr = substitute(x),
           override = TRUE)
 Multicolumn(x, name = deparse(expr), levelnames = levels(x), 
             width=2, first=1, justify="l",
-            texify = TRUE, expr = substitute(x),
+            texify = getOption("tables.texify", FALSE), 
+            expr = substitute(x),
             override = TRUE)
 }
 \arguments{
@@ -78,6 +81,6 @@ Language to insert into the table formula to achieve the desired table.
 \examples{
 tabular( Factor(1:10, "row") ~
        All(iris[1:10,])*Heading()*identity )
-latex( tabular( RowFactor(1:10, "", 5)  ~ 
+toLatex( tabular( RowFactor(1:10, "", 5)  ~ 
        All(iris[1:10,])*Heading()*identity )) 
 }

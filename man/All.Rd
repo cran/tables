@@ -9,7 +9,7 @@ This constructs a formula object for all the columns of a dataframe.
 \usage{
 All(df, numeric=TRUE, character=FALSE, logical=FALSE, factor=FALSE, 
         complex=FALSE, raw=FALSE, other=FALSE,
-        texify=TRUE)
+        texify=getOption("tables.texify", FALSE))
 }
 \arguments{
   \item{df}{
