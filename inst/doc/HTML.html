@@ -16,6 +16,22 @@
 
 <title>HTML Tables</title>
 
+<script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
+// v0.0.1
+// Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
+
+document.addEventListener('DOMContentLoaded', function() {
+  const codeList = document.getElementsByClassName("sourceCode");
+  for (var i = 0; i < codeList.length; i++) {
+    var linkList = codeList[i].getElementsByTagName('a');
+    for (var j = 0; j < linkList.length; j++) {
+      if (linkList[j].innerHTML === "") {
+        linkList[j].setAttribute('aria-hidden', 'true');
+      }
+    }
+  }
+});
+</script>
 <script>$(document).ready(function(){
     if (typeof $('[data-toggle="tooltip"]').tooltip === 'function') {
         $('[data-toggle="tooltip"]').tooltip();
@@ -25,13 +41,199 @@
     }
 });
 </script>
+<style type="text/css">
+.lightable-minimal {
+border-collapse: separate;
+border-spacing: 16px 1px;
+width: 100%;
+margin-bottom: 10px;
+}
+.lightable-minimal td {
+margin-left: 5px;
+margin-right: 5px;
+}
+.lightable-minimal th {
+margin-left: 5px;
+margin-right: 5px;
+}
+.lightable-minimal thead tr:last-child th {
+border-bottom: 2px solid #00000050;
+empty-cells: hide;
+}
+.lightable-minimal tbody tr:first-child td {
+padding-top: 0.5em;
+}
+.lightable-minimal.lightable-hover tbody tr:hover {
+background-color: #f5f5f5;
+}
+.lightable-minimal.lightable-striped tbody tr:nth-child(even) {
+background-color: #f5f5f5;
+}
+.lightable-classic {
+border-top: 0.16em solid #111111;
+width: 100%;
+margin-bottom: 10px;
+margin: 10px 5px;
+}
+.lightable-classic caption {
+color: #222222;
+}
+.lightable-classic td {
+padding-left: 5px;
+padding-right: 5px;
+color: #222222;
+}
+.lightable-classic th {
+padding-left: 5px;
+padding-right: 5px;
+font-weight: normal;
+color: #222222;
+}
+.lightable-classic thead tr:last-child th {
+border-bottom: 0.10em solid #111111;
+}
+.lightable-classic tbody tr:last-child td {
+border-bottom: 0.14em solid #111111;
+}
+.lightable-classic.lightable-hover tbody tr:hover {
+background-color: #F9EEC1;
+}
+.lightable-classic.lightable-striped tbody tr:nth-child(even) {
+background-color: #f5f5f5;
+}
+.lightable-classic-2 {
+border-top: 3px double #111111;
+width: 100%;
+margin-bottom: 10px;
+}
+.lightable-classic-2 caption {
+color: #222222;
+}
+.lightable-classic-2 td {
+padding-left: 5px;
+padding-right: 5px;
+color: #222222;
+}
+.lightable-classic-2 th {
+padding-left: 5px;
+padding-right: 5px;
+font-weight: normal;
+color: #222222;
+}
+.lightable-classic-2 tbody tr:last-child td {
+border-bottom: 3px double #111111;
+}
+.lightable-classic-2 thead tr:last-child th {
+border-bottom: 1px solid #111111;
+}
+.lightable-classic-2.lightable-hover tbody tr:hover {
+background-color: #F9EEC1;
+}
+.lightable-classic-2.lightable-striped tbody tr:nth-child(even) {
+background-color: #f5f5f5;
+}
+.lightable-material {
+min-width: 100%;
+white-space: nowrap;
+table-layout: fixed;
+font-family: Roboto, sans-serif;
+border: 1px solid #EEE;
+border-collapse: collapse;
+margin-bottom: 10px;
+}
+.lightable-material th {
+height: 56px;
+padding-left: 16px;
+padding-right: 16px;
+}
+.lightable-material td {
+height: 52px;
+padding-left: 16px;
+padding-right: 16px;
+border-top: 1px solid #eeeeee;
+}
+.lightable-material.lightable-hover tbody tr:hover {
+background-color: #f5f5f5;
+}
+.lightable-material.lightable-striped tbody tr:nth-child(even) {
+background-color: #f5f5f5;
+}
+.lightable-material.lightable-striped tbody td {
+border: 0;
+}
+.lightable-material.lightable-striped thead tr:last-child th {
+border-bottom: 1px solid #ddd;
+}
+.lightable-material-dark {
+min-width: 100%;
+white-space: nowrap;
+table-layout: fixed;
+font-family: Roboto, sans-serif;
+border: 1px solid #FFFFFF12;
+border-collapse: collapse;
+margin-bottom: 10px;
+background-color: #363640;
+}
+.lightable-material-dark th {
+height: 56px;
+padding-left: 16px;
+padding-right: 16px;
+color: #FFFFFF60;
+}
+.lightable-material-dark td {
+height: 52px;
+padding-left: 16px;
+padding-right: 16px;
+color: #FFFFFF;
+border-top: 1px solid #FFFFFF12;
+}
+.lightable-material-dark.lightable-hover tbody tr:hover {
+background-color: #FFFFFF12;
+}
+.lightable-material-dark.lightable-striped tbody tr:nth-child(even) {
+background-color: #FFFFFF12;
+}
+.lightable-material-dark.lightable-striped tbody td {
+border: 0;
+}
+.lightable-material-dark.lightable-striped thead tr:last-child th {
+border-bottom: 1px solid #FFFFFF12;
+}
+.lightable-paper {
+width: 100%;
+margin-bottom: 10px;
+color: #444;
+}
+.lightable-paper thead tr:last-child th {
+color: #666;
+vertical-align: bottom;
+border-bottom: 1px solid #00000020;
+line-height: 1.15em;
+padding: 10px 5px;
+}
+.lightable-paper td {
+vertical-align: middle;
+border-bottom: 1px solid #00000010;
+line-height: 1.15em;
+padding: 7px 5px;
+}
+.lightable-paper.lightable-hover tbody tr:hover {
+background-color: #F9EEC1;
+}
+.lightable-paper.lightable-striped tbody tr:nth-child(even) {
+background-color: #00000008;
+}
+.lightable-paper.lightable-striped tbody td {
+border: 0;
+}
+</style>
 
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css" data-origin="pandoc">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
 div.sourceCode { margin: 1em 0; }
@@ -41,14 +243,16 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -57,9 +261,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -318,18 +522,18 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="initializing" class="section level2">
 <h2>Initializing</h2>
 <p>First, you need to load <code>tables</code>. Packages that it uses print banner messages, so you’ll usually want to set a chunk option of <code>message=FALSE</code>.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(tables)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">library</span>(tables)</span></code></pre></div>
 <p>The table is now constructed in the usual way.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">X &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">125</span>, <span class="dt">sd=</span><span class="dv">100</span>)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">Group &lt;-<span class="st"> </span><span class="kw">factor</span>(<span class="kw">sample</span>(letters[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>], <span class="dv">125</span>, <span class="dt">rep=</span><span class="ot">TRUE</span>))</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">tab &lt;-<span class="st"> </span><span class="kw">tabular</span>( Group <span class="op">~</span><span class="st"> </span>(<span class="dt">N=</span><span class="dv">1</span>)<span class="op">+</span><span class="kw">Format</span>(<span class="dt">digits=</span><span class="dv">2</span>)<span class="op">*</span>X<span class="op">*</span>((<span class="dt">Mean=</span>mean) <span class="op">+</span><span class="st"> </span><span class="kw">Heading</span>(<span class="st">&quot;Std Dev&quot;</span>)<span class="op">*</span>sd) )</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>X &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">125</span>, <span class="dt">sd=</span><span class="dv">100</span>)</span>
+<span id="cb2-2"><a href="#cb2-2"></a>Group &lt;-<span class="st"> </span><span class="kw">factor</span>(<span class="kw">sample</span>(letters[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>], <span class="dv">125</span>, <span class="dt">rep=</span><span class="ot">TRUE</span>))</span>
+<span id="cb2-3"><a href="#cb2-3"></a>tab &lt;-<span class="st"> </span><span class="kw">tabular</span>( Group <span class="op">~</span><span class="st"> </span>(<span class="dt">N=</span><span class="dv">1</span>)<span class="op">+</span><span class="kw">Format</span>(<span class="dt">digits=</span><span class="dv">2</span>)<span class="op">*</span>X<span class="op">*</span>((<span class="dt">Mean=</span>mean) <span class="op">+</span><span class="st"> </span><span class="kw">Heading</span>(<span class="st">&quot;Std Dev&quot;</span>)<span class="op">*</span>sd) )</span></code></pre></div>
 <p>In an R Markdown document, you don’t want each table to output the HTML document header, so turn off those options:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">table_options</span>(<span class="kw">htmloptions</span>(<span class="dt">head=</span><span class="ot">FALSE</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">table_options</span>(<span class="kw">htmloptions</span>(<span class="dt">head=</span><span class="ot">FALSE</span>))</span></code></pre></div>
 </div>
 <div id="inserting-a-table" class="section level2">
 <h2>Inserting a Table</h2>
 <p>There are two ways to insert a table into a knitr/rmarkdown document. Since tables version 0.8.4, you can just print the object, and it will be automatically formatted according to the current <code>table_options()</code>:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">tab</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>tab</span></code></pre></div>
 <table class="Rtable">
 <thead>
 <tr class="center">
@@ -364,13 +568,13 @@ Std Dev
 a
 </th>
 <td>
-27
+23
 </td>
 <td>
--11.2
+6.2
 </td>
 <td>
-110.9
+80.7
 </td>
 </tr>
 <tr class="center">
@@ -378,13 +582,13 @@ a
 b
 </th>
 <td>
-26
+29
 </td>
 <td>
--19.8
+16.1
 </td>
 <td>
-111.0
+90.3
 </td>
 </tr>
 <tr class="center">
@@ -392,13 +596,13 @@ b
 c
 </th>
 <td>
-22
+17
 </td>
 <td>
-7.6
+-26.9
 </td>
 <td>
-97.2
+73.1
 </td>
 </tr>
 <tr class="center">
@@ -406,13 +610,13 @@ c
 d
 </th>
 <td>
-21
+30
 </td>
 <td>
--22.1
+-23.4
 </td>
 <td>
-85.2
+102.5
 </td>
 </tr>
 <tr class="center">
@@ -420,29 +624,29 @@ d
 e
 </th>
 <td>
-29
+26
 </td>
 <td>
-12.3
+29.4
 </td>
 <td>
-102.5
+95.8
 </td>
 </tr>
 </tbody>
 </table>
-<p>The previous behaviour required an explicit call to the <code>toHTML()</code> function, and knitr option <code>results = 'asis'</code> for the chunk. To <em>require</em> the older method, use <code>table_options(knit_print = FALSE)</code>:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">table_options</span>(<span class="dt">knit_print =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">tab        <span class="co"># This chunk uses the default results = 'markup'</span></a></code></pre></div>
+<p>The previous behaviour required an explicit call to the <code>toHTML()</code> function, and knitr option <code>results = &#39;asis&#39;</code> for the chunk. To <em>require</em> the older method, use <code>table_options(knit_print = FALSE)</code>:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">table_options</span>(<span class="dt">knit_print =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb5-2"><a href="#cb5-2"></a>tab        <span class="co"># This chunk uses the default results = &#39;markup&#39;</span></span></code></pre></div>
 <pre><code>##                        
 ##           X            
 ##  Group N  Mean  Std Dev
-##  a     27 -11.2 110.9  
-##  b     26 -19.8 111.0  
-##  c     22   7.6  97.2  
-##  d     21 -22.1  85.2  
-##  e     29  12.3 102.5</code></pre>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">toHTML</span>(tab)  <span class="co"># This chunk uses results = 'asis'</span></a></code></pre></div>
+##  a     23   6.2  80.7  
+##  b     29  16.1  90.3  
+##  c     17 -26.9  73.1  
+##  d     30 -23.4 102.5  
+##  e     26  29.4  95.8</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">toHTML</span>(tab)  <span class="co"># This chunk uses results = &#39;asis&#39;</span></span></code></pre></div>
 <table class="Rtable">
  <thead>
  <tr class="center">
@@ -460,39 +664,39 @@ e
  <tbody>
  <tr class="center">
   <th class="left">a</th>
-  <td>27</td>
-  <td>-11.2</td>
-  <td>110.9</td>
+  <td>23</td>
+  <td>  6.2</td>
+  <td> 80.7</td>
 </tr>
  <tr class="center">
   <th class="left">b</th>
-  <td>26</td>
-  <td>-19.8</td>
-  <td>111.0</td>
+  <td>29</td>
+  <td> 16.1</td>
+  <td> 90.3</td>
 </tr>
  <tr class="center">
   <th class="left">c</th>
-  <td>22</td>
-  <td>  7.6</td>
-  <td> 97.2</td>
+  <td>17</td>
+  <td>-26.9</td>
+  <td> 73.1</td>
 </tr>
  <tr class="center">
   <th class="left">d</th>
-  <td>21</td>
-  <td>-22.1</td>
-  <td> 85.2</td>
+  <td>30</td>
+  <td>-23.4</td>
+  <td>102.5</td>
 </tr>
  <tr class="center">
   <th class="left">e</th>
-  <td>29</td>
-  <td> 12.3</td>
-  <td>102.5</td>
+  <td>26</td>
+  <td> 29.4</td>
+  <td> 95.8</td>
 </tr>
  </tbody>
  </table>
 
-<p>In either case, some styling information needs to be included in the document. Ideally this should be in the header, but it can be inserted anywhere by calling <code>writeCSS</code> with <code>results = 'asis'</code>:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">writeCSS</span>()</a></code></pre></div>
+<p>In either case, some styling information needs to be included in the document. Ideally this should be in the header, but it can be inserted anywhere by calling <code>writeCSS</code> with <code>results = &#39;asis&#39;</code>:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">writeCSS</span>()</span></code></pre></div>
 <style>
 .Rtable thead, .Rtable .even {
   background-color: inherit;
@@ -516,8 +720,8 @@ e
 <div id="improving-the-look" class="section level2">
 <h2>Improving the Look</h2>
 <p>The default justification makes the columns of numbers look messy. You can set the justification to the right, but the headers look wrong:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">table_options</span>(<span class="kw">htmloptions</span>(<span class="dt">head =</span> <span class="ot">FALSE</span>, <span class="dt">justification =</span> <span class="st">&quot;r&quot;</span>, <span class="dt">knit_print =</span> <span class="ot">TRUE</span>))</a>
-<a class="sourceLine" id="cb9-2" data-line-number="2">tab</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">table_options</span>(<span class="kw">htmloptions</span>(<span class="dt">head =</span> <span class="ot">FALSE</span>, <span class="dt">justification =</span> <span class="st">&quot;r&quot;</span>, <span class="dt">knit_print =</span> <span class="ot">TRUE</span>))</span>
+<span id="cb9-2"><a href="#cb9-2"></a>tab</span></code></pre></div>
 <table class="Rtable">
 <thead>
 <tr class="right">
@@ -552,13 +756,13 @@ Std Dev
 a
 </th>
 <td>
-27
+23
 </td>
 <td>
--11.2
+6.2
 </td>
 <td>
-110.9
+80.7
 </td>
 </tr>
 <tr class="right">
@@ -566,13 +770,13 @@ a
 b
 </th>
 <td>
-26
+29
 </td>
 <td>
--19.8
+16.1
 </td>
 <td>
-111.0
+90.3
 </td>
 </tr>
 <tr class="right">
@@ -580,13 +784,13 @@ b
 c
 </th>
 <td>
-22
+17
 </td>
 <td>
-7.6
+-26.9
 </td>
 <td>
-97.2
+73.1
 </td>
 </tr>
 <tr class="right">
@@ -594,34 +798,34 @@ c
 d
 </th>
 <td>
-21
+30
 </td>
 <td>
--22.1
-</td>
-<td>
-85.2
-</td>
-</tr>
-<tr class="right">
-<th class="left">
-e
-</th>
-<td>
-29
-</td>
-<td>
-12.3
+-23.4
 </td>
 <td>
 102.5
 </td>
 </tr>
+<tr class="right">
+<th class="left">
+e
+</th>
+<td>
+26
+</td>
+<td>
+29.4
+</td>
+<td>
+95.8
+</td>
+</tr>
 </tbody>
 </table>
 <p>The best look comes with the <code>pad = TRUE</code> option. This adds nonbreaking spaces around the numbers so that centering looks good. It also changes the hyphens to proper minus signs:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw">table_options</span>(<span class="kw">htmloptions</span>(<span class="dt">head =</span> <span class="ot">FALSE</span>, <span class="dt">justification =</span> <span class="st">&quot;c&quot;</span>, <span class="dt">pad =</span> <span class="ot">TRUE</span>))</a>
-<a class="sourceLine" id="cb10-2" data-line-number="2">tab</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw">table_options</span>(<span class="kw">htmloptions</span>(<span class="dt">head =</span> <span class="ot">FALSE</span>, <span class="dt">justification =</span> <span class="st">&quot;c&quot;</span>, <span class="dt">pad =</span> <span class="ot">TRUE</span>))</span>
+<span id="cb10-2"><a href="#cb10-2"></a>tab</span></code></pre></div>
 <table class="Rtable">
 <thead>
 <tr class="center">
@@ -656,13 +860,13 @@ Std Dev
 a
 </th>
 <td>
-27
+23
 </td>
 <td>
- −11.2
+   6.2
 </td>
 <td>
- 110.9
+  80.7
 </td>
 </tr>
 <tr class="center">
@@ -670,13 +874,13 @@ a
 b
 </th>
 <td>
-26
+29
 </td>
 <td>
- −19.8
+  16.1
 </td>
 <td>
- 111.0
+  90.3
 </td>
 </tr>
 <tr class="center">
@@ -684,13 +888,13 @@ b
 c
 </th>
 <td>
-22
+17
 </td>
 <td>
-   7.6
+ −26.9
 </td>
 <td>
-  97.2
+  73.1
 </td>
 </tr>
 <tr class="center">
@@ -698,13 +902,13 @@ c
 d
 </th>
 <td>
-21
+30
 </td>
 <td>
- −22.1
+ −23.4
 </td>
 <td>
-  85.2
+ 102.5
 </td>
 </tr>
 <tr class="center">
@@ -712,13 +916,13 @@ d
 e
 </th>
 <td>
-29
+26
 </td>
 <td>
-  12.3
+  29.4
 </td>
 <td>
- 102.5
+  95.8
 </td>
 </tr>
 </tbody>
@@ -750,21 +954,21 @@ e
 }
 &lt;/style&gt;</code></pre>
 <p>Note that the <code>#ID</code> values will be replaced with the <code>id</code> string given in <code>writeCSS()</code>, and <code>toHTML()</code> has a corresponding argument to allow you to make changes for one specific table. If you are using the newer form of display with <code>table_options(knit_print = TRUE)</code>, you can get customized display for one table by also using <code>table_options(doCSS = TRUE)</code>. For example,</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw">table_options</span>(<span class="dt">CSS =</span></a>
-<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="st">&quot;&lt;style&gt;</span></a>
-<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="st">#ID .center { </span></a>
-<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="st">  text-align:center;</span></a>
-<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="st">  background-color: aliceblue;</span></a>
-<a class="sourceLine" id="cb12-6" data-line-number="6"><span class="st">}</span></a>
-<a class="sourceLine" id="cb12-7" data-line-number="7"><span class="st">&lt;/style&gt;&quot;</span>, <span class="dt">doCSS =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb12-8" data-line-number="8">tab</a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="kw">table_options</span>(<span class="dt">CSS =</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a><span class="st">&quot;&lt;style&gt;</span></span>
+<span id="cb12-3"><a href="#cb12-3"></a><span class="st">#ID .center { </span></span>
+<span id="cb12-4"><a href="#cb12-4"></a><span class="st">  text-align:center;</span></span>
+<span id="cb12-5"><a href="#cb12-5"></a><span class="st">  background-color: aliceblue;</span></span>
+<span id="cb12-6"><a href="#cb12-6"></a><span class="st">}</span></span>
+<span id="cb12-7"><a href="#cb12-7"></a><span class="st">&lt;/style&gt;&quot;</span>, <span class="dt">doCSS =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb12-8"><a href="#cb12-8"></a>tab</span></code></pre></div>
 <style>
-#table3663587ebf07 .center { 
+#table274e9105169 .center { 
   text-align:center;
   background-color: aliceblue;
 }
 </style>
-<table id="table3663587ebf07" class="Rtable">
+<table id="table274e9105169" class="Rtable">
 <thead>
 <tr class="center">
 <th>
@@ -798,13 +1002,13 @@ Std Dev
 a
 </th>
 <td>
-27
+23
 </td>
 <td>
- −11.2
+   6.2
 </td>
 <td>
- 110.9
+  80.7
 </td>
 </tr>
 <tr class="center">
@@ -812,13 +1016,13 @@ a
 b
 </th>
 <td>
-26
+29
 </td>
 <td>
- −19.8
+  16.1
 </td>
 <td>
- 111.0
+  90.3
 </td>
 </tr>
 <tr class="center">
@@ -826,13 +1030,13 @@ b
 c
 </th>
 <td>
-22
+17
 </td>
 <td>
-   7.6
+ −26.9
 </td>
 <td>
-  97.2
+  73.1
 </td>
 </tr>
 <tr class="center">
@@ -840,13 +1044,13 @@ c
 d
 </th>
 <td>
-21
+30
 </td>
 <td>
- −22.1
+ −23.4
 </td>
 <td>
-  85.2
+ 102.5
 </td>
 </tr>
 <tr class="center">
@@ -854,19 +1058,19 @@ d
 e
 </th>
 <td>
-29
+26
 </td>
 <td>
-  12.3
+  29.4
 </td>
 <td>
- 102.5
+  95.8
 </td>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw">table_options</span>(<span class="dt">doCSS =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb13-2" data-line-number="2">tab</a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="kw">table_options</span>(<span class="dt">doCSS =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb13-2"><a href="#cb13-2"></a>tab</span></code></pre></div>
 <table class="Rtable">
 <thead>
 <tr class="center">
@@ -901,13 +1105,13 @@ Std Dev
 a
 </th>
 <td>
-27
+23
 </td>
 <td>
- −11.2
+   6.2
 </td>
 <td>
- 110.9
+  80.7
 </td>
 </tr>
 <tr class="center">
@@ -915,13 +1119,13 @@ a
 b
 </th>
 <td>
-26
+29
 </td>
 <td>
- −19.8
+  16.1
 </td>
 <td>
- 111.0
+  90.3
 </td>
 </tr>
 <tr class="center">
@@ -929,13 +1133,13 @@ b
 c
 </th>
 <td>
-22
+17
 </td>
 <td>
-   7.6
+ −26.9
 </td>
 <td>
-  97.2
+  73.1
 </td>
 </tr>
 <tr class="center">
@@ -943,13 +1147,13 @@ c
 d
 </th>
 <td>
-21
+30
 </td>
 <td>
- −22.1
+ −23.4
 </td>
 <td>
-  85.2
+ 102.5
 </td>
 </tr>
 <tr class="center">
@@ -957,13 +1161,13 @@ d
 e
 </th>
 <td>
-29
+26
 </td>
 <td>
-  12.3
+  29.4
 </td>
 <td>
- 102.5
+  95.8
 </td>
 </tr>
 </tbody>
@@ -972,23 +1176,23 @@ e
 <div id="kableextra-support" class="section level2">
 <h2>kableExtra support</h2>
 <p>The kableExtra package contains a large number of functions to customize the look of tables generated by the <code>knitr::kable()</code> function. These can also be made to work with tables from this package, using the <code>toKable()</code> function. For example,</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw">library</span>(magrittr)</a>
-<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="kw">library</span>(kableExtra)</a>
-<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="kw">toKable</span>(tab, <span class="dt">format=</span><span class="st">&quot;html&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="st">  </span><span class="kw">kable_styling</span>(<span class="st">&quot;striped&quot;</span>, <span class="dt">position =</span> <span class="st">&quot;float_right&quot;</span>, <span class="dt">full_width =</span> <span class="ot">FALSE</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb14-5" data-line-number="5"><span class="st">  </span><span class="kw">add_header_above</span>(<span class="kw">c</span>(<span class="st">&quot;Row Label&quot;</span> =<span class="st"> </span><span class="dv">1</span>, <span class="st">&quot;Statistics&quot;</span> =<span class="st"> </span><span class="dv">3</span>)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb14-6" data-line-number="6"><span class="st">  </span><span class="kw">column_spec</span>(<span class="dv">4</span>, <span class="dt">color =</span> <span class="st">&quot;red&quot;</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb14-7" data-line-number="7"><span class="st">  </span><span class="kw">row_spec</span>(<span class="dv">1</span>, <span class="dt">color =</span> <span class="st">&quot;blue&quot;</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb14-8" data-line-number="8"><span class="st">  </span><span class="kw">group_rows</span>(<span class="st">&quot;Subgroup&quot;</span>, <span class="dv">3</span>, <span class="dv">5</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="kw">library</span>(magrittr)</span>
+<span id="cb14-2"><a href="#cb14-2"></a><span class="kw">library</span>(kableExtra)</span>
+<span id="cb14-3"><a href="#cb14-3"></a><span class="kw">toKable</span>(tab, <span class="dt">format=</span><span class="st">&quot;html&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb14-4"><a href="#cb14-4"></a><span class="st">  </span><span class="kw">kable_styling</span>(<span class="st">&quot;striped&quot;</span>, <span class="dt">position =</span> <span class="st">&quot;float_right&quot;</span>, <span class="dt">full_width =</span> <span class="ot">FALSE</span>) <span class="op">%&gt;%</span></span>
+<span id="cb14-5"><a href="#cb14-5"></a><span class="st">  </span><span class="kw">add_header_above</span>(<span class="kw">c</span>(<span class="st">&quot;Row Label&quot;</span> =<span class="st"> </span><span class="dv">1</span>, <span class="st">&quot;Statistics&quot;</span> =<span class="st"> </span><span class="dv">3</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb14-6"><a href="#cb14-6"></a><span class="st">  </span><span class="kw">column_spec</span>(<span class="dv">4</span>, <span class="dt">color =</span> <span class="st">&quot;red&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb14-7"><a href="#cb14-7"></a><span class="st">  </span><span class="kw">row_spec</span>(<span class="dv">1</span>, <span class="dt">color =</span> <span class="st">&quot;blue&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb14-8"><a href="#cb14-8"></a><span class="st">  </span><span class="kw">group_rows</span>(<span class="st">&quot;Subgroup&quot;</span>, <span class="dv">3</span>, <span class="dv">5</span>)</span></code></pre></div>
 <table class="Rtable table table-striped" style="width: auto !important; float: right; margin-left: 10px;">
 <thead>
 <tr>
-<th style="border-bottom:hidden; padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1">
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1">
 <div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
 Row Label
 </div>
 </th>
-<th style="border-bottom:hidden; padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="3">
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="3">
 <div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
 Statistics
 </div>
@@ -1026,13 +1230,13 @@ Std Dev
 a
 </th>
 <td style="color: blue !important;">
-27
+23
 </td>
 <td style="color: blue !important;">
- −11.2
+   6.2
 </td>
 <td style="color: red !important;color: blue !important;">
- 110.9
+  80.7
 </td>
 </tr>
 <tr class="center">
@@ -1040,13 +1244,13 @@ a
 b
 </th>
 <td>
-26
+29
 </td>
 <td>
- −19.8
+  16.1
 </td>
 <td style="color: red !important;">
- 111.0
+  90.3
 </td>
 </tr>
 <tr grouplength="3">
@@ -1055,45 +1259,45 @@ b
 </td>
 </tr>
 <tr class="center">
-<th class="left" style="NA padding-left: 2em;" indentlevel="1">
+<th class="left" style="NA padding-left:  2em;" indentlevel="1">
 c
 </th>
 <td>
-22
+17
 </td>
 <td>
-   7.6
+ −26.9
 </td>
 <td style="color: red !important;">
-  97.2
+  73.1
 </td>
 </tr>
 <tr class="center">
-<th class="left" style="NA padding-left: 2em;" indentlevel="1">
+<th class="left" style="NA padding-left:  2em;" indentlevel="1">
 d
 </th>
 <td>
-21
+30
 </td>
 <td>
- −22.1
-</td>
-<td style="color: red !important;">
-  85.2
-</td>
-</tr>
-<tr class="center">
-<th class="left" style="NA padding-left: 2em;" indentlevel="1">
-e
-</th>
-<td>
-29
-</td>
-<td>
-  12.3
+ −23.4
 </td>
 <td style="color: red !important;">
  102.5
+</td>
+</tr>
+<tr class="center">
+<th class="left" style="NA padding-left:  2em;" indentlevel="1">
+e
+</th>
+<td>
+26
+</td>
+<td>
+  29.4
+</td>
+<td style="color: red !important;">
+  95.8
 </td>
 </tr>
 </tbody>

@@ -1,4 +1,4 @@
-4d4403ae1b1ae43b38bc80834c233f1b *DESCRIPTION
+4566941e65289031a1618a3e93f3d5bf *DESCRIPTION
 f44f77a96d6ef627e375367e0423add1 *NAMESPACE
 c5d24e70edc73f093a2a2327934501cb *R/All.R
 2f2af156a2d61dd12f45f7d68c5c12ca *R/AllObs.R
@@ -17,17 +17,17 @@ aad8ba7294cd3d19eb6d1e0401cde1a8 *R/table.R
 c40a09d832f3ff6a2cccce04ff6842a3 *R/tabular.R
 1a5ae63082273e29403bae92299163e8 *R/toKable.R
 698eaf98da9c8942274e5652b2e58395 *R/write.R
-7bd2acdeacef1b94d1d7bd1b31fdf86f *build/vignette.rds
-42444fb07aa68250a52a1dab22dc3ef3 *inst/NEWS
+8828533dc1bc57ad917797de3d83ab10 *build/vignette.rds
+821e79eda5dc1e7e84a996dfaf7e4a71 *inst/NEWS
 fb6f9b0d25fbf8d9f919b8b896a6ca00 *inst/doc/HTML.R
 3d2b7bfe6ffbcb1c78b6d3fcb8b4b1ed *inst/doc/HTML.Rmd
-81ce4ece65e52032f52c52ed654866b9 *inst/doc/HTML.html
+57fb68dacaa2deb5d4f3fe7ee182cb10 *inst/doc/HTML.html
 453e14962b14babddc62d33757545c3a *inst/doc/knitrTables.R
 59f95ea635f34ef8a4c2be7b4a95de8a *inst/doc/knitrTables.Rmd
-320c73cccd3c5835f40739ee6de3c1da *inst/doc/knitrTables.pdf
+9dd21d653e8483e665a2f3768ea8f1fc *inst/doc/knitrTables.pdf
 fb53ba9d8661209870da0e1a9da21a0d *inst/doc/tables.R
 67859e845f0efe7b6d415d6b392ce9aa *inst/doc/tables.Rnw
-3e3863cb88b5e00bc91a2439ec9130e6 *inst/doc/tables.pdf
+a16c19eedc9b6aa8189909db60199aab *inst/doc/tables.pdf
 5d8d115dcbea373182a0dbffc7881440 *inst/todo.txt
 787603b22b421dc4a372a499bc54b98b *man/All.Rd
 b90a6a3746be2cf5c0c04b4eb3d6cbbf *man/AllObs.Rd
@@ -58,5 +58,5 @@ f4a9e4f471b61ac3576f8cd9d32085ea *man/write.csv.tabular.Rd
 3d2b7bfe6ffbcb1c78b6d3fcb8b4b1ed *vignettes/HTML.Rmd
 59f95ea635f34ef8a4c2be7b4a95de8a *vignettes/knitrTables.Rmd
 67859e845f0efe7b6d415d6b392ce9aa *vignettes/tables.Rnw
-800da26437745596caf94b8e04aa044a *vignettes/tables.Rout.save
+77be1ecf72dbc9bdcca7155c6404e200 *vignettes/tables.Rout.save
 d29e140876506deac1c04ecdeb4c9f5d *vignettes/tables.bib

@@ -144,3 +144,6 @@
 0.9.3:
       Added latexTable() function, to provide captions, labels, etc.
       Added knitrTable vignette.
+      
+0.9.4:
+      Minor update to fix test note.
