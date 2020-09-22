@@ -2,6 +2,12 @@
 knitr::opts_chunk$set(echo = TRUE)
 options(width=60)
 
+## ----echo = FALSE-----------------------------------------
+if (!requireNamespace("rmarkdown") || !rmarkdown::pandoc_available("1.12.3")) {
+  warning("This vignette requires pandoc version 1.12.3; code will not run in older versions.")
+  knitr::opts_chunk$set(eval = FALSE)
+}
+
 ## ----echo=FALSE-------------------------------------------
 library(tables)
 table_options(knit_print = FALSE)
