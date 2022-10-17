@@ -165,7 +165,17 @@ toHTML <- function(object, file = "",
   }
   if (opts$doEnd)
     mycat("</table>\n")
-  browsable(HTML(output), value = browsable)
+  
+  result <- browsable(HTML(output), value = browsable)
+  if (!identical(file, "")) {
+    if (is.character(file)) {
+      file <- file(file, open = if (append) "at" else "wt")
+      on.exit(close(file))
+    }
+    writeLines(output, file)
+    invisible(result)
+  } else
+    result
 }
 
 html.tabular <- function(object, ...) {

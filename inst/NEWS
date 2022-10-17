@@ -147,3 +147,15 @@
       
 0.9.4:
       Minor update to fix test note.
+
+0.9.7:
+      toHTML() was ignoring the file argument.
+
+0.9.8:
+      All() didn't work with tibbles.  (Reported by Vincent Arel-Bundock.)
+      
+0.9.10:
+      rbind() failed in a complicated example, because the classes
+      or names of the column labels differed.
+      Error messages for rbind() and cbind() have been made more
+      helpful.

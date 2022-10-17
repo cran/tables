@@ -691,14 +691,14 @@ tabular.formula <- function(table, data=NULL, n, suppressLabels=0, ...) {
     	formats <- formats[!droprow, !dropcol]
     	justifications <- justifications[!droprow, !dropcol, drop = FALSE]
     	dropcells <- dropcells[!droprow, !dropcol, drop = FALSE]
-    	save <- class(rlabels)
-    	class(rlabels) <- c("tabularRowLabels", save)
+    	save <- oldClass(rlabels)
+    	oldClass(rlabels) <- c("tabularRowLabels", save)
     	rlabels <- rlabels[!droprow,, drop = FALSE]
-    	class(rlabels) <- save
-    	save <- class(clabels)
-    	class(clabels) <- c("tabularColLabels", save)
+    	oldClass(rlabels) <- save
+    	save <- oldClass(clabels)
+    	oldClass(clabels) <- c("tabularColLabels", save)
     	clabels <- clabels[, !dropcol, drop = FALSE]
-    	class(clabels) <- save
+    	oldClass(clabels) <- save
     }
     structure(result, formula=formula, rowLabels=rlabels, colLabels=clabels, table=table,
     	      formats = formats, justification = justifications, dropcells = dropcells,

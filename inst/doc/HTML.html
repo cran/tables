@@ -16,19 +16,16 @@
 
 <title>HTML Tables</title>
 
-<script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
-// v0.0.1
-// Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
-
-document.addEventListener('DOMContentLoaded', function() {
-  const codeList = document.getElementsByClassName("sourceCode");
-  for (var i = 0; i < codeList.length; i++) {
-    var linkList = codeList[i].getElementsByTagName('a');
-    for (var j = 0; j < linkList.length; j++) {
-      if (linkList[j].innerHTML === "") {
-        linkList[j].setAttribute('aria-hidden', 'true');
-      }
-    }
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
   }
 });
 </script>
@@ -71,9 +68,16 @@ background-color: #f5f5f5;
 }
 .lightable-classic {
 border-top: 0.16em solid #111111;
+border-bottom: 0.16em solid #111111;
 width: 100%;
 margin-bottom: 10px;
 margin: 10px 5px;
+}
+.lightable-classic tfoot tr td {
+border: 0;
+}
+.lightable-classic tfoot tr:first-child td {
+border-top: 0.14em solid #111111;
 }
 .lightable-classic caption {
 color: #222222;
@@ -92,9 +96,6 @@ color: #222222;
 .lightable-classic thead tr:last-child th {
 border-bottom: 0.10em solid #111111;
 }
-.lightable-classic tbody tr:last-child td {
-border-bottom: 0.14em solid #111111;
-}
 .lightable-classic.lightable-hover tbody tr:hover {
 background-color: #F9EEC1;
 }
@@ -103,8 +104,15 @@ background-color: #f5f5f5;
 }
 .lightable-classic-2 {
 border-top: 3px double #111111;
+border-bottom: 3px double #111111;
 width: 100%;
 margin-bottom: 10px;
+}
+.lightable-classic-2 tfoot tr td {
+border: 0;
+}
+.lightable-classic-2 tfoot tr:first-child td {
+border-top: 3px double #111111;
 }
 .lightable-classic-2 caption {
 color: #222222;
@@ -141,6 +149,12 @@ border: 1px solid #EEE;
 border-collapse: collapse;
 margin-bottom: 10px;
 }
+.lightable-material tfoot tr td {
+border: 0;
+}
+.lightable-material tfoot tr:first-child td {
+border-top: 1px solid #EEE;
+}
 .lightable-material th {
 height: 56px;
 padding-left: 16px;
@@ -174,6 +188,12 @@ border-collapse: collapse;
 margin-bottom: 10px;
 background-color: #363640;
 }
+.lightable-material-dark tfoot tr td {
+border: 0;
+}
+.lightable-material-dark tfoot tr:first-child td {
+border-top: 1px solid #FFFFFF12;
+}
 .lightable-material-dark th {
 height: 56px;
 padding-left: 16px;
@@ -204,6 +224,12 @@ width: 100%;
 margin-bottom: 10px;
 color: #444;
 }
+.lightable-paper tfoot tr td {
+border: 0;
+}
+.lightable-paper tfoot tr:first-child td {
+border-top: 1px solid #00000020;
+}
 .lightable-paper thead tr:last-child th {
 color: #666;
 vertical-align: bottom;
@@ -228,22 +254,39 @@ border: 0;
 }
 </style>
 
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
-<style type="text/css">code{white-space: pre;}</style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
 <style type="text/css" data-origin="pandoc">
-code.sourceCode > span { display: inline-block; line-height: 1.25; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-code.sourceCode > span:empty { height: 1.2em; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -263,7 +306,7 @@ pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-le
 div.sourceCode
   {   }
 @media screen {
-code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -303,13 +346,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   for (var i = 0; i < sheets.length; i++) {
     if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
     try { var rules = sheets[i].cssRules; } catch (e) { continue; }
-    for (var j = 0; j < rules.length; j++) {
+    var j = 0;
+    while (j < rules.length) {
       var rule = rules[j];
       // check if there is a div.sourceCode rule
-      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -317,6 +367,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   }
 })();
 </script>
+
 
 
 
@@ -518,22 +569,29 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 
-<p>This short R Markdown document illustrates how to use <code>tables</code> in HTML.</p>
+<p>This short R Markdown document illustrates how to use
+<code>tables</code> in HTML.</p>
 <div id="initializing" class="section level2">
 <h2>Initializing</h2>
-<p>First, you need to load <code>tables</code>. Packages that it uses print banner messages, so you’ll usually want to set a chunk option of <code>message=FALSE</code>.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">library</span>(tables)</span></code></pre></div>
+<p>First, you need to load <code>tables</code>. Packages that it uses
+print banner messages, so you’ll usually want to set a chunk option of
+<code>message=FALSE</code>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tables)</span></code></pre></div>
 <p>The table is now constructed in the usual way.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>X &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">125</span>, <span class="dt">sd=</span><span class="dv">100</span>)</span>
-<span id="cb2-2"><a href="#cb2-2"></a>Group &lt;-<span class="st"> </span><span class="kw">factor</span>(<span class="kw">sample</span>(letters[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>], <span class="dv">125</span>, <span class="dt">rep=</span><span class="ot">TRUE</span>))</span>
-<span id="cb2-3"><a href="#cb2-3"></a>tab &lt;-<span class="st"> </span><span class="kw">tabular</span>( Group <span class="op">~</span><span class="st"> </span>(<span class="dt">N=</span><span class="dv">1</span>)<span class="op">+</span><span class="kw">Format</span>(<span class="dt">digits=</span><span class="dv">2</span>)<span class="op">*</span>X<span class="op">*</span>((<span class="dt">Mean=</span>mean) <span class="op">+</span><span class="st"> </span><span class="kw">Heading</span>(<span class="st">&quot;Std Dev&quot;</span>)<span class="op">*</span>sd) )</span></code></pre></div>
-<p>In an R Markdown document, you don’t want each table to output the HTML document header, so turn off those options:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">table_options</span>(<span class="kw">htmloptions</span>(<span class="dt">head=</span><span class="ot">FALSE</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">125</span>, <span class="at">sd=</span><span class="dv">100</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>Group <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">sample</span>(letters[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>], <span class="dv">125</span>, <span class="at">rep=</span><span class="cn">TRUE</span>))</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>tab <span class="ot">&lt;-</span> <span class="fu">tabular</span>( Group <span class="sc">~</span> (<span class="at">N=</span><span class="dv">1</span>)<span class="sc">+</span><span class="fu">Format</span>(<span class="at">digits=</span><span class="dv">2</span>)<span class="sc">*</span>X<span class="sc">*</span>((<span class="at">Mean=</span>mean) <span class="sc">+</span> <span class="fu">Heading</span>(<span class="st">&quot;Std Dev&quot;</span>)<span class="sc">*</span>sd) )</span></code></pre></div>
+<p>In an R Markdown document, you don’t want each table to output the
+HTML document header, so turn off those options:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table_options</span>(<span class="fu">htmloptions</span>(<span class="at">head=</span><span class="cn">FALSE</span>))</span></code></pre></div>
 </div>
 <div id="inserting-a-table" class="section level2">
 <h2>Inserting a Table</h2>
-<p>There are two ways to insert a table into a knitr/rmarkdown document. Since tables version 0.8.4, you can just print the object, and it will be automatically formatted according to the current <code>table_options()</code>:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>tab</span></code></pre></div>
+<p>There are two ways to insert a table into a knitr/rmarkdown document.
+Since tables version 0.8.4, you can just print the object, and it will
+be automatically formatted according to the current
+<code>table_options()</code>:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>tab</span></code></pre></div>
 <table class="Rtable">
 <thead>
 <tr class="center">
@@ -568,13 +626,13 @@ Std Dev
 a
 </th>
 <td>
-28
+32
 </td>
 <td>
--2.6
+-12.76
 </td>
 <td>
-96.8
+95.88
 </td>
 </tr>
 <tr class="center">
@@ -582,13 +640,13 @@ a
 b
 </th>
 <td>
-19
+21
 </td>
 <td>
--20.4
+-31.76
 </td>
 <td>
-94.7
+123.51
 </td>
 </tr>
 <tr class="center">
@@ -596,13 +654,13 @@ b
 c
 </th>
 <td>
-25
+18
 </td>
 <td>
--23.3
+17.18
 </td>
 <td>
-102.9
+126.59
 </td>
 </tr>
 <tr class="center">
@@ -610,13 +668,13 @@ c
 d
 </th>
 <td>
-29
+28
 </td>
 <td>
--3.7
+0.76
 </td>
 <td>
-91.5
+96.68
 </td>
 </tr>
 <tr class="center">
@@ -624,34 +682,37 @@ d
 e
 </th>
 <td>
-24
+26
 </td>
 <td>
--6.9
+16.15
 </td>
 <td>
-113.9
+94.09
 </td>
 </tr>
 </tbody>
 </table>
-<p>The previous behaviour required an explicit call to the <code>toHTML()</code> function, and knitr option <code>results = &#39;asis&#39;</code> for the chunk. To <em>require</em> the older method, use <code>table_options(knit_print = FALSE)</code>:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">table_options</span>(<span class="dt">knit_print =</span> <span class="ot">FALSE</span>)</span>
-<span id="cb5-2"><a href="#cb5-2"></a>tab        <span class="co"># This chunk uses the default results = &#39;markup&#39;</span></span></code></pre></div>
-<pre><code>##                        
-##           X            
-##  Group N  Mean  Std Dev
-##  a     28  -2.6  96.8  
-##  b     19 -20.4  94.7  
-##  c     25 -23.3 102.9  
-##  d     29  -3.7  91.5  
-##  e     24  -6.9 113.9</code></pre>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">toHTML</span>(tab)  <span class="co"># This chunk uses results = &#39;asis&#39;</span></span></code></pre></div>
+<p>The previous behaviour required an explicit call to the
+<code>toHTML()</code> function, and knitr option
+<code>results = &#39;asis&#39;</code> for the chunk. To <em>require</em> the
+older method, use <code>table_options(knit_print = FALSE)</code>:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table_options</span>(<span class="at">knit_print =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>tab        <span class="co"># This chunk uses the default results = &#39;markup&#39;</span></span></code></pre></div>
+<pre><code>##                         
+##           X             
+##  Group N  Mean   Std Dev
+##  a     32 -12.76  95.88 
+##  b     21 -31.76 123.51 
+##  c     18  17.18 126.59 
+##  d     28   0.76  96.68 
+##  e     26  16.15  94.09</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">toHTML</span>(tab)  <span class="co"># This chunk uses results = &#39;asis&#39;</span></span></code></pre></div>
 <table class="Rtable">
  <thead>
  <tr class="center">
-  <th>&nbsp;</th>
-  <th>&nbsp;</th>
+  <th> </th>
+  <th> </th>
   <th colspan="2">X</th>
 </tr>
  <tr class="center">
@@ -664,39 +725,42 @@ e
  <tbody>
  <tr class="center">
   <th class="left">a</th>
-  <td>28</td>
-  <td> -2.6</td>
-  <td> 96.8</td>
+  <td>32</td>
+  <td>-12.76</td>
+  <td> 95.88</td>
 </tr>
  <tr class="center">
   <th class="left">b</th>
-  <td>19</td>
-  <td>-20.4</td>
-  <td> 94.7</td>
+  <td>21</td>
+  <td>-31.76</td>
+  <td>123.51</td>
 </tr>
  <tr class="center">
   <th class="left">c</th>
-  <td>25</td>
-  <td>-23.3</td>
-  <td>102.9</td>
+  <td>18</td>
+  <td> 17.18</td>
+  <td>126.59</td>
 </tr>
  <tr class="center">
   <th class="left">d</th>
-  <td>29</td>
-  <td> -3.7</td>
-  <td> 91.5</td>
+  <td>28</td>
+  <td>  0.76</td>
+  <td> 96.68</td>
 </tr>
  <tr class="center">
   <th class="left">e</th>
-  <td>24</td>
-  <td> -6.9</td>
-  <td>113.9</td>
+  <td>26</td>
+  <td> 16.15</td>
+  <td> 94.09</td>
 </tr>
  </tbody>
  </table>
 
-<p>In either case, some styling information needs to be included in the document. Ideally this should be in the header, but it can be inserted anywhere by calling <code>writeCSS</code> with <code>results = &#39;asis&#39;</code>:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">writeCSS</span>()</span></code></pre></div>
+<p>In either case, some styling information needs to be included in the
+document. Ideally this should be in the header, but it can be inserted
+anywhere by calling <code>writeCSS</code> with
+<code>results = &#39;asis&#39;</code>:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">writeCSS</span>()</span></code></pre></div>
 <style>
 .Rtable thead, .Rtable .even {
   background-color: inherit;
@@ -719,9 +783,11 @@ e
 </div>
 <div id="improving-the-look" class="section level2">
 <h2>Improving the Look</h2>
-<p>The default justification makes the columns of numbers look messy. You can set the justification to the right, but the headers look wrong:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">table_options</span>(<span class="kw">htmloptions</span>(<span class="dt">head =</span> <span class="ot">FALSE</span>, <span class="dt">justification =</span> <span class="st">&quot;r&quot;</span>, <span class="dt">knit_print =</span> <span class="ot">TRUE</span>))</span>
-<span id="cb9-2"><a href="#cb9-2"></a>tab</span></code></pre></div>
+<p>The default justification makes the columns of numbers look messy.
+You can set the justification to the right, but the headers look
+wrong:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table_options</span>(<span class="fu">htmloptions</span>(<span class="at">head =</span> <span class="cn">FALSE</span>, <span class="at">justification =</span> <span class="st">&quot;r&quot;</span>, <span class="at">knit_print =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>tab</span></code></pre></div>
 <table class="Rtable">
 <thead>
 <tr class="right">
@@ -756,13 +822,13 @@ Std Dev
 a
 </th>
 <td>
-28
+32
 </td>
 <td>
--2.6
+-12.76
 </td>
 <td>
-96.8
+95.88
 </td>
 </tr>
 <tr class="right">
@@ -770,13 +836,13 @@ a
 b
 </th>
 <td>
-19
+21
 </td>
 <td>
--20.4
+-31.76
 </td>
 <td>
-94.7
+123.51
 </td>
 </tr>
 <tr class="right">
@@ -784,13 +850,13 @@ b
 c
 </th>
 <td>
-25
+18
 </td>
 <td>
--23.3
+17.18
 </td>
 <td>
-102.9
+126.59
 </td>
 </tr>
 <tr class="right">
@@ -798,13 +864,13 @@ c
 d
 </th>
 <td>
-29
+28
 </td>
 <td>
--3.7
+0.76
 </td>
 <td>
-91.5
+96.68
 </td>
 </tr>
 <tr class="right">
@@ -812,20 +878,22 @@ d
 e
 </th>
 <td>
-24
+26
 </td>
 <td>
--6.9
+16.15
 </td>
 <td>
-113.9
+94.09
 </td>
 </tr>
 </tbody>
 </table>
-<p>The best look comes with the <code>pad = TRUE</code> option. This adds nonbreaking spaces around the numbers so that centering looks good. It also changes the hyphens to proper minus signs:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw">table_options</span>(<span class="kw">htmloptions</span>(<span class="dt">head =</span> <span class="ot">FALSE</span>, <span class="dt">justification =</span> <span class="st">&quot;c&quot;</span>, <span class="dt">pad =</span> <span class="ot">TRUE</span>))</span>
-<span id="cb10-2"><a href="#cb10-2"></a>tab</span></code></pre></div>
+<p>The best look comes with the <code>pad = TRUE</code> option. This
+adds nonbreaking spaces around the numbers so that centering looks good.
+It also changes the hyphens to proper minus signs:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table_options</span>(<span class="fu">htmloptions</span>(<span class="at">head =</span> <span class="cn">FALSE</span>, <span class="at">justification =</span> <span class="st">&quot;c&quot;</span>, <span class="at">pad =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>tab</span></code></pre></div>
 <table class="Rtable">
 <thead>
 <tr class="center">
@@ -860,13 +928,13 @@ Std Dev
 a
 </th>
 <td>
-28
+32
 </td>
 <td>
-  −2.6
+ −12.76
 </td>
 <td>
-  96.8
+  95.88
 </td>
 </tr>
 <tr class="center">
@@ -874,13 +942,13 @@ a
 b
 </th>
 <td>
-19
+21
 </td>
 <td>
- −20.4
+ −31.76
 </td>
 <td>
-  94.7
+ 123.51
 </td>
 </tr>
 <tr class="center">
@@ -888,13 +956,13 @@ b
 c
 </th>
 <td>
-25
+18
 </td>
 <td>
- −23.3
+  17.18
 </td>
 <td>
- 102.9
+ 126.59
 </td>
 </tr>
 <tr class="center">
@@ -902,13 +970,13 @@ c
 d
 </th>
 <td>
-29
+28
 </td>
 <td>
-  −3.7
+   0.76
 </td>
 <td>
-  91.5
+  96.68
 </td>
 </tr>
 <tr class="center">
@@ -916,23 +984,33 @@ d
 e
 </th>
 <td>
-24
+26
 </td>
 <td>
-  −6.9
+  16.15
 </td>
 <td>
- 113.9
+  94.09
 </td>
 </tr>
 </tbody>
 </table>
-<p>Unfortunately, if you cut this table and paste it into a spreadsheet, the spaces and minus signs probably won’t be understood. I don’t know how to get everything we want :-(.</p>
+<p>Unfortunately, if you cut this table and paste it into a spreadsheet,
+the spaces and minus signs probably won’t be understood. I don’t know
+how to get everything we want :-(.</p>
 </div>
 <div id="fine-tuning" class="section level2">
 <h2>Fine tuning</h2>
-<p>This document uses the default CSS from <code>table_options()$CSS</code>. If you are producing an <code>html_document</code>, it should be okay. It does not look quite right in a <code>slidy_presentation</code>, and is no good at all in an <code>ioslides_presentation</code>. Furthermore, you might not agree with my design choices.</p>
-<p>In any of these cases, you should substitute your own CSS. You will need to modify the default one, and can use it as the <code>CSS</code> argument to <code>writeCSS()</code>, or set it as a new default in <code>table_options()</code>.</p>
+<p>This document uses the default CSS from
+<code>table_options()$CSS</code>. If you are producing an
+<code>html_document</code>, it should be okay. It does not look quite
+right in a <code>slidy_presentation</code>, and is no good at all in an
+<code>ioslides_presentation</code>. Furthermore, you might not agree
+with my design choices.</p>
+<p>In any of these cases, you should substitute your own CSS. You will
+need to modify the default one, and can use it as the <code>CSS</code>
+argument to <code>writeCSS()</code>, or set it as a new default in
+<code>table_options()</code>.</p>
 <p>Here is the default setting:</p>
 <pre><code>&lt;style&gt;
 #ID .Rtable thead, .Rtable .even {
@@ -953,22 +1031,28 @@ e
   border-width: 0;
 }
 &lt;/style&gt;</code></pre>
-<p>Note that the <code>#ID</code> values will be replaced with the <code>id</code> string given in <code>writeCSS()</code>, and <code>toHTML()</code> has a corresponding argument to allow you to make changes for one specific table. If you are using the newer form of display with <code>table_options(knit_print = TRUE)</code>, you can get customized display for one table by also using <code>table_options(doCSS = TRUE)</code>. For example,</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="kw">table_options</span>(<span class="dt">CSS =</span></span>
-<span id="cb12-2"><a href="#cb12-2"></a><span class="st">&quot;&lt;style&gt;</span></span>
-<span id="cb12-3"><a href="#cb12-3"></a><span class="st">#ID .center { </span></span>
-<span id="cb12-4"><a href="#cb12-4"></a><span class="st">  text-align:center;</span></span>
-<span id="cb12-5"><a href="#cb12-5"></a><span class="st">  background-color: aliceblue;</span></span>
-<span id="cb12-6"><a href="#cb12-6"></a><span class="st">}</span></span>
-<span id="cb12-7"><a href="#cb12-7"></a><span class="st">&lt;/style&gt;&quot;</span>, <span class="dt">doCSS =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb12-8"><a href="#cb12-8"></a>tab</span></code></pre></div>
+<p>Note that the <code>#ID</code> values will be replaced with the
+<code>id</code> string given in <code>writeCSS()</code>, and
+<code>toHTML()</code> has a corresponding argument to allow you to make
+changes for one specific table. If you are using the newer form of
+display with <code>table_options(knit_print = TRUE)</code>, you can get
+customized display for one table by also using
+<code>table_options(doCSS = TRUE)</code>. For example,</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table_options</span>(<span class="at">CSS =</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&lt;style&gt;</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="st">#ID .center { </span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="st">  text-align:center;</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="st">  background-color: aliceblue;</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="st">}</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="st">&lt;/style&gt;&quot;</span>, <span class="at">doCSS =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>tab</span></code></pre></div>
 <style>
-#table45d428880ff3 .center { 
+#table11d294a589bfb .center { 
   text-align:center;
   background-color: aliceblue;
 }
 </style>
-<table id="table45d428880ff3" class="Rtable">
+<table id="table11d294a589bfb" class="Rtable">
 <thead>
 <tr class="center">
 <th>
@@ -1002,13 +1086,13 @@ Std Dev
 a
 </th>
 <td>
-28
+32
 </td>
 <td>
-  −2.6
+ −12.76
 </td>
 <td>
-  96.8
+  95.88
 </td>
 </tr>
 <tr class="center">
@@ -1016,13 +1100,13 @@ a
 b
 </th>
 <td>
-19
+21
 </td>
 <td>
- −20.4
+ −31.76
 </td>
 <td>
-  94.7
+ 123.51
 </td>
 </tr>
 <tr class="center">
@@ -1030,13 +1114,13 @@ b
 c
 </th>
 <td>
-25
+18
 </td>
 <td>
- −23.3
+  17.18
 </td>
 <td>
- 102.9
+ 126.59
 </td>
 </tr>
 <tr class="center">
@@ -1044,13 +1128,13 @@ c
 d
 </th>
 <td>
-29
+28
 </td>
 <td>
-  −3.7
+   0.76
 </td>
 <td>
-  91.5
+  96.68
 </td>
 </tr>
 <tr class="center">
@@ -1058,19 +1142,19 @@ d
 e
 </th>
 <td>
-24
+26
 </td>
 <td>
-  −6.9
+  16.15
 </td>
 <td>
- 113.9
+  94.09
 </td>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="kw">table_options</span>(<span class="dt">doCSS =</span> <span class="ot">FALSE</span>)</span>
-<span id="cb13-2"><a href="#cb13-2"></a>tab</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table_options</span>(<span class="at">doCSS =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>tab</span></code></pre></div>
 <table class="Rtable">
 <thead>
 <tr class="center">
@@ -1105,13 +1189,13 @@ Std Dev
 a
 </th>
 <td>
-28
+32
 </td>
 <td>
-  −2.6
+ −12.76
 </td>
 <td>
-  96.8
+  95.88
 </td>
 </tr>
 <tr class="center">
@@ -1119,13 +1203,13 @@ a
 b
 </th>
 <td>
-19
+21
 </td>
 <td>
- −20.4
+ −31.76
 </td>
 <td>
-  94.7
+ 123.51
 </td>
 </tr>
 <tr class="center">
@@ -1133,13 +1217,13 @@ b
 c
 </th>
 <td>
-25
+18
 </td>
 <td>
- −23.3
+  17.18
 </td>
 <td>
- 102.9
+ 126.59
 </td>
 </tr>
 <tr class="center">
@@ -1147,13 +1231,13 @@ c
 d
 </th>
 <td>
-29
+28
 </td>
 <td>
-  −3.7
+   0.76
 </td>
 <td>
-  91.5
+  96.68
 </td>
 </tr>
 <tr class="center">
@@ -1161,13 +1245,13 @@ d
 e
 </th>
 <td>
-24
+26
 </td>
 <td>
-  −6.9
+  16.15
 </td>
 <td>
- 113.9
+  94.09
 </td>
 </tr>
 </tbody>
@@ -1175,15 +1259,19 @@ e
 </div>
 <div id="kableextra-support" class="section level2">
 <h2>kableExtra support</h2>
-<p>The kableExtra package contains a large number of functions to customize the look of tables generated by the <code>knitr::kable()</code> function. These can also be made to work with tables from this package, using the <code>toKable()</code> function. For example,</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="kw">library</span>(magrittr)</span>
-<span id="cb14-2"><a href="#cb14-2"></a><span class="kw">library</span>(kableExtra)</span>
-<span id="cb14-3"><a href="#cb14-3"></a><span class="kw">toKable</span>(tab, <span class="dt">format=</span><span class="st">&quot;html&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb14-4"><a href="#cb14-4"></a><span class="st">  </span><span class="kw">kable_styling</span>(<span class="st">&quot;striped&quot;</span>, <span class="dt">position =</span> <span class="st">&quot;float_right&quot;</span>, <span class="dt">full_width =</span> <span class="ot">FALSE</span>) <span class="op">%&gt;%</span></span>
-<span id="cb14-5"><a href="#cb14-5"></a><span class="st">  </span><span class="kw">add_header_above</span>(<span class="kw">c</span>(<span class="st">&quot;Row Label&quot;</span> =<span class="st"> </span><span class="dv">1</span>, <span class="st">&quot;Statistics&quot;</span> =<span class="st"> </span><span class="dv">3</span>)) <span class="op">%&gt;%</span></span>
-<span id="cb14-6"><a href="#cb14-6"></a><span class="st">  </span><span class="kw">column_spec</span>(<span class="dv">4</span>, <span class="dt">color =</span> <span class="st">&quot;red&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb14-7"><a href="#cb14-7"></a><span class="st">  </span><span class="kw">row_spec</span>(<span class="dv">1</span>, <span class="dt">color =</span> <span class="st">&quot;blue&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb14-8"><a href="#cb14-8"></a><span class="st">  </span><span class="kw">group_rows</span>(<span class="st">&quot;Subgroup&quot;</span>, <span class="dv">3</span>, <span class="dv">5</span>)</span></code></pre></div>
+<p>The kableExtra package contains a large number of functions to
+customize the look of tables generated by the
+<code>knitr::kable()</code> function. These can also be made to work
+with tables from this package, using the <code>toKable()</code>
+function. For example,</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">toKable</span>(tab, <span class="at">format=</span><span class="st">&quot;html&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="st">&quot;striped&quot;</span>, <span class="at">position =</span> <span class="st">&quot;float_right&quot;</span>, <span class="at">full_width =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_header_above</span>(<span class="fu">c</span>(<span class="st">&quot;Row Label&quot;</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">&quot;Statistics&quot;</span> <span class="ot">=</span> <span class="dv">3</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">column_spec</span>(<span class="dv">4</span>, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">row_spec</span>(<span class="dv">1</span>, <span class="at">color =</span> <span class="st">&quot;blue&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_rows</span>(<span class="st">&quot;Subgroup&quot;</span>, <span class="dv">3</span>, <span class="dv">5</span>)</span></code></pre></div>
 <table class="Rtable table table-striped" style="width: auto !important; float: right; margin-left: 10px;">
 <thead>
 <tr>
@@ -1230,13 +1318,13 @@ Std Dev
 a
 </th>
 <td style="color: blue !important;">
-28
+32
 </td>
 <td style="color: blue !important;">
-  −2.6
+ −12.76
 </td>
 <td style="color: red !important;color: blue !important;">
-  96.8
+  95.88
 </td>
 </tr>
 <tr class="center">
@@ -1244,13 +1332,13 @@ a
 b
 </th>
 <td>
-19
+21
 </td>
 <td>
- −20.4
+ −31.76
 </td>
 <td style="color: red !important;">
-  94.7
+ 123.51
 </td>
 </tr>
 <tr grouplength="3">
@@ -1259,50 +1347,54 @@ b
 </td>
 </tr>
 <tr class="center">
-<th class="left" style="NA padding-left:  2em;" indentlevel="1">
+<th class="left" style="NApadding-left: 2em;" indentlevel="1">
 c
 </th>
 <td>
-25
+18
 </td>
 <td>
- −23.3
+  17.18
 </td>
 <td style="color: red !important;">
- 102.9
+ 126.59
 </td>
 </tr>
 <tr class="center">
-<th class="left" style="NA padding-left:  2em;" indentlevel="1">
+<th class="left" style="NApadding-left: 2em;" indentlevel="1">
 d
 </th>
 <td>
-29
+28
 </td>
 <td>
-  −3.7
+   0.76
 </td>
 <td style="color: red !important;">
-  91.5
+  96.68
 </td>
 </tr>
 <tr class="center">
-<th class="left" style="NA padding-left:  2em;" indentlevel="1">
+<th class="left" style="NApadding-left: 2em;" indentlevel="1">
 e
 </th>
 <td>
-24
+26
 </td>
 <td>
-  −6.9
+  16.15
 </td>
 <td style="color: red !important;">
- 113.9
+  94.09
 </td>
 </tr>
 </tbody>
 </table>
-<p>There are conflicts between the styling options from <code>kableExtra</code> and the ones specified in <code>table_options()$CSS</code>; some modifications might be needed to make everything work. For instance, the code above requests striping, but that did not show up. Experimentation may be needed!</p>
+<p>There are conflicts between the styling options from
+<code>kableExtra</code> and the ones specified in
+<code>table_options()$CSS</code>; some modifications might be needed to
+make everything work. For instance, the code above requests striping,
+but that did not show up. Experimentation may be needed!</p>
 </div>
 
 

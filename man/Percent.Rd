@@ -59,7 +59,8 @@ vignette for details.)
 Finally, other possible \code{denom} values 
 are a logical vector, in which
 case the values marked \code{TRUE} are used, or anything else, which will
-be passed to \code{fn} as \code{y}.
+be passed to \code{fn} as \code{y} without any subsetting.  (To pass a variable with subsetting,
+use the \code{\link{Arguments}} pseudo-function instead.)
 }
 \section{Pseudo-functions}{
 \code{Percent} is a \dQuote{pseudo-function}:  it takes the form of a function call, but is

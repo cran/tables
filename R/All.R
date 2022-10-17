@@ -25,7 +25,7 @@ All <- function(df, numeric=TRUE, character=FALSE, logical=FALSE, factor=FALSE,
     
     f <- NULL
     for (i in seq_along(names)) {
-        value <- df[,i]
+        value <- df[[i]]
         if (is.numeric(value)) {
             if (is.function(numeric))
             	value <- numeric(value)

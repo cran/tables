@@ -22,7 +22,7 @@ The tabular object.
 }
   \item{file}{
 A filename or connection to which to write the HTML code, or
-\code{""} to write to the standard output.
+\code{""} to write to the console.
 }
   \item{options}{
 A list of options to set for the duration of the call.
@@ -64,8 +64,11 @@ See \code{\link{table_options}} for a number of options that control formatting,
 the default style sheet.
 }
 \value{
-The \code{toHTML()} function creates an HTML object using the
-\code{htmltools::HTML} function.
+If \code{file = ""} (the default), the \code{toHTML()}
+function creates an HTML object using the
+\code{htmltools::HTML} function and returns it. 
+If \code{file} is a character value or a connection, the results are written there and the HTML object is returned
+invisibly.
 }
 \seealso{
 \code{\link{print.tabular}}, \code{\link{toLatex.tabular}}, \code{\link[Hmisc]{html}}, \code{\link{htmloptions}}
