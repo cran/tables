@@ -114,7 +114,7 @@ tabular( (F+1) ~ (n=1)
            + Format(digits=2)*X*(mean + sd) )
 
 ## ---------------------------------------------------------
-stderr <- function(x) sd(x)/sqrt(length(x))
+StdErr <- function(x) sd(x)/sqrt(length(x))
 fmt <- function(x, digits, ...) {
   s <- format(x, digits=digits, ...)
   is_stderr <- (1:length(s)) > length(s) %/% 2
@@ -122,7 +122,7 @@ fmt <- function(x, digits, ...) {
   s[!is_stderr] <- latexNumeric(s[!is_stderr])
   s
 }
-tabular( Format(fmt(digits=1))*(F+1) ~ X*(mean + stderr) )
+tabular( Format(fmt(digits=1))*(F+1) ~ X*(mean + StdErr) )
 
 ## ---------------------------------------------------------
 tabular( (F+1) ~ X*(Format(digits=2)*mean 
@@ -208,13 +208,13 @@ tabular( Species + Hline(2:5) + 1
                          ~ Heading()*mean*All(iris), data=iris)
 
 ## ---------------------------------------------------------
-stderr <- function(x) sd(x)/sqrt(length(x))
+StdErr <- function(x) sd(x)/sqrt(length(x))
 tabular( (Species+1) ~ All(iris)*
-          PlusMinus(mean, stderr, digits=1), data=iris )
+          PlusMinus(mean, StdErr, digits=1), data=iris )
 
 ## ---------------------------------------------------------
-lcl <- function(x) mean(x) - qt(0.975, df=length(x)-1)*stderr(x)
-ucl <- function(x) mean(x) + qt(0.975, df=length(x)-1)*stderr(x)
+lcl <- function(x) mean(x) - qt(0.975, df=length(x)-1)*StdErr(x)
+ucl <- function(x) mean(x) + qt(0.975, df=length(x)-1)*StdErr(x)
 tabular( (Species+1) ~ All(iris)*
           Paste(lcl, ucl, digits=2, 
                 head="95\\% CI", sep=",", prefix="[",
