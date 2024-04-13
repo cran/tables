@@ -55,9 +55,18 @@ tab
 library(magrittr)
 library(kableExtra)
 toKable(tab, format="html") %>% 
-  kable_styling("striped", position = "float_right", full_width = FALSE) %>%
+  kable_styling("striped", full_width = FALSE) %>%
   add_header_above(c("Row Label" = 1, "Statistics" = 3)) %>%
   column_spec(4, color = "red") %>%
   row_spec(1, color = "blue") %>%
   group_rows("Subgroup", 3, 5)
+
+## -----------------------------------------------------------------------------
+library(magrittr)
+library(tinytable)
+toTinytable(tab, theme = "striped") %>%
+  group_tt(i = list("Subgroup" = 3)) %>%
+  group_tt(j = list("Row Label" = 1, "Statistics" = 2:4)) %>%
+  style_tt(i = 3, color = "red", align = "c", line = "bt", line_color = "red") %>%
+  style_tt(i = 5:6, j = 3:4, background = "black", color = "orange")
 

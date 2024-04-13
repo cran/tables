@@ -337,8 +337,8 @@ lcl <- function(x) mean(x) - qt(0.975, df=length(x)-1)*stderr(x)
 ucl <- function(x) mean(x) + qt(0.975, df=length(x)-1)*stderr(x)
 toLatex( tabular( (Species+1) ~ All(iris)*
           Paste(lcl, ucl, digits=2, 
-                head="95\\% CI", sep=",", prefix="[",
-                postfix="]"), 
+                head="95\\% CI", 
+                prefix="[", sep=",", postfix="]"), 
           data=iris ) )
 
 
