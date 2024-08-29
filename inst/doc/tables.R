@@ -57,7 +57,7 @@ tabular( (Species + 1) ~ (n=1) + Format(digits=2)*
 set.seed(100)
 X <- rnorm(10)
 X
-A <- sample(letters[1:2], 10, rep=TRUE)
+A <- sample(letters[1:2], 10, replace = TRUE)
 A
 F <- factor(A)
 F
@@ -463,7 +463,7 @@ toLatex( tabular( A + 1 ~ (n=1) ) )
 ### code chunk number 56: tables.Rnw:1239-1248
 ###################################################
 set.seed(1206)
-q <- data.frame(p = rep(c("A","B"),each=10,len=30),
+q <- data.frame(p = rep(c("A","B"), each = 10, length.out = 30),
                            a = rep(c(1,2,3),each=10),id=seq(30),
                            b = round(runif(30,10,20)),
                            c = round(runif(30,40,70)),

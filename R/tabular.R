@@ -628,10 +628,22 @@ tabular.formula <- function(table, data=NULL, n, suppressLabels=0, ...) {
 		domain = NA)
     if (missing(n) && inherits(data, "data.frame"))
     	n <- nrow(data)
-    if (is.null(data))
-    	data <- environment(table)
+    
+    # We need access to labelSubset() (and perhaps other functions in future)
+    # when evaluating a table expression (issue #30), but we don't want
+    # to mask the user's copy.
+    
+    parent <- if (is.environment(data)) data else environment(table)
+    if (!exists("labelSubset", envir = parent)) {
+      withTableFns <- new.env(parent = parent)
+      withTableFns$labelSubset <- labelSubset
+    } else
+      withTableFns <- parent
+    
+    if (is.null(data) || is.environment(data))
+    	data <- withTableFns
     else if (is.list(data))
-    	data <- list2env(data, parent=environment(table))
+    	data <- list2env(data, parent = environment(table))
     else if (!is.environment(data))
     	stop("'data' must be a dataframe, list or environment")
     	
@@ -706,14 +718,14 @@ tabular.formula <- function(table, data=NULL, n, suppressLabels=0, ...) {
 }
 
 justify <- function(x, justification="c", width=max(nchar(x))) {
-    justification <- rep(justification, len=length(x))
+    justification <- rep(justification, length.out = length(x))
     change <- justification %in% c("c", "l", "r")
     if (!any(change)) return(x)
     y <- x[change]
     justification <- justification[change]
     y <- sub("^ *", "", y)
     y <- sub(" *$", "", y)
-    width <- rep(width, len=length(x))
+    width <- rep(width, length.out = length(x))
     width <- width[change]
     lens <- nchar(y)
     ind <- justification == "c"
