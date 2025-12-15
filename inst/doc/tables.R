@@ -403,26 +403,28 @@ toLatex( tabular( Multicolumn(Species, width=3,
 
 
 ###################################################
-### code chunk number 48: tables.Rnw:1154-1155
+### code chunk number 48: tables.Rnw:1154-1157
 ###################################################
-df <- data.frame(A = factor(c( "$", "\\" ) ), B_label=1:2)
+df <- data.frame(A = factor(c( "$", "\\" ), 
+                            levels = c( "$", "\\" ) ),
+                 B_label = 1:2)
 
 
 ###################################################
-### code chunk number 49: tables.Rnw:1158-1159 (eval = FALSE)
+### code chunk number 49: tables.Rnw:1160-1161 (eval = FALSE)
 ###################################################
 ## toLatex( tabular( mean ~ A*B_label, data=df ) ) 
 
 
 ###################################################
-### code chunk number 50: tables.Rnw:1164-1166
+### code chunk number 50: tables.Rnw:1166-1168
 ###################################################
 options(tables.texify = TRUE)
 toLatex( tabular( mean ~ Factor(A)*All(df), data=df ) ) 
 
 
 ###################################################
-### code chunk number 51: tables.Rnw:1186-1189
+### code chunk number 51: tables.Rnw:1188-1191
 ###################################################
 dat <- data.frame( a = c(1, 2, 3, NA), b = 1:4 )
 mean(dat$a)
@@ -430,20 +432,20 @@ mean(dat$a, na.rm=TRUE)
 
 
 ###################################################
-### code chunk number 52: tables.Rnw:1197-1199
+### code chunk number 52: tables.Rnw:1199-1201
 ###################################################
 Mean <- function(x) base::mean(x, na.rm=TRUE)
 toLatex( tabular( Mean ~ a + b, data=dat ) )
 
 
 ###################################################
-### code chunk number 53: tables.Rnw:1205-1206
+### code chunk number 53: tables.Rnw:1207-1208
 ###################################################
 toLatex( tabular( mean ~ a + b, data = na.omit(dat) ) )
 
 
 ###################################################
-### code chunk number 54: tables.Rnw:1212-1215
+### code chunk number 54: tables.Rnw:1214-1217
 ###################################################
 toLatex( tabular( 
   Mean ~ (1 + Heading(Complete)*complete.cases(dat)) * (a + b), 
@@ -451,7 +453,7 @@ toLatex( tabular(
 
 
 ###################################################
-### code chunk number 55: tables.Rnw:1225-1229
+### code chunk number 55: tables.Rnw:1227-1231
 ###################################################
 A <- factor(dat$a)
 toLatex( tabular( A + 1 ~ (n=1)) )
@@ -460,7 +462,7 @@ toLatex( tabular( A + 1 ~ (n=1) ) )
 
 
 ###################################################
-### code chunk number 56: tables.Rnw:1239-1248
+### code chunk number 56: tables.Rnw:1241-1250
 ###################################################
 set.seed(1206)
 q <- data.frame(p = rep(c("A","B"), each = 10, length.out = 30),
@@ -474,13 +476,13 @@ toLatex(tab)
 
 
 ###################################################
-### code chunk number 57: tables.Rnw:1254-1255
+### code chunk number 57: tables.Rnw:1256-1257
 ###################################################
 toLatex(tab[ tab[,1] > 0, ])
 
 
 ###################################################
-### code chunk number 58: tables.Rnw:1262-1269
+### code chunk number 58: tables.Rnw:1264-1271
 ###################################################
 formula <- Factor(p)*Factor(a) ~ 
 	   (N = 1) + (b + c)*(mean+sd)
@@ -492,7 +494,7 @@ toLatex(tab)
 
 
 ###################################################
-### code chunk number 59: tables.Rnw:1275-1279
+### code chunk number 59: tables.Rnw:1277-1281
 ###################################################
 colLabels(tab)
 labs <- colLabels(tab)
@@ -501,13 +503,13 @@ colLabels(tab) <- labs
 
 
 ###################################################
-### code chunk number 60: tables.Rnw:1282-1283
+### code chunk number 60: tables.Rnw:1284-1285
 ###################################################
 toLatex(tab)
 
 
 ###################################################
-### code chunk number 61: tables.Rnw:1312-1317
+### code chunk number 61: tables.Rnw:1314-1319
 ###################################################
 library(magrittr)
 library(kableExtra)
@@ -517,7 +519,7 @@ toKable(tab) %>%
 
 
 ###################################################
-### code chunk number 62: tables.Rnw:1336-1340
+### code chunk number 62: tables.Rnw:1338-1342
 ###################################################
 latexTable(tabular((Species + 1) ~ (n=1) + Format(digits=2)*
                    (Sepal.Length + Sepal.Width)*(mean + sd), 

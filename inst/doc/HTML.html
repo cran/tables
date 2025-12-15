@@ -1,0 +1,1961 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Duncan Murdoch" />
+
+<meta name="date" content="2016-01-17" />
+
+<title>HTML Tables</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+<script>$(document).ready(function(){
+    if (typeof $('[data-toggle="tooltip"]').tooltip === 'function') {
+        $('[data-toggle="tooltip"]').tooltip();
+    }
+    if ($('[data-toggle="popover"]').popover === 'function') {
+        $('[data-toggle="popover"]').popover();
+    }
+});
+</script>
+<style type="text/css">
+.lightable-minimal {
+border-collapse: separate;
+border-spacing: 16px 1px;
+width: 100%;
+margin-bottom: 10px;
+}
+.lightable-minimal td {
+margin-left: 5px;
+margin-right: 5px;
+}
+.lightable-minimal th {
+margin-left: 5px;
+margin-right: 5px;
+}
+.lightable-minimal thead tr:last-child th {
+border-bottom: 2px solid #00000050;
+empty-cells: hide;
+}
+.lightable-minimal tbody tr:first-child td {
+padding-top: 0.5em;
+}
+.lightable-minimal.lightable-hover tbody tr:hover {
+background-color: #f5f5f5;
+}
+.lightable-minimal.lightable-striped tbody tr:nth-child(even) {
+background-color: #f5f5f5;
+}
+.lightable-classic {
+border-top: 0.16em solid #111111;
+border-bottom: 0.16em solid #111111;
+width: 100%;
+margin-bottom: 10px;
+margin: 10px 5px;
+}
+.lightable-classic tfoot tr td {
+border: 0;
+}
+.lightable-classic tfoot tr:first-child td {
+border-top: 0.14em solid #111111;
+}
+.lightable-classic caption {
+color: #222222;
+}
+.lightable-classic td {
+padding-left: 5px;
+padding-right: 5px;
+color: #222222;
+}
+.lightable-classic th {
+padding-left: 5px;
+padding-right: 5px;
+font-weight: normal;
+color: #222222;
+}
+.lightable-classic thead tr:last-child th {
+border-bottom: 0.10em solid #111111;
+}
+.lightable-classic.lightable-hover tbody tr:hover {
+background-color: #F9EEC1;
+}
+.lightable-classic.lightable-striped tbody tr:nth-child(even) {
+background-color: #f5f5f5;
+}
+.lightable-classic-2 {
+border-top: 3px double #111111;
+border-bottom: 3px double #111111;
+width: 100%;
+margin-bottom: 10px;
+}
+.lightable-classic-2 tfoot tr td {
+border: 0;
+}
+.lightable-classic-2 tfoot tr:first-child td {
+border-top: 3px double #111111;
+}
+.lightable-classic-2 caption {
+color: #222222;
+}
+.lightable-classic-2 td {
+padding-left: 5px;
+padding-right: 5px;
+color: #222222;
+}
+.lightable-classic-2 th {
+padding-left: 5px;
+padding-right: 5px;
+font-weight: normal;
+color: #222222;
+}
+.lightable-classic-2 tbody tr:last-child td {
+border-bottom: 3px double #111111;
+}
+.lightable-classic-2 thead tr:last-child th {
+border-bottom: 1px solid #111111;
+}
+.lightable-classic-2.lightable-hover tbody tr:hover {
+background-color: #F9EEC1;
+}
+.lightable-classic-2.lightable-striped tbody tr:nth-child(even) {
+background-color: #f5f5f5;
+}
+.lightable-material {
+min-width: 100%;
+white-space: nowrap;
+table-layout: fixed;
+font-family: Roboto, sans-serif;
+border: 1px solid #EEE;
+border-collapse: collapse;
+margin-bottom: 10px;
+}
+.lightable-material tfoot tr td {
+border: 0;
+}
+.lightable-material tfoot tr:first-child td {
+border-top: 1px solid #EEE;
+}
+.lightable-material th {
+height: 56px;
+padding-left: 16px;
+padding-right: 16px;
+}
+.lightable-material td {
+height: 52px;
+padding-left: 16px;
+padding-right: 16px;
+border-top: 1px solid #eeeeee;
+}
+.lightable-material.lightable-hover tbody tr:hover {
+background-color: #f5f5f5;
+}
+.lightable-material.lightable-striped tbody tr:nth-child(even) {
+background-color: #f5f5f5;
+}
+.lightable-material.lightable-striped tbody td {
+border: 0;
+}
+.lightable-material.lightable-striped thead tr:last-child th {
+border-bottom: 1px solid #ddd;
+}
+.lightable-material-dark {
+min-width: 100%;
+white-space: nowrap;
+table-layout: fixed;
+font-family: Roboto, sans-serif;
+border: 1px solid #FFFFFF12;
+border-collapse: collapse;
+margin-bottom: 10px;
+background-color: #363640;
+}
+.lightable-material-dark tfoot tr td {
+border: 0;
+}
+.lightable-material-dark tfoot tr:first-child td {
+border-top: 1px solid #FFFFFF12;
+}
+.lightable-material-dark th {
+height: 56px;
+padding-left: 16px;
+padding-right: 16px;
+color: #FFFFFF60;
+}
+.lightable-material-dark td {
+height: 52px;
+padding-left: 16px;
+padding-right: 16px;
+color: #FFFFFF;
+border-top: 1px solid #FFFFFF12;
+}
+.lightable-material-dark.lightable-hover tbody tr:hover {
+background-color: #FFFFFF12;
+}
+.lightable-material-dark.lightable-striped tbody tr:nth-child(even) {
+background-color: #FFFFFF12;
+}
+.lightable-material-dark.lightable-striped tbody td {
+border: 0;
+}
+.lightable-material-dark.lightable-striped thead tr:last-child th {
+border-bottom: 1px solid #FFFFFF12;
+}
+.lightable-paper {
+width: 100%;
+margin-bottom: 10px;
+color: #444;
+}
+.lightable-paper tfoot tr td {
+border: 0;
+}
+.lightable-paper tfoot tr:first-child td {
+border-top: 1px solid #00000020;
+}
+.lightable-paper thead tr:last-child th {
+color: #666;
+vertical-align: bottom;
+border-bottom: 1px solid #00000020;
+line-height: 1.15em;
+padding: 10px 5px;
+}
+.lightable-paper td {
+vertical-align: middle;
+border-bottom: 1px solid #00000010;
+line-height: 1.15em;
+padding: 7px 5px;
+}
+.lightable-paper.lightable-hover tbody tr:hover {
+background-color: #F9EEC1;
+}
+.lightable-paper.lightable-striped tbody tr:nth-child(even) {
+background-color: #00000008;
+}
+.lightable-paper.lightable-striped tbody td {
+border: 0;
+}
+</style>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">HTML Tables</h1>
+<h4 class="author">Duncan Murdoch</h4>
+<h4 class="date">January 17, 2016</h4>
+
+
+
+<p>This short R Markdown document illustrates how to use
+<code>tables</code> in HTML.</p>
+<div id="initializing" class="section level2">
+<h2>Initializing</h2>
+<p>First, you need to load <code>tables</code>. Packages that it uses
+print banner messages, so you’ll usually want to set a chunk option of
+<code>message=FALSE</code>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(tables)</span></code></pre></div>
+<p>The table is now constructed in the usual way.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">125</span>, <span class="at">sd=</span><span class="dv">100</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>Group <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">sample</span>(letters[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>], <span class="dv">125</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>tab <span class="ot">&lt;-</span> <span class="fu">tabular</span>( Group <span class="sc">~</span> (<span class="at">N=</span><span class="dv">1</span>)<span class="sc">+</span><span class="fu">Format</span>(<span class="at">digits=</span><span class="dv">2</span>)<span class="sc">*</span>X<span class="sc">*</span>((<span class="at">Mean=</span>mean) <span class="sc">+</span> <span class="fu">Heading</span>(<span class="st">&quot;Std Dev&quot;</span>)<span class="sc">*</span>sd) )</span></code></pre></div>
+<p>In an R Markdown document, you don’t want each table to output the
+HTML document header, so turn off those options:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">table_options</span>(<span class="fu">htmloptions</span>(<span class="at">head=</span><span class="cn">FALSE</span>))</span></code></pre></div>
+</div>
+<div id="inserting-a-table" class="section level2">
+<h2>Inserting a Table</h2>
+<p>There are two ways to insert a table into a knitr/rmarkdown document.
+Since tables version 0.8.4, you can just print the object, and it will
+be automatically formatted according to the current
+<code>table_options()</code>:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>tab</span></code></pre></div>
+<table class="Rtable">
+<thead>
+<tr class="center">
+<th>
+ 
+</th>
+<th>
+ 
+</th>
+<th colspan="2">
+X
+</th>
+</tr>
+<tr class="center">
+<th>
+Group
+</th>
+<th>
+N
+</th>
+<th>
+Mean
+</th>
+<th>
+Std Dev
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="center">
+<th class="left">
+a
+</th>
+<td>
+35
+</td>
+<td>
+2.4
+</td>
+<td>
+98.3
+</td>
+</tr>
+<tr class="center">
+<th class="left">
+b
+</th>
+<td>
+20
+</td>
+<td>
+-16.9
+</td>
+<td>
+85.2
+</td>
+</tr>
+<tr class="center">
+<th class="left">
+c
+</th>
+<td>
+28
+</td>
+<td>
+-3.9
+</td>
+<td>
+93.4
+</td>
+</tr>
+<tr class="center">
+<th class="left">
+d
+</th>
+<td>
+17
+</td>
+<td>
+3.1
+</td>
+<td>
+104.1
+</td>
+</tr>
+<tr class="center">
+<th class="left">
+e
+</th>
+<td>
+25
+</td>
+<td>
+-17.7
+</td>
+<td>
+95.3
+</td>
+</tr>
+</tbody>
+</table>
+<p>The previous behaviour required an explicit call to the
+<code>toHTML()</code> function, and knitr option
+<code>results = &#39;asis&#39;</code> for the chunk. To <em>require</em> the
+older method, use <code>table_options(knit_print = FALSE)</code>:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">table_options</span>(<span class="at">knit_print =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>tab        <span class="co"># This chunk uses the default results = &#39;markup&#39;</span></span></code></pre></div>
+<pre><code>##                        
+##           X            
+##  Group N  Mean  Std Dev
+##  a     35   2.4  98.3  
+##  b     20 -16.9  85.2  
+##  c     28  -3.9  93.4  
+##  d     17   3.1 104.1  
+##  e     25 -17.7  95.3</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">toHTML</span>(tab)  <span class="co"># This chunk uses results = &#39;asis&#39;</span></span></code></pre></div>
+<table class="Rtable">
+ <thead>
+ <tr class="center">
+  <th> </th>
+  <th> </th>
+  <th colspan="2">X</th>
+</tr>
+ <tr class="center">
+  <th>Group</th>
+  <th>N</th>
+  <th>Mean</th>
+  <th>Std Dev</th>
+</tr>
+ </thead>
+ <tbody>
+ <tr class="center">
+  <th class="left">a</th>
+  <td>35</td>
+  <td>  2.4</td>
+  <td> 98.3</td>
+</tr>
+ <tr class="center">
+  <th class="left">b</th>
+  <td>20</td>
+  <td>-16.9</td>
+  <td> 85.2</td>
+</tr>
+ <tr class="center">
+  <th class="left">c</th>
+  <td>28</td>
+  <td> -3.9</td>
+  <td> 93.4</td>
+</tr>
+ <tr class="center">
+  <th class="left">d</th>
+  <td>17</td>
+  <td>  3.1</td>
+  <td>104.1</td>
+</tr>
+ <tr class="center">
+  <th class="left">e</th>
+  <td>25</td>
+  <td>-17.7</td>
+  <td> 95.3</td>
+</tr>
+ </tbody>
+ </table>
+
+<p>In either case, some styling information needs to be included in the
+document. Ideally this should be in the header, but it can be inserted
+anywhere by calling <code>writeCSS</code> with
+<code>results = &#39;asis&#39;</code>:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">writeCSS</span>()</span></code></pre></div>
+<style>
+.Rtable thead, .Rtable .even {
+background-color: inherit;
+}
+.left { text-align:left; }
+.center { text-align:center; }
+.right { text-align:right; }
+.Rtable, .Rtable thead {
+border-collapse: collapse;
+border-style: solid;
+border-width: medium 0;
+border-color: inherit;
+}
+.Rtable th, .Rtable td {
+padding-left: 0.5em;
+padding-right: 0.5em;
+border-width: 0;
+}
+</style>
+</div>
+<div id="improving-the-look" class="section level2">
+<h2>Improving the Look</h2>
+<p>The default justification makes the columns of numbers look messy.
+You can set the justification to the right, but the headers look
+wrong:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">table_options</span>(<span class="fu">htmloptions</span>(<span class="at">head =</span> <span class="cn">FALSE</span>, <span class="at">justification =</span> <span class="st">&quot;r&quot;</span>, <span class="at">knit_print =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>tab</span></code></pre></div>
+<table class="Rtable">
+<thead>
+<tr class="right">
+<th>
+ 
+</th>
+<th>
+ 
+</th>
+<th colspan="2">
+X
+</th>
+</tr>
+<tr class="right">
+<th>
+Group
+</th>
+<th>
+N
+</th>
+<th>
+Mean
+</th>
+<th>
+Std Dev
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="right">
+<th class="left">
+a
+</th>
+<td>
+35
+</td>
+<td>
+2.4
+</td>
+<td>
+98.3
+</td>
+</tr>
+<tr class="right">
+<th class="left">
+b
+</th>
+<td>
+20
+</td>
+<td>
+-16.9
+</td>
+<td>
+85.2
+</td>
+</tr>
+<tr class="right">
+<th class="left">
+c
+</th>
+<td>
+28
+</td>
+<td>
+-3.9
+</td>
+<td>
+93.4
+</td>
+</tr>
+<tr class="right">
+<th class="left">
+d
+</th>
+<td>
+17
+</td>
+<td>
+3.1
+</td>
+<td>
+104.1
+</td>
+</tr>
+<tr class="right">
+<th class="left">
+e
+</th>
+<td>
+25
+</td>
+<td>
+-17.7
+</td>
+<td>
+95.3
+</td>
+</tr>
+</tbody>
+</table>
+<p>The best look comes with the <code>pad = TRUE</code> option. This
+adds nonbreaking spaces around the numbers so that centering looks good.
+It also changes the hyphens to proper minus signs:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">table_options</span>(<span class="fu">htmloptions</span>(<span class="at">head =</span> <span class="cn">FALSE</span>, <span class="at">justification =</span> <span class="st">&quot;c&quot;</span>, <span class="at">pad =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>tab</span></code></pre></div>
+<table class="Rtable">
+<thead>
+<tr class="center">
+<th>
+ 
+</th>
+<th>
+ 
+</th>
+<th colspan="2">
+X
+</th>
+</tr>
+<tr class="center">
+<th>
+Group
+</th>
+<th>
+N
+</th>
+<th>
+Mean
+</th>
+<th>
+Std Dev
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="center">
+<th class="left">
+a
+</th>
+<td>
+35
+</td>
+<td>
+   2.4
+</td>
+<td>
+  98.3
+</td>
+</tr>
+<tr class="center">
+<th class="left">
+b
+</th>
+<td>
+20
+</td>
+<td>
+ −16.9
+</td>
+<td>
+  85.2
+</td>
+</tr>
+<tr class="center">
+<th class="left">
+c
+</th>
+<td>
+28
+</td>
+<td>
+  −3.9
+</td>
+<td>
+  93.4
+</td>
+</tr>
+<tr class="center">
+<th class="left">
+d
+</th>
+<td>
+17
+</td>
+<td>
+   3.1
+</td>
+<td>
+ 104.1
+</td>
+</tr>
+<tr class="center">
+<th class="left">
+e
+</th>
+<td>
+25
+</td>
+<td>
+ −17.7
+</td>
+<td>
+  95.3
+</td>
+</tr>
+</tbody>
+</table>
+<p>Unfortunately, if you cut this table and paste it into a spreadsheet,
+the spaces and minus signs probably won’t be understood. I don’t know
+how to get everything we want :-(.</p>
+</div>
+<div id="fine-tuning" class="section level2">
+<h2>Fine tuning</h2>
+<p>This document uses the default CSS from
+<code>table_options()$CSS</code>. If you are producing an
+<code>html_document</code>, it should be okay. It does not look quite
+right in a <code>slidy_presentation</code>, and is no good at all in an
+<code>ioslides_presentation</code>. Furthermore, you might not agree
+with my design choices.</p>
+<p>In any of these cases, you should substitute your own CSS. You will
+need to modify the default one, and can use it as the <code>CSS</code>
+argument to <code>writeCSS()</code>, or set it as a new default in
+<code>table_options()</code>.</p>
+<p>Here is the default setting:</p>
+<pre><code>&lt;style&gt;
+#ID .Rtable thead, .Rtable .even {
+  background-color: inherit;
+}
+#ID .left   { text-align:left; }
+#ID .center { text-align:center; }
+#ID .right  { text-align:right; }
+#ID .Rtable, #ID .Rtable thead {
+  border-collapse: collapse;
+  border-style: solid;
+  border-width: medium 0;
+  border-color: inherit;
+}
+#ID .Rtable th, #ID .Rtable td {
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  border-width: 0;
+}
+&lt;/style&gt;</code></pre>
+<p>Note that the <code>#ID</code> values will be replaced with the
+<code>id</code> string given in <code>writeCSS()</code>, and
+<code>toHTML()</code> has a corresponding argument to allow you to make
+changes for one specific table. If you are using the newer form of
+display with <code>table_options(knit_print = TRUE)</code>, you can get
+customized display for one table by also using
+<code>table_options(doCSS = TRUE)</code>. For example,</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="fu">table_options</span>(<span class="at">CSS =</span></span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a><span class="st">&quot;&lt;style&gt;</span></span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a><span class="st">#ID .center { </span></span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a><span class="st">  text-align:center;</span></span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a><span class="st">  background-color: aliceblue;</span></span>
+<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a><span class="st">}</span></span>
+<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a><span class="st">&lt;/style&gt;&quot;</span>, <span class="at">doCSS =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a>tab</span></code></pre></div>
+<style>
+#table138105859538 .center { text-align:center;
+background-color: aliceblue;
+}
+</style>
+<table id="table138105859538" class="Rtable">
+<thead>
+<tr class="center">
+<th>
+ 
+</th>
+<th>
+ 
+</th>
+<th colspan="2">
+X
+</th>
+</tr>
+<tr class="center">
+<th>
+Group
+</th>
+<th>
+N
+</th>
+<th>
+Mean
+</th>
+<th>
+Std Dev
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="center">
+<th class="left">
+a
+</th>
+<td>
+35
+</td>
+<td>
+   2.4
+</td>
+<td>
+  98.3
+</td>
+</tr>
+<tr class="center">
+<th class="left">
+b
+</th>
+<td>
+20
+</td>
+<td>
+ −16.9
+</td>
+<td>
+  85.2
+</td>
+</tr>
+<tr class="center">
+<th class="left">
+c
+</th>
+<td>
+28
+</td>
+<td>
+  −3.9
+</td>
+<td>
+  93.4
+</td>
+</tr>
+<tr class="center">
+<th class="left">
+d
+</th>
+<td>
+17
+</td>
+<td>
+   3.1
+</td>
+<td>
+ 104.1
+</td>
+</tr>
+<tr class="center">
+<th class="left">
+e
+</th>
+<td>
+25
+</td>
+<td>
+ −17.7
+</td>
+<td>
+  95.3
+</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="fu">table_options</span>(<span class="at">doCSS =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a>tab</span></code></pre></div>
+<table class="Rtable">
+<thead>
+<tr class="center">
+<th>
+ 
+</th>
+<th>
+ 
+</th>
+<th colspan="2">
+X
+</th>
+</tr>
+<tr class="center">
+<th>
+Group
+</th>
+<th>
+N
+</th>
+<th>
+Mean
+</th>
+<th>
+Std Dev
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="center">
+<th class="left">
+a
+</th>
+<td>
+35
+</td>
+<td>
+   2.4
+</td>
+<td>
+  98.3
+</td>
+</tr>
+<tr class="center">
+<th class="left">
+b
+</th>
+<td>
+20
+</td>
+<td>
+ −16.9
+</td>
+<td>
+  85.2
+</td>
+</tr>
+<tr class="center">
+<th class="left">
+c
+</th>
+<td>
+28
+</td>
+<td>
+  −3.9
+</td>
+<td>
+  93.4
+</td>
+</tr>
+<tr class="center">
+<th class="left">
+d
+</th>
+<td>
+17
+</td>
+<td>
+   3.1
+</td>
+<td>
+ 104.1
+</td>
+</tr>
+<tr class="center">
+<th class="left">
+e
+</th>
+<td>
+25
+</td>
+<td>
+ −17.7
+</td>
+<td>
+  95.3
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="kableextra-support" class="section level2">
+<h2>kableExtra support</h2>
+<p>The kableExtra package contains a large number of functions to
+customize the look of tables generated by the
+<code>knitr::kable()</code> function. These can also be made to work
+with tables from this package, using the <code>toKable()</code>
+function. For example,</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a><span class="fu">toKable</span>(tab, <span class="at">format=</span><span class="st">&quot;html&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="st">&quot;striped&quot;</span>, <span class="at">full_width =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a>  <span class="fu">add_header_above</span>(<span class="fu">c</span>(<span class="st">&quot;Row Label&quot;</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">&quot;Statistics&quot;</span> <span class="ot">=</span> <span class="dv">3</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a>  <span class="fu">column_spec</span>(<span class="dv">4</span>, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a>  <span class="fu">row_spec</span>(<span class="dv">1</span>, <span class="at">color =</span> <span class="st">&quot;blue&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a>  <span class="fu">group_rows</span>(<span class="st">&quot;Subgroup&quot;</span>, <span class="dv">3</span>, <span class="dv">5</span>)</span></code></pre></div>
+<table class="Rtable table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1">
+<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+Row Label
+</div>
+</th>
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="3">
+<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+Statistics
+</div>
+</th>
+</tr>
+<tr class="center">
+<th>
+ 
+</th>
+<th>
+ 
+</th>
+<th colspan="2">
+X
+</th>
+</tr>
+<tr class="center">
+<th>
+Group
+</th>
+<th>
+N
+</th>
+<th>
+Mean
+</th>
+<th>
+Std Dev
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="center">
+<th class="left" style="color: blue !important;">
+a
+</th>
+<td style="color: blue !important;">
+35
+</td>
+<td style="color: blue !important;">
+   2.4
+</td>
+<td style="color: red !important;color: blue !important;">
+  98.3
+</td>
+</tr>
+<tr class="center">
+<th class="left">
+b
+</th>
+<td>
+20
+</td>
+<td>
+ −16.9
+</td>
+<td style="color: red !important;">
+  85.2
+</td>
+</tr>
+<tr grouplength="3">
+<td colspan="4" style="border-bottom: 1px solid;">
+<strong>Subgroup</strong>
+</td>
+</tr>
+<tr class="center">
+<th class="left" style="NApadding-left: 2em;" indentlevel="1">
+c
+</th>
+<td>
+28
+</td>
+<td>
+  −3.9
+</td>
+<td style="color: red !important;">
+  93.4
+</td>
+</tr>
+<tr class="center">
+<th class="left" style="NApadding-left: 2em;" indentlevel="1">
+d
+</th>
+<td>
+17
+</td>
+<td>
+   3.1
+</td>
+<td style="color: red !important;">
+ 104.1
+</td>
+</tr>
+<tr class="center">
+<th class="left" style="NApadding-left: 2em;" indentlevel="1">
+e
+</th>
+<td>
+25
+</td>
+<td>
+ −17.7
+</td>
+<td style="color: red !important;">
+  95.3
+</td>
+</tr>
+</tbody>
+</table>
+<p>There are conflicts between the styling options from
+<code>kableExtra</code> and the ones specified in
+<code>table_options()$CSS</code>; some modifications might be needed to
+make everything work. For instance, the code above requests striping,
+but that did not show up. Experimentation may be needed!</p>
+</div>
+<div id="tinytable-support" class="section level2">
+<h2>tinytable support</h2>
+<p>The <code>tinytable</code> package is another package which can be
+used to customize the look of tables generated by <code>tables</code>. A
+<code>tinytable</code> can be customized, and then printed or saved to a
+variety of formats, including: HTML, LaTeX, Word, Typst, PNG, PDF,
+Rmarkdown, and Quarto. For example,</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a><span class="fu">library</span>(tinytable)</span>
+<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a><span class="fu">toTinytable</span>(tab, <span class="at">theme =</span> <span class="st">&quot;striped&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a>  <span class="fu">group_tt</span>(<span class="at">i =</span> <span class="fu">list</span>(<span class="st">&quot;Subgroup&quot;</span> <span class="ot">=</span> <span class="dv">3</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a>  <span class="fu">group_tt</span>(<span class="at">j =</span> <span class="fu">list</span>(<span class="st">&quot;Row Label&quot;</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">&quot;Statistics&quot;</span> <span class="ot">=</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a>  <span class="fu">style_tt</span>(<span class="at">i =</span> <span class="dv">3</span>, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>, <span class="at">align =</span> <span class="st">&quot;c&quot;</span>, <span class="at">line =</span> <span class="st">&quot;bt&quot;</span>, <span class="at">line_color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb15-7"><a href="#cb15-7" tabindex="-1"></a>  <span class="fu">style_tt</span>(<span class="at">i =</span> <span class="dv">5</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">j =</span> <span class="dv">3</span><span class="sc">:</span><span class="dv">4</span>, <span class="at">background =</span> <span class="st">&quot;black&quot;</span>, <span class="at">color =</span> <span class="st">&quot;orange&quot;</span>)</span></code></pre></div>
+<!-- preamble start -->
+
+    <script>// TinyTable JavaScript Framework
+// Function factory for creating table-specific operations
+window.TinyTable = {
+  // Helper to create Tabulator instance with Luxon dependency
+  createTabulator: function(elementId, config) {
+    const { DateTime } = window.luxon || {};
+    return new Tabulator(elementId, {
+      dependencies: { DateTime },
+      ...config
+    });
+  },
+
+  createTableFunctions: function (tableId) {
+    const spans = []; // {top, left, rowspan, colspan}
+
+    function resolveToAnchor(i, j) {
+      // find if (i,j) is inside any span; return that span's anchor if so
+      for (const s of spans) {
+        if (
+          i >= s.top && i < s.top + s.rowspan &&
+          j >= s.left && j < s.left + s.colspan
+        ) {
+          return { i: s.top, j: s.left };
+        }
+      }
+      return { i, j };
+    }
+
+    return {
+      styleCell: function (i, j, css_id) {
+        // normalize possible string indices
+        i = +i; j = +j;
+
+        const table = document.getElementById(tableId);
+        const { i: ai, j: aj } = resolveToAnchor(i, j);
+        const cell = table.querySelector(`[data-row="${ai}"][data-col="${aj}"]`);
+        if (!cell) return; // silently skip if not found (e.g., removed)
+        cell.classList.add(css_id);
+      },
+
+      spanCell: function (i, j, rowspan, colspan) {
+        i = +i; j = +j;
+
+        const table = document.getElementById(tableId);
+        const targetCell = table.querySelector(`[data-row="${i}"][data-col="${j}"]`);
+        if (!targetCell) {
+          console.warn(`Cell at (${i}, ${j}) not found.`);
+          return;
+        }
+
+        // record span so future styleCell calls map to the anchor
+        spans.push({ top: i, left: j, rowspan, colspan });
+
+        // remove covered cells (except anchor)
+        const cellsToRemove = [];
+        for (let r = 0; r < rowspan; r++) {
+          for (let c = 0; c < colspan; c++) {
+            if (r === 0 && c === 0) continue;
+            const cell = table.querySelector(`[data-row="${i + r}"][data-col="${j + c}"]`);
+            if (cell) cellsToRemove.push(cell);
+          }
+        }
+        cellsToRemove.forEach(cell => cell.remove());
+
+        // set HTML attributes for clarity/serialization
+        targetCell.setAttribute('rowspan', rowspan);
+        targetCell.setAttribute('colspan', colspan);
+      }
+    };
+  }
+};
+
+// =============================================================================
+// TABULATOR CUSTOM FORMATTERS (revised)
+// =============================================================================
+
+// SVG sparkline
+function tinytable_sparkline(cell, p = {}) {
+  let values = cell.getValue() ?? [];
+  if (!Array.isArray(values)) values = [values];
+  // coerce to finite numbers & strip NaNs
+  values = values.map(Number).filter(Number.isFinite);
+  const n = values.length;
+  if (n === 0) return "";
+
+  const w = p.width ?? 120, h = p.height ?? 30, pad = p.pad ?? 2;
+  const color = p.color ?? "currentColor", sw = p.strokeWidth ?? 1.5;
+  const fill = p.fillArea ?? false;
+  const showDots = p.showDots ?? false;
+  const dotR = p.dotRadius ?? 1.75;
+  const ariaLabel = p.ariaLabel ?? `sparkline with ${n} points`;
+
+  // single pass for min/max
+  let min = Infinity, max = -Infinity;
+  for (let v of values) { if (v < min) min = v; if (v > max) max = v; }
+  const span = (max - min) || 1;
+
+  const x = i => pad + (i * (w - 2 * pad)) / Math.max(n - 1, 1);
+  const y = v => h - pad - ((v - min) * (h - 2 * pad)) / span;
+
+  let d = `M ${x(0)},${y(values[0])}`;
+  for (let i = 1; i < n; i++) d += ` L ${x(i)},${y(values[i])}`;
+
+  const NS = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(NS, "svg");
+  svg.setAttribute("viewBox", `0 0 ${w} ${h}`);
+  svg.setAttribute("width", w);
+  svg.setAttribute("height", h);
+  svg.setAttribute("role", "img");
+  svg.setAttribute("aria-label", ariaLabel);
+
+  const path = document.createElementNS(NS, "path");
+  path.setAttribute("stroke", color);
+  path.setAttribute("stroke-width", sw);
+  path.setAttribute("vector-effect", "non-scaling-stroke");
+
+  if (fill) {
+    const area = document.createElementNS(NS, "path");
+    area.setAttribute("d", d + ` L ${x(n - 1)},${h - pad} L ${x(0)},${h - pad} Z`);
+    area.setAttribute("fill", color);
+    area.setAttribute("fill-opacity", p.fillOpacity ?? 0.25);
+    svg.appendChild(area);
+    path.setAttribute("d", d);
+    path.setAttribute("fill", "none");
+  } else {
+    path.setAttribute("d", d);
+    path.setAttribute("fill", "none");
+  }
+  svg.appendChild(path);
+
+  if (showDots) {
+    const dot = (i) => {
+      const c = document.createElementNS(NS, "circle");
+      c.setAttribute("cx", x(i));
+      c.setAttribute("cy", y(values[i]));
+      c.setAttribute("r", dotR);
+      c.setAttribute("fill", color);
+      return c;
+    };
+    if (p.dots === "end") svg.appendChild(dot(n - 1));
+    else if (p.dots === "minmax") {
+      const iMin = values.indexOf(min), iMax = values.indexOf(max);
+      svg.appendChild(dot(iMin)); svg.appendChild(dot(iMax));
+    } else if (p.dots === true) {
+      for (let i = 0; i < n; i++) svg.appendChild(dot(i));
+    }
+  }
+
+  if (p.title) {
+    const title = document.createElementNS(NS, "title");
+    title.textContent = p.title;
+    svg.appendChild(title);
+  }
+
+  return svg;
+}
+
+// Canvas histogram
+function tinytable_histogram(cell, p = {}) {
+  let data = cell.getValue() ?? [];
+  if (!Array.isArray(data)) data = [data];
+  data = data.map(Number).filter(Number.isFinite);
+  const n = data.length;
+  if (n === 0) return "";
+
+  const cssWidth = p.width ?? 120;
+  const cssHeight = p.height ?? 30;
+  const color = p.color ?? "currentColor";
+  const gap = p.gap ?? 1;         // px gap between bars
+  const pad = p.pad ?? 0;         // inner padding
+  const ariaLabel = p.ariaLabel ?? `histogram with ${n} observations`;
+
+  // robust bins: Sturges as default; allow override
+  const k = Math.max(1, Math.min(64, p.bins ?? Math.ceil(Math.log2(n) + 1)));
+
+  // stats
+  let min = Infinity, max = -Infinity;
+  for (let v of data) { if (v < min) min = v; if (v > max) max = v; }
+
+  // zero-range safeguard -> single centered bar
+  const range = max - min;
+  const binWidth = range > 0 ? range / k : 1;
+
+  const bins = new Array(k).fill(0);
+  if (range === 0) {
+    // put all mass in the middle bin
+    bins[Math.floor(k / 2)] = n;
+  } else {
+    for (let v of data) {
+      let idx = Math.floor((v - min) / binWidth);
+      if (idx >= k) idx = k - 1; // clamp max edge
+      bins[idx]++;
+    }
+  }
+  const maxCount = Math.max(...bins, 1);
+
+  // HiDPI / Retina crispness
+  const dpr = window.devicePixelRatio || 1;
+  const canvas = document.createElement("canvas");
+  canvas.width = Math.round(cssWidth * dpr);
+  canvas.height = Math.round(cssHeight * dpr);
+  canvas.style.width = cssWidth + "px";
+  canvas.style.height = cssHeight + "px";
+  canvas.setAttribute("role", "img");
+  canvas.setAttribute("aria-label", ariaLabel);
+
+  const ctx = canvas.getContext("2d");
+  ctx.scale(dpr, dpr);
+  ctx.clearRect(0, 0, cssWidth, cssHeight);
+  ctx.fillStyle = color;
+
+  const innerW = cssWidth - pad * 2;
+  const innerH = cssHeight - pad * 2;
+  const barW = innerW / k;
+
+  for (let i = 0; i < k; i++) {
+    const h = (bins[i] / maxCount) * innerH;
+    const x = pad + i * barW;
+    const y = cssHeight - pad - h;
+    // 0.5 translate helps crisp vertical edges on some displays
+    ctx.fillRect(Math.round(x) + 0.5, Math.floor(y), Math.max(0, barW - gap), Math.ceil(h));
+  }
+
+  if (p.title) canvas.title = p.title;
+  return canvas;
+}
+
+// Unified sorter that uses hidden rank field
+function tinytable_rank_sorter(a, b, aRow, bRow, column, dir, sorterParams) {
+  const rankField = sorterParams.rankField;
+  const aVal = aRow.getData()[rankField] || 0;
+  const bVal = bRow.getData()[rankField] || 0;
+  return aVal - bVal;
+}
+</script>
+
+    <script>
+      // Create table-specific functions using external factory
+      const tableFns_a0kvlinc08vdq3htfjsm = TinyTable.createTableFunctions("tinytable_a0kvlinc08vdq3htfjsm");
+      // tinytable span after
+      window.addEventListener('load', function () { tableFns_a0kvlinc08vdq3htfjsm.spanCell(3, 1, 1, 4) })
+      window.addEventListener('load', function () {
+          var cellsToStyle = [
+            // tinytable style arrays after
+          { positions: [ { i: '5', j: 3 }, { i: '6', j: 3 }, { i: '5', j: 4 }, { i: '6', j: 4 } ], css_id: 'tinytable_css_hs4te3a2boel72prauah',}, 
+          { positions: [ { i: '-2', j: 3 }, { i: '-2', j: 4 }, { i: '-1', j: 4 } ], css_id: 'tinytable_css_7g4pgkgpase0c1oc1lva',}, 
+          { positions: [ { i: '-2', j: 2 }, { i: '-1', j: 3 } ], css_id: 'tinytable_css_flout0xswcb0bc0vjbeu',}, 
+          { positions: [ { i: '3', j: 1 }, { i: '3', j: 2 }, { i: '3', j: 3 }, { i: '3', j: 4 } ], css_id: 'tinytable_css_x9s1auw79c9b3htzj64j',}, 
+          { positions: [ { i: '1', j: 1 }, { i: '5', j: 1 }, { i: '1', j: 2 }, { i: '5', j: 2 }, { i: '1', j: 3 }, { i: '1', j: 4 } ], css_id: 'tinytable_css_whxwzxhf0iqly07uhs5k',}, 
+          { positions: [ { i: '-1', j: 1 }, { i: '-1', j: 2 } ], css_id: 'tinytable_css_a0kwo9fj16uz8uxpyeqr',}, 
+          { positions: [ { i: '-2', j: 1 } ], css_id: 'tinytable_css_6hercq06ccgbcijbms49',}, 
+          ];
+
+          // Loop over the arrays to style the cells
+          cellsToStyle.forEach(function (group) {
+              group.positions.forEach(function (cell) {
+                  tableFns_a0kvlinc08vdq3htfjsm.styleCell(cell.i, cell.j, group.css_id);
+              });
+          });
+      });
+    </script>
+
+    <style type="text/css">
+
+
+.tinytable {
+
+--tt-text-color: inherit;
+--tt-line-color: black;
+--tt-border-color: var(--tt-line-color);
+--tt-striped-bg: rgba(0, 0, 0, .05);
+--tt-hover-bg: rgba(0, 0, 0, .075);
+--tt-background-color: transparent;
+--tt-footnote-bg: var(--tt-background-color);
+
+--tt-cell-padding: .5rem;
+--tt-cell-padding-sm: calc(var(--tt-cell-padding) / 2);
+--tt-table-margin: .5rem 0;
+--tt-caption-padding: .5rem 0;
+--tt-footnote-padding: .2rem .5rem;
+--tt-footnote-first-padding-top: .5rem;
+--tt-footnote-gap: .1rem;
+--tt-container-padding: 10px;
+
+--tt-font-size-footnote: 0.875rem;
+--tt-font-size-caption: 1rem;
+--tt-font-size-sup: 0.75em;
+--tt-line-height-footnote: 1.25;
+--tt-line-height-footnote-tight: 1.2;
+--tt-font-weight-header: normal;
+
+--tt-cell-valign: top;
+--tt-header-align: left;
+--tt-header-valign: bottom;
+--tt-caption-align: var(--tt-header-align);
+--tt-caption-side: top;
+
+--tt-table-width: 100%;
+
+--tt-border-width: 1px;
+--tt-border-width-tbody: 2px;
+}
+
+.tinytable {
+width: var(--tt-table-width);
+margin: var(--tt-table-margin);
+border-collapse: collapse;
+background-color: var(--tt-background-color);
+color: var(--tt-text-color);
+font-family: inherit;
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+}
+.tinytable * {
+font-family: inherit;
+}
+
+.tinytable th,
+.tinytable td {
+position: relative;
+padding: var(--tt-cell-padding);
+vertical-align: var(--tt-cell-valign);
+}
+.tinytable thead th {
+text-align: var(--tt-header-align);
+vertical-align: var(--tt-header-valign);
+font-weight: var(--tt-font-weight-header);
+border-bottom: none;
+}
+.tinytable thead th[align="center"] {
+text-align: center;
+}
+.tinytable tbody + tbody {
+border-top: var(--tt-border-width-tbody) solid var(--tt-border-color);
+}
+
+
+.tinytable-sm th,
+.tinytable-sm td {
+padding: var(--tt-cell-padding-sm);
+}
+
+.tinytable-bordered {
+border: var(--tt-border-width) solid var(--tt-border-color);
+}
+.tinytable-bordered th,
+.tinytable-bordered td {
+border: var(--tt-border-width) solid var(--tt-border-color);
+}
+
+.tinytable-striped tbody tr:nth-of-type(odd) {
+background-color: var(--tt-striped-bg);
+}
+
+.tinytable-hover tbody tr:hover {
+background-color: var(--tt-hover-bg);
+}
+
+.tinytable-responsive {
+width: var(--tt-table-width);
+overflow-x: auto;
+-webkit-overflow-scrolling: touch;
+}
+
+.tinytable :is(td, th)[class*="tinytable_css_"] {
+position: relative;
+
+--border-top: 0;
+--border-right: 0;
+--border-bottom: 0;
+--border-left: 0;
+
+--line-color-top: currentColor;
+--line-color-right: currentColor;
+--line-color-bottom: currentColor;
+--line-color-left: currentColor;
+
+--line-width-top: 0.1em;
+--line-width-right: 0.1em;
+--line-width-bottom: 0.1em;
+--line-width-left: 0.1em;
+
+--trim-top-left: 0%;
+--trim-top-right: 0%;
+--trim-right-top: 0%;
+--trim-right-bottom: 0%;
+--trim-bottom-left: 0%;
+--trim-bottom-right: 0%;
+--trim-left-top: 0%;
+--trim-left-bottom: 0%;
+}
+
+.tinytable :is(td, th)[class*="tinytable_css_"]::before {
+content: "";
+position: absolute;
+top: var(--trim-top-left, var(--trim-top-right, 0));
+left: var(--trim-left-top, 0);
+right: var(--trim-right-top, 0);
+bottom: 0;
+pointer-events: none;
+z-index: 1;
+border-top: calc(var(--border-top) * var(--line-width-top)) solid var(--line-color-top);
+border-right: calc(var(--border-right) * var(--line-width-right)) solid var(--line-color-right);
+border-left: calc(var(--border-left) * var(--line-width-left)) solid var(--line-color-left);
+}
+
+.tinytable :is(td, th)[class*="tinytable_css_"]::after {
+content: "";
+position: absolute;
+left: var(--trim-bottom-left, 0);
+right: var(--trim-bottom-right, 0);
+bottom: var(--trim-left-bottom, var(--trim-right-bottom, 0));
+height: calc(var(--border-bottom) * var(--line-width-bottom));
+background: var(--line-color-bottom);
+pointer-events: none;
+z-index: 2;
+}
+
+.tinytable-container {
+padding: var(--tt-container-padding);
+overflow-x: auto;
+overflow-y: auto;
+width: auto;
+height: auto;
+}
+
+.tinytable caption {
+padding: var(--tt-caption-padding);
+caption-side: var(--tt-caption-side);
+font-size: var(--tt-font-size-caption);
+text-align: var(--tt-caption-align);
+}
+
+.tinytable tfoot tr:first-child td {
+padding-top: var(--tt-footnote-first-padding-top);
+}
+.tinytable tfoot td {
+padding: var(--tt-footnote-padding);
+font-size: var(--tt-font-size-footnote);
+line-height: var(--tt-line-height-footnote);
+background-color: var(--tt-footnote-bg);
+}
+
+.tinytable tfoot tr + tr td {
+padding-top: var(--tt-footnote-gap);
+}
+
+.tinytable tfoot sup {
+font-size: var(--tt-font-size-sup);
+line-height: 0;
+vertical-align: text-top;
+}
+
+.tinytable tfoot tr:nth-child(n+2) td {
+line-height: var(--tt-line-height-footnote-tight);
+}
+</style>
+    <style>
+
+#tinytable_a0kvlinc08vdq3htfjsm td.tinytable_css_hs4te3a2boel72prauah, #tinytable_a0kvlinc08vdq3htfjsm th.tinytable_css_hs4te3a2boel72prauah { color: #FFA500; background-color: black }
+#tinytable_a0kvlinc08vdq3htfjsm td.tinytable_css_7g4pgkgpase0c1oc1lva, #tinytable_a0kvlinc08vdq3htfjsm th.tinytable_css_7g4pgkgpase0c1oc1lva { position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+#tinytable_a0kvlinc08vdq3htfjsm td.tinytable_css_flout0xswcb0bc0vjbeu, #tinytable_a0kvlinc08vdq3htfjsm th.tinytable_css_flout0xswcb0bc0vjbeu { position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 3%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+#tinytable_a0kvlinc08vdq3htfjsm td.tinytable_css_x9s1auw79c9b3htzj64j, #tinytable_a0kvlinc08vdq3htfjsm th.tinytable_css_x9s1auw79c9b3htzj64j { position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: #FF0000; --line-color-left: black; --line-color-right: black; --line-color-top: #FF0000; --line-width-bottom: 0.1em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center; color: #FF0000; background-color: #ededed }
+#tinytable_a0kvlinc08vdq3htfjsm td.tinytable_css_whxwzxhf0iqly07uhs5k, #tinytable_a0kvlinc08vdq3htfjsm th.tinytable_css_whxwzxhf0iqly07uhs5k { background-color: #ededed }
+#tinytable_a0kvlinc08vdq3htfjsm td.tinytable_css_a0kwo9fj16uz8uxpyeqr, #tinytable_a0kvlinc08vdq3htfjsm th.tinytable_css_a0kwo9fj16uz8uxpyeqr { text-align: center }
+#tinytable_a0kvlinc08vdq3htfjsm td.tinytable_css_6hercq06ccgbcijbms49, #tinytable_a0kvlinc08vdq3htfjsm th.tinytable_css_6hercq06ccgbcijbms49 { position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 3%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+</style>
+    <div class="container">
+      <table class="tinytable" id="tinytable_a0kvlinc08vdq3htfjsm" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+        
+        <thead>
+<tr>
+<th scope="col" align="center" colspan="1" data-row="-2" data-col="1">Row Label</th>
+<th scope="col" align="center" colspan="3" data-row="-2" data-col="2">Statistics</th>
+</tr>
+<tr>
+<th scope="col" align="center" colspan="1" data-row="-1" data-col="1"> </th>
+<th scope="col" align="center" colspan="1" data-row="-1" data-col="2"> </th>
+<th scope="col" align="center" colspan="2" data-row="-1" data-col="3">X</th>
+</tr>
+              <tr>
+                <th scope="col" data-row="0" data-col="1">Group</th>
+                <th scope="col" data-row="0" data-col="2">N</th>
+                <th scope="col" data-row="0" data-col="3">Mean</th>
+                <th scope="col" data-row="0" data-col="4">Std Dev</th>
+              </tr>
+        </thead>
+        
+        <tbody>
+                <tr>
+                  <td data-row="1" data-col="1">a</td>
+                  <td data-row="1" data-col="2">35</td>
+                  <td data-row="1" data-col="3">2.4</td>
+                  <td data-row="1" data-col="4">98.3</td>
+                </tr>
+                <tr>
+                  <td data-row="2" data-col="1">b</td>
+                  <td data-row="2" data-col="2">20</td>
+                  <td data-row="2" data-col="3">-16.9</td>
+                  <td data-row="2" data-col="4">85.2</td>
+                </tr>
+                <tr>
+                  <td data-row="3" data-col="1">Subgroup</td>
+                  <td data-row="3" data-col="2">Subgroup</td>
+                  <td data-row="3" data-col="3">Subgroup</td>
+                  <td data-row="3" data-col="4">Subgroup</td>
+                </tr>
+                <tr>
+                  <td data-row="4" data-col="1">c</td>
+                  <td data-row="4" data-col="2">28</td>
+                  <td data-row="4" data-col="3">-3.9</td>
+                  <td data-row="4" data-col="4">93.4</td>
+                </tr>
+                <tr>
+                  <td data-row="5" data-col="1">d</td>
+                  <td data-row="5" data-col="2">17</td>
+                  <td data-row="5" data-col="3">3.1</td>
+                  <td data-row="5" data-col="4">104.1</td>
+                </tr>
+                <tr>
+                  <td data-row="6" data-col="1">e</td>
+                  <td data-row="6" data-col="2">25</td>
+                  <td data-row="6" data-col="3">-17.7</td>
+                  <td data-row="6" data-col="4">95.3</td>
+                </tr>
+        </tbody>
+      </table>
+    </div>
+<!-- hack to avoid NA insertion in last line -->
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

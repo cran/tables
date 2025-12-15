@@ -1,6 +1,6 @@
 Package: tables
 Title: Formula-Driven Table Generation
-Version: 0.9.31
+Version: 0.9.33
 Authors@R: person(given = "Duncan",
                   family = "Murdoch",
                   role = c("aut", "cre"),
@@ -14,12 +14,12 @@ Depends: R (>= 2.12.0)
 Imports: stats, utils, knitr, htmltools
 Suggests: magrittr, kableExtra (>= 0.9.0), Hmisc, bookdown, rmarkdown,
         pkgdown, formatters, tinytable (>= 0.0.5)
-VignetteBuilder: rmarkdown
+VignetteBuilder: knitr, rmarkdown
 URL: https://dmurdoch.github.io/tables/
 BugReports: https://github.com/dmurdoch/tables/issues
 SystemRequirements: pandoc (>= 1.12.3) for vignettes
 NeedsCompilation: no
-Packaged: 2024-08-29 13:43:49 UTC; murdoch
+Packaged: 2025-12-14 20:44:29 UTC; murdoch
 Author: Duncan Murdoch [aut, cre]
 Repository: CRAN
-Date/Publication: 2024-08-29 14:10:02 UTC
+Date/Publication: 2025-12-15 06:50:02 UTC
