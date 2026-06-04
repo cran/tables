@@ -328,12 +328,12 @@ colLabels(tab) <- labs
 ## ---------------------------------------------------------
 tab
 
-## ---------------------------------------------------------
-library(magrittr)
-library(kableExtra)
-toKable(tab) %>% 
-  kable_styling(full_width = TRUE) %>%
-  column_spec(4, color = "red")
+## ----eval=FALSE-------------------------------------------
+# library(magrittr)
+# library(kableExtra)
+# toKable(tab) %>%
+#   kable_styling(full_width = TRUE) %>%
+#   column_spec(4, color = "red")
 
 ## ---------------------------------------------------------
 latexTable(tabular((Species + 1) ~ (n=1) + Format(digits=2)*

@@ -626,13 +626,13 @@ Std Dev
 a
 </th>
 <td>
-35
+29
 </td>
 <td>
-2.4
+12.18
 </td>
 <td>
-98.3
+95.19
 </td>
 </tr>
 <tr class="center">
@@ -640,13 +640,13 @@ a
 b
 </th>
 <td>
-20
+18
 </td>
 <td>
--16.9
+-22.81
 </td>
 <td>
-85.2
+112.91
 </td>
 </tr>
 <tr class="center">
@@ -657,10 +657,10 @@ c
 28
 </td>
 <td>
--3.9
+20.76
 </td>
 <td>
-93.4
+117.77
 </td>
 </tr>
 <tr class="center">
@@ -668,13 +668,13 @@ c
 d
 </th>
 <td>
-17
+20
 </td>
 <td>
-3.1
+-8.76
 </td>
 <td>
-104.1
+106.15
 </td>
 </tr>
 <tr class="center">
@@ -682,13 +682,13 @@ d
 e
 </th>
 <td>
-25
+30
 </td>
 <td>
--17.7
+0.94
 </td>
 <td>
-95.3
+91.06
 </td>
 </tr>
 </tbody>
@@ -699,14 +699,14 @@ e
 older method, use <code>table_options(knit_print = FALSE)</code>:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">table_options</span>(<span class="at">knit_print =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>tab        <span class="co"># This chunk uses the default results = &#39;markup&#39;</span></span></code></pre></div>
-<pre><code>##                        
-##           X            
-##  Group N  Mean  Std Dev
-##  a     35   2.4  98.3  
-##  b     20 -16.9  85.2  
-##  c     28  -3.9  93.4  
-##  d     17   3.1 104.1  
-##  e     25 -17.7  95.3</code></pre>
+<pre><code>##                         
+##           X             
+##  Group N  Mean   Std Dev
+##  a     29  12.18  95.19 
+##  b     18 -22.81 112.91 
+##  c     28  20.76 117.77 
+##  d     20  -8.76 106.15 
+##  e     30   0.94  91.06</code></pre>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">toHTML</span>(tab)  <span class="co"># This chunk uses results = &#39;asis&#39;</span></span></code></pre></div>
 <table class="Rtable">
  <thead>
@@ -725,33 +725,33 @@ older method, use <code>table_options(knit_print = FALSE)</code>:</p>
  <tbody>
  <tr class="center">
   <th class="left">a</th>
-  <td>35</td>
-  <td>  2.4</td>
-  <td> 98.3</td>
+  <td>29</td>
+  <td> 12.18</td>
+  <td> 95.19</td>
 </tr>
  <tr class="center">
   <th class="left">b</th>
-  <td>20</td>
-  <td>-16.9</td>
-  <td> 85.2</td>
+  <td>18</td>
+  <td>-22.81</td>
+  <td>112.91</td>
 </tr>
  <tr class="center">
   <th class="left">c</th>
   <td>28</td>
-  <td> -3.9</td>
-  <td> 93.4</td>
+  <td> 20.76</td>
+  <td>117.77</td>
 </tr>
  <tr class="center">
   <th class="left">d</th>
-  <td>17</td>
-  <td>  3.1</td>
-  <td>104.1</td>
+  <td>20</td>
+  <td> -8.76</td>
+  <td>106.15</td>
 </tr>
  <tr class="center">
   <th class="left">e</th>
-  <td>25</td>
-  <td>-17.7</td>
-  <td> 95.3</td>
+  <td>30</td>
+  <td>  0.94</td>
+  <td> 91.06</td>
 </tr>
  </tbody>
  </table>
@@ -822,13 +822,13 @@ Std Dev
 a
 </th>
 <td>
-35
+29
 </td>
 <td>
-2.4
+12.18
 </td>
 <td>
-98.3
+95.19
 </td>
 </tr>
 <tr class="right">
@@ -836,13 +836,13 @@ a
 b
 </th>
 <td>
-20
+18
 </td>
 <td>
--16.9
+-22.81
 </td>
 <td>
-85.2
+112.91
 </td>
 </tr>
 <tr class="right">
@@ -853,10 +853,10 @@ c
 28
 </td>
 <td>
--3.9
+20.76
 </td>
 <td>
-93.4
+117.77
 </td>
 </tr>
 <tr class="right">
@@ -864,13 +864,13 @@ c
 d
 </th>
 <td>
-17
+20
 </td>
 <td>
-3.1
+-8.76
 </td>
 <td>
-104.1
+106.15
 </td>
 </tr>
 <tr class="right">
@@ -878,13 +878,13 @@ d
 e
 </th>
 <td>
-25
+30
 </td>
 <td>
--17.7
+0.94
 </td>
 <td>
-95.3
+91.06
 </td>
 </tr>
 </tbody>
@@ -928,13 +928,13 @@ Std Dev
 a
 </th>
 <td>
-35
+29
 </td>
 <td>
-   2.4
+  12.18
 </td>
 <td>
-  98.3
+  95.19
 </td>
 </tr>
 <tr class="center">
@@ -942,13 +942,13 @@ a
 b
 </th>
 <td>
-20
+18
 </td>
 <td>
- −16.9
+ −22.81
 </td>
 <td>
-  85.2
+ 112.91
 </td>
 </tr>
 <tr class="center">
@@ -959,10 +959,10 @@ c
 28
 </td>
 <td>
-  −3.9
+  20.76
 </td>
 <td>
-  93.4
+ 117.77
 </td>
 </tr>
 <tr class="center">
@@ -970,13 +970,13 @@ c
 d
 </th>
 <td>
-17
+20
 </td>
 <td>
-   3.1
+  −8.76
 </td>
 <td>
- 104.1
+ 106.15
 </td>
 </tr>
 <tr class="center">
@@ -984,13 +984,13 @@ d
 e
 </th>
 <td>
-25
+30
 </td>
 <td>
- −17.7
+   0.94
 </td>
 <td>
-  95.3
+  91.06
 </td>
 </tr>
 </tbody>
@@ -1047,11 +1047,11 @@ customized display for one table by also using
 <span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a><span class="st">&lt;/style&gt;&quot;</span>, <span class="at">doCSS =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a>tab</span></code></pre></div>
 <style>
-#table138105859538 .center { text-align:center;
+#table5e164edc8bf9 .center { text-align:center;
 background-color: aliceblue;
 }
 </style>
-<table id="table138105859538" class="Rtable">
+<table id="table5e164edc8bf9" class="Rtable">
 <thead>
 <tr class="center">
 <th>
@@ -1085,13 +1085,13 @@ Std Dev
 a
 </th>
 <td>
-35
+29
 </td>
 <td>
-   2.4
+  12.18
 </td>
 <td>
-  98.3
+  95.19
 </td>
 </tr>
 <tr class="center">
@@ -1099,13 +1099,13 @@ a
 b
 </th>
 <td>
-20
+18
 </td>
 <td>
- −16.9
+ −22.81
 </td>
 <td>
-  85.2
+ 112.91
 </td>
 </tr>
 <tr class="center">
@@ -1116,10 +1116,10 @@ c
 28
 </td>
 <td>
-  −3.9
+  20.76
 </td>
 <td>
-  93.4
+ 117.77
 </td>
 </tr>
 <tr class="center">
@@ -1127,13 +1127,13 @@ c
 d
 </th>
 <td>
-17
+20
 </td>
 <td>
-   3.1
+  −8.76
 </td>
 <td>
- 104.1
+ 106.15
 </td>
 </tr>
 <tr class="center">
@@ -1141,13 +1141,13 @@ d
 e
 </th>
 <td>
-25
+30
 </td>
 <td>
- −17.7
+   0.94
 </td>
 <td>
-  95.3
+  91.06
 </td>
 </tr>
 </tbody>
@@ -1188,13 +1188,13 @@ Std Dev
 a
 </th>
 <td>
-35
+29
 </td>
 <td>
-   2.4
+  12.18
 </td>
 <td>
-  98.3
+  95.19
 </td>
 </tr>
 <tr class="center">
@@ -1202,13 +1202,13 @@ a
 b
 </th>
 <td>
-20
+18
 </td>
 <td>
- −16.9
+ −22.81
 </td>
 <td>
-  85.2
+ 112.91
 </td>
 </tr>
 <tr class="center">
@@ -1219,10 +1219,10 @@ c
 28
 </td>
 <td>
-  −3.9
+  20.76
 </td>
 <td>
-  93.4
+ 117.77
 </td>
 </tr>
 <tr class="center">
@@ -1230,13 +1230,13 @@ c
 d
 </th>
 <td>
-17
+20
 </td>
 <td>
-   3.1
+  −8.76
 </td>
 <td>
- 104.1
+ 106.15
 </td>
 </tr>
 <tr class="center">
@@ -1244,13 +1244,13 @@ d
 e
 </th>
 <td>
-25
+30
 </td>
 <td>
- −17.7
+   0.94
 </td>
 <td>
-  95.3
+  91.06
 </td>
 </tr>
 </tbody>
@@ -1317,13 +1317,13 @@ Std Dev
 a
 </th>
 <td style="color: blue !important;">
-35
+29
 </td>
 <td style="color: blue !important;">
-   2.4
+  12.18
 </td>
 <td style="color: red !important;color: blue !important;">
-  98.3
+  95.19
 </td>
 </tr>
 <tr class="center">
@@ -1331,13 +1331,13 @@ a
 b
 </th>
 <td>
-20
+18
 </td>
 <td>
- −16.9
+ −22.81
 </td>
 <td style="color: red !important;">
-  85.2
+ 112.91
 </td>
 </tr>
 <tr grouplength="3">
@@ -1353,10 +1353,10 @@ c
 28
 </td>
 <td>
-  −3.9
+  20.76
 </td>
 <td style="color: red !important;">
-  93.4
+ 117.77
 </td>
 </tr>
 <tr class="center">
@@ -1364,13 +1364,13 @@ c
 d
 </th>
 <td>
-17
+20
 </td>
 <td>
-   3.1
+  −8.76
 </td>
 <td style="color: red !important;">
- 104.1
+ 106.15
 </td>
 </tr>
 <tr class="center">
@@ -1378,13 +1378,13 @@ d
 e
 </th>
 <td>
-25
+30
 </td>
 <td>
- −17.7
+   0.94
 </td>
 <td style="color: red !important;">
-  95.3
+  91.06
 </td>
 </tr>
 </tbody>
@@ -1649,25 +1649,25 @@ function tinytable_rank_sorter(a, b, aRow, bRow, column, dir, sorterParams) {
 
     <script>
       // Create table-specific functions using external factory
-      const tableFns_a0kvlinc08vdq3htfjsm = TinyTable.createTableFunctions("tinytable_a0kvlinc08vdq3htfjsm");
+      const tableFns_w9p9v23snd8f00jcnpuv = TinyTable.createTableFunctions("tinytable_w9p9v23snd8f00jcnpuv");
       // tinytable span after
-      window.addEventListener('load', function () { tableFns_a0kvlinc08vdq3htfjsm.spanCell(3, 1, 1, 4) })
+      window.addEventListener('load', function () { tableFns_w9p9v23snd8f00jcnpuv.spanCell(3, 1, 1, 4) })
       window.addEventListener('load', function () {
           var cellsToStyle = [
             // tinytable style arrays after
-          { positions: [ { i: '5', j: 3 }, { i: '6', j: 3 }, { i: '5', j: 4 }, { i: '6', j: 4 } ], css_id: 'tinytable_css_hs4te3a2boel72prauah',}, 
-          { positions: [ { i: '-2', j: 3 }, { i: '-2', j: 4 }, { i: '-1', j: 4 } ], css_id: 'tinytable_css_7g4pgkgpase0c1oc1lva',}, 
-          { positions: [ { i: '-2', j: 2 }, { i: '-1', j: 3 } ], css_id: 'tinytable_css_flout0xswcb0bc0vjbeu',}, 
-          { positions: [ { i: '3', j: 1 }, { i: '3', j: 2 }, { i: '3', j: 3 }, { i: '3', j: 4 } ], css_id: 'tinytable_css_x9s1auw79c9b3htzj64j',}, 
-          { positions: [ { i: '1', j: 1 }, { i: '5', j: 1 }, { i: '1', j: 2 }, { i: '5', j: 2 }, { i: '1', j: 3 }, { i: '1', j: 4 } ], css_id: 'tinytable_css_whxwzxhf0iqly07uhs5k',}, 
-          { positions: [ { i: '-1', j: 1 }, { i: '-1', j: 2 } ], css_id: 'tinytable_css_a0kwo9fj16uz8uxpyeqr',}, 
-          { positions: [ { i: '-2', j: 1 } ], css_id: 'tinytable_css_6hercq06ccgbcijbms49',}, 
+          { positions: [ { i: '5', j: 3 }, { i: '6', j: 3 }, { i: '5', j: 4 }, { i: '6', j: 4 } ], css_id: 'tinytable_css_klrig06j7xupywsv759l',}, 
+          { positions: [ { i: '-2', j: 3 }, { i: '-2', j: 4 }, { i: '-1', j: 4 } ], css_id: 'tinytable_css_2m3cxnj8idvqxb8z413h',}, 
+          { positions: [ { i: '-2', j: 2 }, { i: '-1', j: 3 } ], css_id: 'tinytable_css_kmgud2dkbh8y6w23lxfr',}, 
+          { positions: [ { i: '3', j: 1 }, { i: '3', j: 2 }, { i: '3', j: 3 }, { i: '3', j: 4 } ], css_id: 'tinytable_css_27pz3z6mswevu0cxno7k',}, 
+          { positions: [ { i: '1', j: 1 }, { i: '5', j: 1 }, { i: '1', j: 2 }, { i: '5', j: 2 }, { i: '1', j: 3 }, { i: '1', j: 4 } ], css_id: 'tinytable_css_5ev0tfkgrl9f6lmzmxty',}, 
+          { positions: [ { i: '-1', j: 1 }, { i: '-1', j: 2 } ], css_id: 'tinytable_css_fpw9x2td0y16l7w2hps9',}, 
+          { positions: [ { i: '-2', j: 1 } ], css_id: 'tinytable_css_qwcxxwbj5ry5hljbr8s3',}, 
           ];
 
           // Loop over the arrays to style the cells
           cellsToStyle.forEach(function (group) {
               group.positions.forEach(function (cell) {
-                  tableFns_a0kvlinc08vdq3htfjsm.styleCell(cell.i, cell.j, group.css_id);
+                  tableFns_w9p9v23snd8f00jcnpuv.styleCell(cell.i, cell.j, group.css_id);
               });
           });
       });
@@ -1724,7 +1724,7 @@ font-family: inherit;
 -webkit-font-smoothing: antialiased;
 -moz-osx-font-smoothing: grayscale;
 }
-.tinytable * {
+.tinytable *:not(mjx-container):not(mjx-container *) {
 font-family: inherit;
 }
 
@@ -1870,16 +1870,16 @@ line-height: var(--tt-line-height-footnote-tight);
 </style>
     <style>
 
-#tinytable_a0kvlinc08vdq3htfjsm td.tinytable_css_hs4te3a2boel72prauah, #tinytable_a0kvlinc08vdq3htfjsm th.tinytable_css_hs4te3a2boel72prauah { color: #FFA500; background-color: black }
-#tinytable_a0kvlinc08vdq3htfjsm td.tinytable_css_7g4pgkgpase0c1oc1lva, #tinytable_a0kvlinc08vdq3htfjsm th.tinytable_css_7g4pgkgpase0c1oc1lva { position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
-#tinytable_a0kvlinc08vdq3htfjsm td.tinytable_css_flout0xswcb0bc0vjbeu, #tinytable_a0kvlinc08vdq3htfjsm th.tinytable_css_flout0xswcb0bc0vjbeu { position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 3%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
-#tinytable_a0kvlinc08vdq3htfjsm td.tinytable_css_x9s1auw79c9b3htzj64j, #tinytable_a0kvlinc08vdq3htfjsm th.tinytable_css_x9s1auw79c9b3htzj64j { position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: #FF0000; --line-color-left: black; --line-color-right: black; --line-color-top: #FF0000; --line-width-bottom: 0.1em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center; color: #FF0000; background-color: #ededed }
-#tinytable_a0kvlinc08vdq3htfjsm td.tinytable_css_whxwzxhf0iqly07uhs5k, #tinytable_a0kvlinc08vdq3htfjsm th.tinytable_css_whxwzxhf0iqly07uhs5k { background-color: #ededed }
-#tinytable_a0kvlinc08vdq3htfjsm td.tinytable_css_a0kwo9fj16uz8uxpyeqr, #tinytable_a0kvlinc08vdq3htfjsm th.tinytable_css_a0kwo9fj16uz8uxpyeqr { text-align: center }
-#tinytable_a0kvlinc08vdq3htfjsm td.tinytable_css_6hercq06ccgbcijbms49, #tinytable_a0kvlinc08vdq3htfjsm th.tinytable_css_6hercq06ccgbcijbms49 { position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: black; --line-color-left: black; --line-color-right: black; --line-color-top: black; --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 3%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+#tinytable_w9p9v23snd8f00jcnpuv td.tinytable_css_klrig06j7xupywsv759l, #tinytable_w9p9v23snd8f00jcnpuv th.tinytable_css_klrig06j7xupywsv759l { color: #FFA500; background-color: black }
+#tinytable_w9p9v23snd8f00jcnpuv td.tinytable_css_2m3cxnj8idvqxb8z413h, #tinytable_w9p9v23snd8f00jcnpuv th.tinytable_css_2m3cxnj8idvqxb8z413h { position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: black; --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.03em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+#tinytable_w9p9v23snd8f00jcnpuv td.tinytable_css_kmgud2dkbh8y6w23lxfr, #tinytable_w9p9v23snd8f00jcnpuv th.tinytable_css_kmgud2dkbh8y6w23lxfr { position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: black; --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.03em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 3%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+#tinytable_w9p9v23snd8f00jcnpuv td.tinytable_css_27pz3z6mswevu0cxno7k, #tinytable_w9p9v23snd8f00jcnpuv th.tinytable_css_27pz3z6mswevu0cxno7k { position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: #FF0000; --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: #FF0000; --line-width-bottom: 0.1em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center; color: #FF0000; background-color: #ededed }
+#tinytable_w9p9v23snd8f00jcnpuv td.tinytable_css_5ev0tfkgrl9f6lmzmxty, #tinytable_w9p9v23snd8f00jcnpuv th.tinytable_css_5ev0tfkgrl9f6lmzmxty { background-color: #ededed }
+#tinytable_w9p9v23snd8f00jcnpuv td.tinytable_css_fpw9x2td0y16l7w2hps9, #tinytable_w9p9v23snd8f00jcnpuv th.tinytable_css_fpw9x2td0y16l7w2hps9 { text-align: center }
+#tinytable_w9p9v23snd8f00jcnpuv td.tinytable_css_qwcxxwbj5ry5hljbr8s3, #tinytable_w9p9v23snd8f00jcnpuv th.tinytable_css_qwcxxwbj5ry5hljbr8s3 { position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: black; --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.03em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 3%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
 </style>
     <div class="container">
-      <table class="tinytable" id="tinytable_a0kvlinc08vdq3htfjsm" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+      <table class="tinytable" id="tinytable_w9p9v23snd8f00jcnpuv" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
         
         <thead>
 <tr>
@@ -1902,15 +1902,15 @@ line-height: var(--tt-line-height-footnote-tight);
         <tbody>
                 <tr>
                   <td data-row="1" data-col="1">a</td>
-                  <td data-row="1" data-col="2">35</td>
-                  <td data-row="1" data-col="3">2.4</td>
-                  <td data-row="1" data-col="4">98.3</td>
+                  <td data-row="1" data-col="2">29</td>
+                  <td data-row="1" data-col="3">12.18</td>
+                  <td data-row="1" data-col="4">95.19</td>
                 </tr>
                 <tr>
                   <td data-row="2" data-col="1">b</td>
-                  <td data-row="2" data-col="2">20</td>
-                  <td data-row="2" data-col="3">-16.9</td>
-                  <td data-row="2" data-col="4">85.2</td>
+                  <td data-row="2" data-col="2">18</td>
+                  <td data-row="2" data-col="3">-22.81</td>
+                  <td data-row="2" data-col="4">112.91</td>
                 </tr>
                 <tr>
                   <td data-row="3" data-col="1">Subgroup</td>
@@ -1921,20 +1921,20 @@ line-height: var(--tt-line-height-footnote-tight);
                 <tr>
                   <td data-row="4" data-col="1">c</td>
                   <td data-row="4" data-col="2">28</td>
-                  <td data-row="4" data-col="3">-3.9</td>
-                  <td data-row="4" data-col="4">93.4</td>
+                  <td data-row="4" data-col="3">20.76</td>
+                  <td data-row="4" data-col="4">117.77</td>
                 </tr>
                 <tr>
                   <td data-row="5" data-col="1">d</td>
-                  <td data-row="5" data-col="2">17</td>
-                  <td data-row="5" data-col="3">3.1</td>
-                  <td data-row="5" data-col="4">104.1</td>
+                  <td data-row="5" data-col="2">20</td>
+                  <td data-row="5" data-col="3">-8.76</td>
+                  <td data-row="5" data-col="4">106.15</td>
                 </tr>
                 <tr>
                   <td data-row="6" data-col="1">e</td>
-                  <td data-row="6" data-col="2">25</td>
-                  <td data-row="6" data-col="3">-17.7</td>
-                  <td data-row="6" data-col="4">95.3</td>
+                  <td data-row="6" data-col="2">30</td>
+                  <td data-row="6" data-col="3">0.94</td>
+                  <td data-row="6" data-col="4">91.06</td>
                 </tr>
         </tbody>
       </table>
